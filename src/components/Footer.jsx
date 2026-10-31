@@ -1,0 +1,302 @@
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { ChevronDown } from 'lucide-react'
+import LegalModal from './LegalModal.jsx'
+import { slugDeCategoria } from '../utils/categorias.js'
+
+const ICONOS_SOCIALES = [
+  {
+    nombre: 'Instagram',
+    href: 'https://instagram.com/3d.apolovibes',
+    svg: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="2" y="2" width="20" height="20" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+]
+
+const ENLACES_TIENDA = ['Videojuegos y Cine', 'Articulados', 'Llaveros', 'Animales', 'Accesorios', 'Diseños a medida'].map(
+  nombre => ({ nombre, href: `/categorias?cat=${slugDeCategoria(nombre)}`}))
+
+const ENLACES_EMPRESA = [
+  { nombre: 'Nosotros', href: '/' },
+  { nombre: 'Cotiza tu producto', href: '/cotizar' },
+]
+
+const LINK_BUTTON_STYLE = {
+  fontSize: 13, color: 'var(--text-dim)', background: 'none',
+  border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left',
+  fontFamily: 'inherit',
+}
+
+function SeccionFooter({ titulo, abierta, alAlternar, children }) {
+  return (
+    <div className="footer-seccion">
+      <button
+        type="button"
+        className="footer-seccion-toggle"
+        onClick={alAlternar}
+        aria-expanded={abierta}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+          background: 'none',
+          border: 'none',
+          padding: '10px 0 12px',
+          cursor: 'pointer',
+          fontFamily: 'inherit',
+          textAlign: 'left',
+        }}
+      >
+        <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text)' }}>{titulo}</span>
+        <ChevronDown
+          size={16}
+          className="footer-chevron"
+          style={{
+            color: 'var(--text-dim)',
+            flexShrink: 0,
+            transition: 'transform .15s',
+            transform: abierta ? 'rotate(180deg)' : undefined,
+          }}
+        />
+      </button>
+      <div className={abierta ? 'footer-seccion-contenido' : 'footer-seccion-contenido footer-seccion-cerrada'}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+          {children}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function Footer() {
+  const [modalAbierto, setModalAbierto] = useState(null)
+  const [seccionesAbiertas, setSeccionesAbiertas] = useState({})
+
+  useEffect(() => {
+    function interceptarNavegacion(e) {
+      const target = e.target
+      if (!(target instanceof Element)) return
+
+      const estaEnCheckout = window.__checkoutBlocking && (
+        (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) || 
+        window.location.pathname.endsWith('/checkout') || 
+        window.location.pathname.includes('/checkout')
+      )
+      if (!estaEnCheckout) return
+
+      // Bloquear links
+      const enlace = target.closest('a')
+      if (enlace) {
+        const href = enlace.getAttribute('href')
+        if (href && !href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('tel:') && enlace.target !== '_blank' && !href.startsWith('#') && !href.startsWith('javascript:')) {
+          e.preventDefault()
+          e.stopPropagation()
+          e.stopImmediatePropagation()
+          window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: href } }))
+          return
+        }
+      }
+
+      // Bloquear botones dentro del footer que navegan
+      const footer = target.closest('footer')
+      if (footer) {
+        const boton = target.closest('button')
+        if (boton) {
+          // Permitir abrir modales legales
+          const texto = boton.textContent?.toLowerCase() || ''
+          if (texto.includes('términos') || texto.includes('privacidad') || texto.includes('cookies') || texto.includes('despachos') || texto.includes('devoluciones')) {
+            return
+          }
+          e.preventDefault()
+          e.stopPropagation()
+          e.stopImmediatePropagation()
+          window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/' } }))
+        }
+      }
+    }
+
+    document.addEventListener('click', interceptarNavegacion, true)
+    return () => document.removeEventListener('click', interceptarNavegacion, true)
+  }, [])
+
+  function alternar(id) {
+    setSeccionesAbiertas((s) => ({ ...s, [id]: !s[id] }))
+  }
+
+  return (
+    <>
+      <footer style={{ background: 'var(--surface)', marginTop: 60 }}>
+        <div className="wrap" style={{ paddingTop: '56px', paddingBottom: '24px' }}>
+          <div
+            className="footer-grid"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1.4fr 1fr 1fr 1fr',
+              gap: 32,
+              paddingBottom: 32,
+              borderBottom: '1px solid var(--line)',
+            }}
+          >
+            <div className="footer-brand">
+              <p
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 700,
+                  fontSize: 16,
+                  color: 'var(--accent)',
+                  marginBottom: 10,
+                }}
+              >
+                Apolo Vibes 3D
+              </p>
+              <p style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.6, marginBottom: 16, maxWidth: 220 }}>
+                De nuestro stock o hecho a tu medida: tu idea, con la energía de Apolo Vibes.
+              </p>
+
+              <p
+                style={{
+                  fontSize: 11,
+                  fontWeight: 500,
+                  color: 'var(--text-dim)',
+                  letterSpacing: '.04em',
+                  textTransform: 'uppercase',
+                  marginBottom: 8,
+                }}
+              >
+                Síguenos en Instagram
+              </p>
+              <div style={{ display: 'flex', gap: 10 }}>
+                {ICONOS_SOCIALES.map((red) => (
+                  <a
+                    key={red.nombre}
+                    href={red.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={red.nombre}
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: 8,
+                      background: 'var(--surface-2)',
+                      border: '1px solid var(--line)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--accent)',
+                      transition: 'border-color .2s',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--accent)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--line)')}
+                  >
+                    {red.svg}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+
+            <SeccionFooter
+              titulo="Tienda"
+              abierta={seccionesAbiertas.tienda}
+              alAlternar={() => alternar('tienda')}
+            >
+              {ENLACES_TIENDA.map((e) => (
+                <Link
+                  key={e.nombre}
+                  to={e.href}
+                  onClick={(ev) => {
+                    const estaEnCheckout = window.__checkoutBlocking && (
+                      (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) || 
+                      window.location.pathname.endsWith('/checkout') || 
+                      window.location.pathname.includes('/checkout')
+                    )
+                    if (estaEnCheckout) {
+                      ev.preventDefault()
+                      window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: e.href } }))
+                    }
+                  }}
+                  style={{ fontSize: 13, color: 'var(--text-dim)' }}
+                >
+                  {e.nombre}
+                </Link>
+              ))}
+            </SeccionFooter>
+
+            <SeccionFooter
+              titulo="Empresa"
+              abierta={seccionesAbiertas.empresa}
+              alAlternar={() => alternar('empresa')}
+            >
+              {ENLACES_EMPRESA.map((e) => (
+                <Link
+                  key={e.nombre}
+                  to={e.href}
+                  onClick={(ev) => {
+                    const estaEnCheckout = window.__checkoutBlocking && (
+                      (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) || 
+                      window.location.pathname.endsWith('/checkout') || 
+                      window.location.pathname.includes('/checkout')
+                    )
+                    if (estaEnCheckout) {
+                      ev.preventDefault()
+                      window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: e.href } }))
+                    }
+                  }}
+                  style={{ fontSize: 13, color: 'var(--text-dim)' }}
+                >
+                  {e.nombre}
+                </Link>
+              ))}
+              <button onClick={() => setModalAbierto('terminos')} style={LINK_BUTTON_STYLE}>
+                Términos y condiciones
+              </button>
+              <button onClick={() => setModalAbierto('privacidad')} style={LINK_BUTTON_STYLE}>
+                Política de privacidad
+              </button>   
+              <button  style={LINK_BUTTON_STYLE}>
+                Política de cookies
+              </button>
+                <button  style={LINK_BUTTON_STYLE}>
+                Cambios y devoluciones
+              </button>
+              
+            </SeccionFooter>
+
+            <SeccionFooter
+              titulo="Contacto"
+              abierta={seccionesAbiertas.contacto}
+              alAlternar={() => alternar('contacto')}
+            >
+              <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>apolovibes3d@gmail.com</span>
+              <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>Viña del Mar, Chile</span>
+            </SeccionFooter>
+          </div>
+
+          <div
+            className="footer-bottom"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingTop: 20,
+              fontSize: 12,
+              color: 'var(--text-dim)',
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
+            <span>Copyright © 2024 ApoloVibes3D. </span>
+            <span>Impulsando la creatividad con cada impresión</span>
+          </div>
+        </div>
+      </footer>
+
+      <LegalModal tipo={modalAbierto} onClose={() => setModalAbierto(null)} />
+    </>
+  )
+}
