@@ -6,6 +6,7 @@ import { useProductos } from '../context/ProductContext.jsx'
 import { Star, ImageOff } from 'lucide-react'
 import { useState } from 'react'
 import { productoApi } from '../services/products.js'
+import { Path } from 'three'
 
 const ACENTOS = ['#FA7F19', '#F6D976', '#E8863E']
 const COLOR_NUEVO = '#2fa018'
@@ -21,7 +22,7 @@ export default function ProductCard({ producto, index = 0 }) {
   const categoria = categorias.find(c => c.id === producto.categoria_id)
   const imagenTarjeta = producto.imagen_thumb || producto.imagen
   const [agregando, setAgregando] = useState(false)
-  const { ruta } = apiPath()
+  const { ruta } = apiPath(imagenTarjeta)
   const navigate = useNavigate()
 
   const handleAgregar = async () => {
@@ -86,7 +87,7 @@ export default function ProductCard({ producto, index = 0 }) {
         >
           {imagenTarjeta ? (
             <img
-              src={ruta={imagenTarjeta}}
+              src={ruta(imagenTarjeta)}
               alt={producto.nombre}
               loading="lazy"
               decoding="async"
