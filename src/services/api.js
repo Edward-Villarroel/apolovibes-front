@@ -1,7 +1,5 @@
 
-// En produccion el front (V2NET) corre en otro origen que la API (Render en
-// subdominio): la URL del backend/gateway via VITE_API_URL (ej. https://api.tudominio.com).
-// En dev local se mantiene el mismo-origen '/api' (Vite proxy -> gateway :3000).
+
 const BASE_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api'
 const AUTH_STORAGE_KEY = 'apolovibes_auth'
 const EXCLUDE_RETRY = ['/auth/login', '/auth/refresh', '/auth/logout', '/auth/mfa/verificar', '/auth/mfa/activar', '/auth/mfa/desactivar', '/auth/cambiar-contrasena']
@@ -81,7 +79,7 @@ function esPublica(path, metodo) {
   return PUBLIC_PATHS.some(p => path === p || path.startsWith(`${p}/`))
 }
 
-function intentarRefresh() {
+export function intentarRefresh() {
   if (refreshPromise) return refreshPromise
 
   refreshPromise = (async () => {
@@ -128,6 +126,7 @@ async function request(path, options = {}, _retry = false) {
     `${BASE_URL}${path}`,
     {
       ...rest,
+      credentials: rest.credentials || 'include',
       headers: {
         ...(esSubida ? {} : { 'Content-Type': 'application/json' }),
         ...authHeaders(),
@@ -151,6 +150,7 @@ async function request(path, options = {}, _retry = false) {
         {
           ...rest,
           body: partes ? reconstruirFormData(partes) : rest.body,
+          credentials: rest.credentials || 'include',
           headers: {
             ...(esSubida ? {} : { 'Content-Type': 'application/json' }),
             ...headers,
@@ -207,7 +207,7 @@ export const api = {
   },
 }
  
-const COTIZADOR_URL = BASE_URL  // en prod: origina a la API del gateway en Render; el cotizador viaja por <API>/api/cotizar
+const COTIZADOR_URL = BASE_URL  
 
 export const apiCotizador = {
   cotizar: (formData) => conErrorAmigable(

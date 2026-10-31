@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
-import { api } from '../services/api.js'
+import { api, intentarRefresh } from '../services/api.js'
 import { olvidarAvisoMfa } from '../utils/avisoMfa.js'
 
 const AUTH_KEY = 'apolovibes_auth'
@@ -64,8 +64,9 @@ export function AuthProvider({ children }) {
     }
     ;(async () => {
       try {
-        const data = await api.post('/auth/refresh', {})
-        login({ token: data.access_token, user: data.user })
+        const { ok, body } = await intentarRefresh()
+        if (!ok || !body?.access_token) throw new Error('refresh fallido')
+        login({ token: body.access_token, user: body.user })
       } catch {
         alert('No se pudo iniciar sesión con Google')
       }
