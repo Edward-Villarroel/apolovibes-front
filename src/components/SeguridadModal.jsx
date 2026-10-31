@@ -54,7 +54,7 @@ const analizarPassword = (pw) => {
 }
 
 const seccionStyle = {
-    border: '1px solid var(--line)', borderRadius: 12, padding: '16px 18px', marginBottom: 16, background: 'var(--surface-2)',
+    borderRadius: 12, padding: '16px 18px', marginBottom: 16, background: 'rgba(255,255,255,.06)',
 }
 
 export default function SeguridadModal({ onClose }) {
@@ -81,7 +81,6 @@ export default function SeguridadModal({ onClose }) {
 
     const fortaleza = analizarPassword(passForm.nueva)
 
-    // Bloquear el scroll de la pagina mientras el modal esta abierto (igual que LoginModal).
     useLayoutEffect(() => {
         const scrollY = window.scrollY
         document.body.style.position = 'fixed'
@@ -237,7 +236,7 @@ export default function SeguridadModal({ onClose }) {
                     .modal-scroll { scrollbar-gutter: stable; }
                 `}</style>
 
-                {/* Header fijo (fuera del scroll) */}
+                {/* Header fijo*/}
                 <div style={{
                     flexShrink: 0,
                     display: 'flex', flexDirection: 'column',
@@ -251,7 +250,7 @@ export default function SeguridadModal({ onClose }) {
                     </h2>
                 </div>
 
-                {/* Cuerpo scrolleable (solo el contenido, entre header y footer) */}
+                {/* Cuerpo scrolleable*/}
                 <div className="modal-scroll" style={{ overflowY: 'auto', flex: 1, minHeight: 0 }}>
                     <div style={{ padding: '20px 32px 28px' }}>
                         {/* --- Cambio de contraseña --- */}

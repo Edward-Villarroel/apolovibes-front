@@ -262,7 +262,7 @@ export default function Footer() {
               <button  style={LINK_BUTTON_STYLE}>
                 Política de cookies
               </button>
-                <button  style={LINK_BUTTON_STYLE}>
+                <button  onClick={() => setModalAbierto('cambios')} style={LINK_BUTTON_STYLE}>
                 Cambios y devoluciones
               </button>
               
