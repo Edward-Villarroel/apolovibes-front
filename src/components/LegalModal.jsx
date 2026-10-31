@@ -187,16 +187,16 @@ Para consultas sobre cambios, devoluciones o garantías: apolovibes3d@gmail.com`
 Las cookies son pequeños archivos que el navegador guarda en su dispositivo cuando visita un sitio web. Permiten recordar información sobre su visita, como su sesión o sus preferencias. También usamos tecnologías equivalentes, como el almacenamiento local del navegador (localStorage y sessionStorage), que cumplen una función similar.
 
 2. Cookies Propias
-El Sitio utiliza únicamente estas cookies, todas necesarias para su funcionamiento:
-- refresh_token: cookie de sesión, httpOnly y SameSite=Strict, válida solo para /api/auth. Permite mantener su sesión iniciada y renovar el acceso sin volver a ingresar sus datos.
-- mfa_ticket: cookie temporal, httpOnly y SameSite=Strict, con una duración máxima de 5 minutos. Se usa solo cuando su cuenta tiene activada la autenticación de dos factores, para completar el segundo paso del inicio de sesión.
+El Sitio utiliza únicamente estas cookies, todas necesarias para su funcionamiento. Los nombres técnicos van entre paréntesis para que pueda identificarlas si alguna vez necesita eliminarlas desde su navegador:
+- Cookie de sesión: mantiene su sesión iniciada y renueva el acceso sin volver a pedirle sus datos. Dura mientras el navegador está abierto y no puede ser leída por el código del Sitio, solo por nuestros servidores.
+- Cookie de verificación en dos pasos: recuerda, por un máximo de 5 minutos, que ya completó el segundo paso del inicio de sesión cuando su cuenta tiene activada la autenticación de dos factores.
 Ninguna de estas cookies se usa para publicidad ni para seguimiento.
 
 3. Almacenamiento Local
 Además de las cookies, el navegador guarda información en su dispositivo:
-- apolovibes_auth (localStorage): token de acceso y datos básicos de su cuenta, para mantener la sesión.
-- apolovibes_theme (localStorage): su preferencia de tema claro u oscuro.
-- apolovibes_mfa_pendiente y aviso_mfa_v2 (sessionStorage): recuerdan, solo mientras la pestaña está abierta, que hay una verificación en dos pasos pendiente o un aviso de seguridad por mostrar.
+- Sesión iniciada: guarda el token de acceso y los datos básicos de su cuenta para no pedirle que ingrese en cada visita.
+- Tema visual: su preferencia de tema claro u oscuro.
+- Avisos de seguridad: recuerdan, solo mientras la pestaña está abierta, que hay una verificación en dos pasos pendiente o un aviso de seguridad por mostrar.
 El carrito de compras no se guarda en su navegador: se almacena en su cuenta en nuestros servidores.
 
 4. Cookies de Terceros
