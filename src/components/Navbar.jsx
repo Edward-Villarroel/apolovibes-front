@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useCart } from '../context/CartContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useTheme } from '../context/ThemeContext.jsx'
-import { mediaPath } from '../utils/media.js'
+import { mediaPath, urlMedia } from '../utils/media.js'
 import {
   ShoppingCart, Menu, X, User, LayoutDashboard, LogOut, Moon, Sun, CircleCheck, ClipboardList,
   Minus, Plus, Trash2, ShieldCheck, Calculator, ChevronRight, LogIn, ReceiptText
@@ -570,7 +570,7 @@ export default function Navbar() {
                           >
                             {item.imagen && (
                               <img
-                                src={item.imagen}
+                                src={urlMedia(item.imagen)}
                                 alt={item.nombre}
                                 loading="lazy"
                                 decoding="async"

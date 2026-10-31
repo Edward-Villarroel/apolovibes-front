@@ -4,7 +4,7 @@ import { RefreshCw, AlertTriangle, Eye, Star, Package, CircleCheck, X, ChevronLe
 import { useAuth } from '../context/AuthContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { pedidosApi } from '../services/orders.js';
-import { mediaPath } from '../utils/media.js';
+import { mediaPath, urlMedia } from '../utils/media.js';
 import ResenaModal from '../components/ResenaModal.jsx';
 import ConfirmModal from '../components/ConfirmModal.jsx';
 import { useBloqueoScroll } from '../hooks/useBloqueoScroll.js';
@@ -329,7 +329,7 @@ function DetalleModal({ pedido, onClose, onPagar, procesando, onCancelado, onMen
                     }}>
                       {item.imagen ? (
                         <img
-                          src={item.imagen}
+                          src={urlMedia(item.imagen)}
                           alt={item.nombre || 'Producto'}
                           loading="lazy" decoding="async" width="56" height="56"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}

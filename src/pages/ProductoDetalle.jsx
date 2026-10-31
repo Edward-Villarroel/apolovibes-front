@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
-import { mediaPath } from '../utils/media.js'
+import { mediaPath, urlMedia } from '../utils/media.js'
 import { useState, useMemo, useEffect } from 'react'
 import { useProductos } from '../context/ProductContext.jsx'
 import { useCart } from '../context/CartContext.jsx'
@@ -192,7 +192,7 @@ export default function ProductoDetalle() {
           >
             {fotoActual && (
               <img
-                src={fotoActual}
+                            src={urlMedia(fotoActual)}
                 alt={producto.nombre}
                 style={{
                   width: '100%',
@@ -292,7 +292,7 @@ export default function ProductoDetalle() {
                       >
                         {c.imagen ? (
                           <img
-                            src={c.imagen_thumb || c.imagen}
+                            src={urlMedia(c.imagen_thumb || c.imagen)}
                             alt=""
                             loading="lazy"
                             decoding="async"

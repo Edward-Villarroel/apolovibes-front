@@ -4,7 +4,7 @@ import { api } from '../services/api.js'
 import { productoApi } from '../services/products.js'
 import SelectOpciones from './SelectOpciones.jsx'
 import { Upload, Trash2 } from 'lucide-react'
-import { mediaPath } from '../utils/media.js'
+import { mediaPath, urlMedia } from '../utils/media.js'
 
 
 const overlayStyle = {
@@ -605,7 +605,7 @@ export default function ModalProducto({ producto, categorias, onClose, onGuardad
                                                 background: 'var(--surface-2)', flexShrink: 0,
                                             }}>
                                                 {c.imagen && (
-                                                    <img src={c.imagen} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                    <img src={urlMedia(c.imagen)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                 )}
                                             </span>
                                             <span style={{ flex: 1, fontSize: 13, color: 'var(--input-text)' }}>{c.nombre}</span>

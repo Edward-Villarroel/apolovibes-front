@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { pedidosApi, TRANSPORTISTAS } from '../../services/orders.js';
 import ConfirmModal from '../../components/ConfirmModal.jsx';
-import { mediaPath } from '../../utils/media.js';
+import { mediaPath, urlMedia } from '../../utils/media.js';
 import { useBloqueoScroll } from '../../hooks/useBloqueoScroll.js';
 
 const ETIQUETAS_ESTADO = {
@@ -424,7 +424,7 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
               }}>
                 {item.imagen ? (
                   <img
-                    src={item.imagen}
+                    src={urlMedia(item.imagen)}
                     alt={item.nombre || 'Producto'}
                     loading="lazy" decoding="async" width="56" height="56"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}

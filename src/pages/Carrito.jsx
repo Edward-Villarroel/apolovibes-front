@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { mediaPath } from '../utils/media.js'
+import { mediaPath, urlMedia } from '../utils/media.js'
 import { Trash2, Minus, Plus, ShoppingCart, Truck, Tag } from 'lucide-react'
 import { useCart } from '../context/CartContext.jsx'
 import { api } from '../services/api.js'
@@ -189,7 +189,7 @@ export default function Carrito() {
               >
                 {item.imagen && (
                   <img
-                    src={item.imagen}
+                    src={urlMedia(item.imagen)}
                     alt={item.nombre}
                     loading="lazy"
                     decoding="async"

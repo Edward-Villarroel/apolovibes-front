@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { mediaPath } from '../utils/media.js'
+import { mediaPath, urlMedia } from '../utils/media.js'
 import { useCart } from '../context/CartContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useProductos } from '../context/ProductContext.jsx'
@@ -85,7 +85,7 @@ export default function ProductCard({ producto, index = 0 }) {
         >
           {imagenTarjeta ? (
             <img
-              src={imagenTarjeta}
+              src={urlMedia(imagenTarjeta)}
               alt={producto.nombre}
               loading="lazy"
               decoding="async"
