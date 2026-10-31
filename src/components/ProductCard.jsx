@@ -21,6 +21,7 @@ export default function ProductCard({ producto, index = 0 }) {
   const categoria = categorias.find(c => c.id === producto.categoria_id)
   const imagenTarjeta = producto.imagen_thumb || producto.imagen
   const [agregando, setAgregando] = useState(false)
+  const { ruta } = apiPath()
   const navigate = useNavigate()
 
   const handleAgregar = async () => {
@@ -85,7 +86,7 @@ export default function ProductCard({ producto, index = 0 }) {
         >
           {imagenTarjeta ? (
             <img
-              src={apiPath={imagenTarjeta}}
+              src={ruta={imagenTarjeta}}
               alt={producto.nombre}
               loading="lazy"
               decoding="async"
