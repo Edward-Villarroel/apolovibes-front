@@ -259,7 +259,7 @@ export default function Footer() {
               <button onClick={() => setModalAbierto('privacidad')} style={LINK_BUTTON_STYLE}>
                 Política de privacidad
               </button>   
-              <button  style={LINK_BUTTON_STYLE}>
+              <button  onClick={() => setModalAbierto('cookies')} style={LINK_BUTTON_STYLE}>
                 Política de cookies
               </button>
                 <button  onClick={() => setModalAbierto('cambios')} style={LINK_BUTTON_STYLE}>
