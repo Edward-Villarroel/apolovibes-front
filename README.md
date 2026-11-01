@@ -54,4 +54,14 @@ src/
        - git pull
        - rm -rf dist (para eliminar el dist anterior)
        - npm run build
-       - cp -r dist/* ~/public_html (actualiza el dist)
+       - cp -a dist/. ~/public_html/   (actualiza el dist)
+   - `cp -r dist/*` NO copia `.htaccess` (los comodines no incluyen archivos que
+     empiezan con punto): usar `cp -a dist/. ~/public_html/`. Ese `.htaccess`
+     (vive en `public/`) es obligatorio: sin él, rutas como `/admin` o
+     `/producto/<id>` recargan a un 503/404 del hosting y parece que la sesión
+     se cerró sola.
+   - El build de producción necesita `VITE_API_URL=https://api.apolovibes3d.cl`.
+     Ya está en `.env.production`, que Vite lee solo en `npm run build`. Si falta,
+     el build aborta con un error explícito (guardia en `vite.config.js`):
+     sin esa URL las imágenes de producto y el refresh de sesión se piden al
+     dominio del hosting estático, donde no hay API.

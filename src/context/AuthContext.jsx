@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
-import { api, intentarRefresh } from '../services/api.js'
+import { api, intentarRefresh, EVENTO_SESION_EXPIRADA } from '../services/api.js'
 import { olvidarAvisoMfa } from '../utils/avisoMfa.js'
 
 const AUTH_KEY = 'apolovibes_auth'
@@ -27,6 +27,15 @@ export function AuthProvider({ children }) {
   }, [auth])
 
   const user = auth?.user ?? null
+
+  // El cliente HTTP borra el token cuando ya no puede renovar la sesión; acá se
+  // sincroniza el estado de React para que ProtectedRoute no deje al admin en
+  // un panel sin sesión.
+  useEffect(() => {
+    const cerrarSesion = () => setAuth(null)
+    window.addEventListener(EVENTO_SESION_EXPIRADA, cerrarSesion)
+    return () => window.removeEventListener(EVENTO_SESION_EXPIRADA, cerrarSesion)
+  }, [])
 
   const login = useCallback((sesion) => {
     olvidarAvisoMfa(sesion?.user?.id)
