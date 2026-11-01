@@ -212,21 +212,19 @@ export const api = {
   },
 }
  
-const COTIZADOR_URL = BASE_URL  
-
 export const apiCotizador = {
-  cotizar: (formData) => conErrorAmigable(
-    fetchConTimeout(
-      `${COTIZADOR_URL}/cotizar`,
-      {
-        method: 'POST',
-        body: formData
-      },
-      TIMEOUT_SUBIDA_MS
-    ).then(async res => {
-      if (!res.ok) throw await errorDeRespuesta(res, '/cotizar')
+  estimar: (formData) =>
+    conErrorAmigable(
+      fetchConTimeout(
+        `${BASE_URL}/cotizaciones/estimar-ia`,
+        {
+          method: 'POST',
+          body: formData
+        },
+        TIMEOUT_SUBIDA_MS
+      ).then(async res => {
+        if (!res.ok) throw await errorDeRespuesta(res, '/cotizaciones/estimar-ia')
         return res.json()
-    })
-  )
+      })
+    ),
 } 
- 
