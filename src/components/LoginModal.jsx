@@ -520,7 +520,7 @@ export default function LoginModal({ onClose }) {
                         Apolo Vibes 3D
                     </p>
                     <h2 style={{ margin: '0 0 10px', fontSize: 24, fontWeight: 700, color: 'var(--text)', fontFamily: 'var(--font-display)', textAlign: 'center', }}>
-                        {modo === 'registro' ? 'Crear cuenta' : modo === 'olvidar' ? 'Recuperar contraseña' : 'Iniciar sesion'}
+                        {modo === 'registro' ? 'Crear cuenta' : modo === 'olvidar' ? 'Recuperar contraseña' : 'Ingresar'}
                     </h2>
 
                     {modo === 'olvidar' ? (
@@ -929,7 +929,7 @@ export default function LoginModal({ onClose }) {
                                 onMouseEnter={(e) => { if (!cargando && !bloqueadoPorCaptcha) e.currentTarget.style.opacity = '.9' }}
                                 onMouseLeave={(e) => { if (!cargando && !bloqueadoPorCaptcha) e.currentTarget.style.opacity = '1' }}
                             >
-                                <LogIn size={16} /> {cargando ? 'Ingresando...' : 'Iniciar Sesión'} <span></span>
+                             {cargando ? 'Ingresando...' : 'Ingresar'} <span></span>
                             </button>
                         </form>
                     ) : exito ? (
