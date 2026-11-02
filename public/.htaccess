@@ -1,0 +1,20 @@
+# SPA de React servida por Vite.
+#
+# Cualquier ruta que no corresponda a un archivo o carpeta real se responde con
+# index.html, y React Router resuelve del lado del cliente. Sin esto, un refresh
+# en /carrito o /productos devuelve error del servidor en vez de la app.
+#
+# Si el hosting ya tenia reglas propias (redireccion a HTTPS, cabeceras, etc.),
+# mergearlas con este archivo en lugar de reemplazarlo a ciegas.
+#
+# Cache de /assets y /media se puede sumar despues con mod_expires, una vez
+# confirmado que el sitio responde (ver README de despliegue).
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
