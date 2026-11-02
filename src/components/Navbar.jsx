@@ -216,7 +216,9 @@ export default function Navbar() {
               }
             }}
           >Catálogo</Link>
-          <Link
+          {!isAdmin && (
+            <>
+             <Link
             to="/cotizar"
             onClick={(e) => {
               const estaEnCheckout = window.__checkoutBlocking && (
@@ -244,8 +246,9 @@ export default function Navbar() {
               }
             }}
           >Nosotros</Link>
+            </>
+          )}
         </nav>
-
         <div style={{ display: 'flex', alignItems: 'center', gap: 14, justifyContent: 'flex-end' }}>
           <button
             className="theme-toggle"
@@ -519,7 +522,7 @@ export default function Navbar() {
                         >
                            Iniciar sesión
                         </button>
-                      </div>
+                      </div>     
                     ) : items.length === 0 ? (
                       <div style={{ padding: '32px 16px', textAlign: 'center' }}>
                         <img
@@ -823,7 +826,8 @@ export default function Navbar() {
                 </>
               )
             )}
-            <div className="nm-section">
+            {!isAdmin && (
+              <div className="nm-section">
               <button className="nm-item" onClick={() => {
                 const estaEnCheckout = window.__checkoutBlocking && (
                   (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) ||
@@ -840,6 +844,7 @@ export default function Navbar() {
                 <Calculator size={18} /> Cotiza tu producto
               </button>
             </div>
+            )}
 
 
             {/* Categorías */}

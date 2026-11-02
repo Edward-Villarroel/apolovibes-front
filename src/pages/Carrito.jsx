@@ -381,7 +381,7 @@ export default function Carrito() {
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 padding: '6px 16px', borderRadius: 6, background: '#ffffffb6',
               }}>
-                <img src={mediaPath('tuu.png')} alt="Tuu" style={{ height: 25 }} />
+                <img src={mediaPath('tuu.webp')} alt="Tuu" style={{ height: 25 }} />
               </div>
             </div>
           </div>
