@@ -1,20 +1,42 @@
-# SPA de React servida por Vite.
+# ApoloVibes 3D - frontend React (Vite) en hosting compartido Apache/LiteSpeed.
 #
-# Cualquier ruta que no corresponda a un archivo o carpeta real se responde con
-# index.html, y React Router resuelve del lado del cliente. Sin esto, un refresh
-# en /carrito o /productos devuelve error del servidor en vez de la app.
+# El sitio es un SPA con React Router: /admin, /producto/<id>, /pago/retorno, etc.
+# no existen como archivos. Sin estas reglas el hosting responde 503/404 en vez
+# de entregar index.html, y al recargar o entrar directo a una ruta el usuario
+# parece "deslogueado". Se copia a public_html desde dist/ en cada despliegue.
 #
 # Si el hosting ya tenia reglas propias (redireccion a HTTPS, cabeceras, etc.),
 # mergearlas con este archivo en lugar de reemplazarlo a ciegas.
-#
-# Cache de /assets y /media se puede sumar despues con mod_expires, una vez
-# confirmado que el sitio responde (ver README de despliegue).
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  # La API vive en api.<dominio> (Render). En este hosting no hay /api: si algo
+  # pide /api/* acá es un build mal configurado (falta VITE_API_URL) y conviene
+  # que falle claro en vez de devolver el index.html con 200.
+  RewriteRule ^api(/|$) - [F,L]
+
+  # Archivos y carpetas reales (assets/, media/, favicon...) se sirven tal cual.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Todo lo demás es una ruta del SPA.
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# index.html no se cachea: los nombres de /assets cambian en cada build.
+<IfModule mod_headers.c>
+  <FilesMatch "^index\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# Los assets con hash sí pueden cachearse agresivamente.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  <FilesMatch "\.(js|css|webp|png|jpg|jpeg|svg|ico|woff2?)$">
+    ExpiresDefault "access plus 1 year"
+  </FilesMatch>
 </IfModule>

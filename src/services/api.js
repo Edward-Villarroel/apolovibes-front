@@ -2,6 +2,10 @@
 
 const BASE_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api'
 const AUTH_STORAGE_KEY = 'apolovibes_auth'
+// Evento con el que el cliente HTTP avisa que la sesión ya no se pudo renovar.
+// Antes solo se borraba localStorage: React seguía creyendo que el usuario
+// estaba logueado (el panel admin quedaba en un estado inconsistente).
+export const EVENTO_SESION_EXPIRADA = 'apolovibes:sesion-expirada'
 const EXCLUDE_RETRY = ['/auth/login', '/auth/refresh', '/auth/logout', '/auth/mfa/verificar', '/auth/mfa/activar', '/auth/mfa/desactivar', '/auth/cambiar-contrasena']
 const TIMEOUT_MS = 30000
 const TIMEOUT_SUBIDA_MS = 120000
@@ -165,6 +169,7 @@ async function request(path, options = {}, _retry = false) {
     }
 
     localStorage.removeItem(AUTH_STORAGE_KEY)
+    window.dispatchEvent(new CustomEvent(EVENTO_SESION_EXPIRADA))
     throw new Error('Sesion expirada. Inicie sesion de nuevo.')
   }
 
@@ -207,21 +212,19 @@ export const api = {
   },
 }
  
-const COTIZADOR_URL = BASE_URL  
-
 export const apiCotizador = {
-  cotizar: (formData) => conErrorAmigable(
-    fetchConTimeout(
-      `${COTIZADOR_URL}/cotizar`,
-      {
-        method: 'POST',
-        body: formData
-      },
-      TIMEOUT_SUBIDA_MS
-    ).then(async res => {
-      if (!res.ok) throw await errorDeRespuesta(res, '/cotizar')
+  estimar: (formData) =>
+    conErrorAmigable(
+      fetchConTimeout(
+        `${BASE_URL}/cotizaciones/estimar-ia`,
+        {
+          method: 'POST',
+          body: formData
+        },
+        TIMEOUT_SUBIDA_MS
+      ).then(async res => {
+        if (!res.ok) throw await errorDeRespuesta(res, '/cotizaciones/estimar-ia')
         return res.json()
-    })
-  )
+      })
+    ),
 } 
- 
