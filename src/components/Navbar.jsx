@@ -16,7 +16,7 @@ import ConfirmModal from './ConfirmModal.jsx'
 
 export default function Navbar() {
   const { items, cantidadTotal, solicitarLogin, abrirLogin, cerrarLogin, quitarItem, actualizarCantidadItem, total, requiereLogin } = useCart()
-  const { isLoggedIn, isAdmin, logout, user } = useAuth()
+  const { isLoggedIn, isAdmin, logout, user, cargando: authCargando } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -67,6 +67,10 @@ export default function Navbar() {
     window.addEventListener('apolovibes:google-mfa', abrirGoogleMfa)
     return () => window.removeEventListener('apolovibes:google-mfa', abrirGoogleMfa)
   }, [abrirLogin])
+
+  useEffect(() => {
+    if (isLoggedIn && solicitarLogin) cerrarLogin()
+  }, [isLoggedIn, solicitarLogin, cerrarLogin])
 
   useEffect(() => {
     function interceptarNavegacion(e) {
@@ -265,14 +269,17 @@ export default function Navbar() {
           {/* Desktop auth */}
           <div style={{ position: 'relative' }} ref={userMenuRef}>
             <button
-              onClick={() => isLoggedIn ? setUserMenuOpen(v => !v) : abrirLogin()}
+              onClick={() => 
+                if (authCargando) return
+                sLoggedIn ? setUserMenuOpen(v => !v) : abrirLogin()}
               aria-label="Mi cuenta"
               style={{
                 width: 34, height: 34, borderRadius: '50%',
                 border: '1.5px solid rgba(251,247,238,.3)',
                 background: 'rgba(251,247,238,.1)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', color: '#FBF7EE',
+                cursor: authCargando ? 'default' : 'pointer', color: '#FBF7EE',
+                opacity: authCargando ? .6 : 1,
                 transition: 'border-color .2s, background .2s',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(251,247,238,.6)'; e.currentTarget.style.background = 'rgba(251,247,238,.15)' }}

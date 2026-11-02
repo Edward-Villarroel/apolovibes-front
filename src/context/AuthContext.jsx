@@ -17,6 +17,9 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(loadAuth)
+  const [cargando, setCargando] = useState(
+    () => new URLSearchParams(window.location.search).get('login') === 'google'
+  )
 
   useEffect(() => {
     if (auth) {
@@ -28,9 +31,6 @@ export function AuthProvider({ children }) {
 
   const user = auth?.user ?? null
 
-  // El cliente HTTP borra el token cuando ya no puede renovar la sesión; acá se
-  // sincroniza el estado de React para que ProtectedRoute no deje al admin en
-  // un panel sin sesión.
   useEffect(() => {
     const cerrarSesion = () => setAuth(null)
     window.addEventListener(EVENTO_SESION_EXPIRADA, cerrarSesion)
@@ -63,10 +63,12 @@ export function AuthProvider({ children }) {
         error === 'cuenta_inactiva'
           ? 'Tu cuenta está desactivada'
           : 'No se pudo iniciar sesión con Google'
+      setCargando(false)
       alert(mensaje)
       return
     }
     if (params.get('mfa')) {
+      setCargando(false)
       sessionStorage.setItem('apolovibes_mfa_pendiente', '1')
       window.dispatchEvent(new CustomEvent('apolovibes:google-mfa'))
       return
@@ -78,12 +80,14 @@ export function AuthProvider({ children }) {
         login({ token: body.access_token, user: body.user })
       } catch {
         alert('No se pudo iniciar sesión con Google')
+      } finally {
+        setCargando(false)
       }
     })()
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, token: auth?.token ?? null, isLoggedIn: !!user, isAdmin: user?.rol === 'admin', login, logout, actualizarUsuario }}>
+    <AuthContext.Provider value={{ user, token: auth?.token ?? null, isLoggedIn: !!user, isAdmin: user?.rol === 'admin', cargando, login, logout, actualizarUsuario }}>
       {children}
     </AuthContext.Provider>
   )
