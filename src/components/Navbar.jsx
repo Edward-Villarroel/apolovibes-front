@@ -422,10 +422,10 @@ export default function Navbar() {
                     color: '#fff', fontSize: 13, fontWeight: 600,
                     cursor: 'pointer',
                     textAlign: 'left',
-                    transition: 'background .15s',
+                    transition: 'filter .15s',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(239,68,68,.08)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+                  onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(.85)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.filter = 'none')}
                 >
                   <LogOut size={16} />
                   Cerrar sesión
