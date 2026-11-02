@@ -269,9 +269,10 @@ export default function Navbar() {
           {/* Desktop auth */}
           <div style={{ position: 'relative' }} ref={userMenuRef}>
             <button
-              onClick={() => 
+              onClick={() => {
                 if (authCargando) return
-                sLoggedIn ? setUserMenuOpen(v => !v) : abrirLogin()}
+                sLoggedIn ? setUserMenuOpen(v => !v) : abrirLogin()
+              }}
               aria-label="Mi cuenta"
               style={{
                 width: 34, height: 34, borderRadius: '50%',
