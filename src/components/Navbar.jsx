@@ -280,8 +280,7 @@ export default function Navbar() {
                 background: 'rgba(251,247,238,.1)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 cursor: authCargando ? 'default' : 'pointer', color: '#FBF7EE',
-                opacity: authCargando ? .6 : 1,
-                transition: 'border-color .2s, background .2s',
+                transition: 'border-color .2s, background .35s',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(251,247,238,.6)'; e.currentTarget.style.background = 'rgba(251,247,238,.15)' }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(251,247,238,.3)'; e.currentTarget.style.background = 'rgba(251,247,238,.1)' }}
