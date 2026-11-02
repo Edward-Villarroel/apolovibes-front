@@ -9,7 +9,6 @@ const estiloImagen = { display: 'block', width: 200, height: 200, objectFit: 'co
 const RESULTADOS_FALLIDOS = ['failed', 'aborted', 'cancelled']
 
 function estadoSegunPasarela(resultado) {
-  //if (resultado === 'completed') return 'completado'
   if (RESULTADOS_FALLIDOS.includes(resultado)) return 'fallido'
   return 'verificando'
 }
@@ -98,7 +97,7 @@ export default function PagoRetorno() {
           </h1>
           <p style={{ color: 'var(--text-dim)', marginBottom: 24 }}>
             {esCotizacion 
-              ? 'Gracias por confiar en ApoloVibes. Tu diseño personalizado ya está en producción.'
+              ? 'Gracias por confiar en ApoloVibes. Tu diseño personalizado fue recibido con exito, puedes revisar el estado en mis-pedidos.'
               : correoEnviado === true
                 ? 'Gracias por tu compra y confiar en ApoloVibes. Te enviamos el comprobante de pago a tu correo.'
                 : correoEnviado === false

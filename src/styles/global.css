@@ -1124,3 +1124,11 @@ label {
   .cup-tabla { min-width: 620px; }
   .cup-tabla th, .cup-tabla td { padding: 10px 12px; }
 }
+
+@media (max-width: 600px) {
+    .login-brand-logo {
+        width: 42px !important;
+        height: 42px !important;
+        margin-bottom: 6px !important;
+    }
+}

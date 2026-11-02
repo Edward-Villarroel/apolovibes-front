@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { LogIn } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { mediaPath } from '../utils/media.js'
@@ -36,7 +35,7 @@ export default function RutaCliente({ children }) {
                 onClick={abrirLogin}
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
             >
-                <LogIn size={16} /> Iniciar sesión
+                 Ingresar
             </button>
         </section>
     )

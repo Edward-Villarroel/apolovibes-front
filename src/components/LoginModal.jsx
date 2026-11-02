@@ -511,6 +511,33 @@ export default function LoginModal({ onClose }) {
 
                 {/* Columna izquierda: formulario */}
                 <div className="login-modal-form" style={{ flex: 1, minWidth: 0, minHeight: 0, overflowY: 'auto', padding: '28px 40px' }}>
+                    <div
+                        className="login-brand-logo"
+                        style={{
+                            width: 52,
+                            height: 52,
+                            margin: '0 auto 8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'relative',
+                        }}
+                    >
+                        <img
+                            src={mediaPath('apolo-vibes-logo2.webp')}
+                            alt="Logo Apolo Vibes 3D"
+                            loading="eager"
+                            decoding="async"
+                            width="447"
+                            height="512"
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'contain',
+                                objectPosition: 'center',
+                            }}
+                        />
+                    </div>
                     <p
                         style={{
                             fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16, textAlign: 'center',
@@ -929,7 +956,7 @@ export default function LoginModal({ onClose }) {
                                 onMouseEnter={(e) => { if (!cargando && !bloqueadoPorCaptcha) e.currentTarget.style.opacity = '.9' }}
                                 onMouseLeave={(e) => { if (!cargando && !bloqueadoPorCaptcha) e.currentTarget.style.opacity = '1' }}
                             >
-                             {cargando ? 'Ingresando...' : 'Ingresar'} <span></span>
+                                {cargando ? 'Ingresando...' : 'Ingresar'} <span></span>
                             </button>
                         </form>
                     ) : exito ? (
@@ -1369,7 +1396,7 @@ export default function LoginModal({ onClose }) {
                             }}
                         >
                             <img
-                                src={mediaPath('apolo-vibes-logo.webp')}
+                                src={mediaPath('apolo-vibes-logo2.webp')}
                                 alt=""
                                 aria-hidden="true"
                                 loading="lazy"

@@ -418,7 +418,7 @@ export default function Navbar() {
                     display: 'flex', alignItems: 'center', gap: 10, 
                     width: 'calc(100% - 16px)', margin: '8px',
                     padding: '11px 12px', border: 'none', borderRadius: 8,
-                    background: '#b60303',
+                    background: 'var(--red)',
                     color: '#fff', fontSize: 13, fontWeight: 600,
                     cursor: 'pointer',
                     textAlign: 'left',
