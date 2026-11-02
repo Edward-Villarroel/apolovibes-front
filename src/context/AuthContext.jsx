@@ -39,6 +39,9 @@ export function AuthProvider({ children }) {
 
   const login = useCallback((sesion) => {
     olvidarAvisoMfa(sesion?.user?.id)
+    try {
+      if (sesion) localStorage.setItem(AUTH_KEY, JSON.stringify(sesion))
+    } catch {}
     setAuth(sesion)
   }, [])
 

@@ -2,6 +2,7 @@ import { useState, useLayoutEffect, useEffect, useRef } from 'react'
 import { mediaPath } from '../utils/media.js'
 import { createPortal } from 'react-dom'
 import { useAuth } from '../context/AuthContext.jsx'
+import { useCart } from '../context/CartContext.jsx'
 import { api } from '../services/api.js'
 import { CheckCircle2, Eye, EyeOff, Lock, Mail, User, ShieldCheck, LogIn } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -68,6 +69,7 @@ const ocultarCorreo = (email) => {
 
 export default function LoginModal({ onClose }) {
     const { login } = useAuth()
+    const { cargarCarrito } = useCart()
     const [modo, setModo] = useState('login')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -154,6 +156,7 @@ export default function LoginModal({ onClose }) {
                 codigo: codigoMfa.trim(),
             })
             login({ token: data.access_token, user: data.user })
+            await cargarCarrito(true)
             onClose()
         } catch (err) {
             const d = err.datos || {}
@@ -237,6 +240,7 @@ export default function LoginModal({ onClose }) {
                 return
             }
             login({ token: data.access_token, user: data.user })
+            await cargarCarrito(true)
             onClose()
         } catch (err) {
             if (captchaRequerido) setCaptchaToken('')

@@ -36,16 +36,15 @@ export function CartProvider({ children }) {
   const mostrarToast = useToast()
   const [items, setItems] = useState([])
   const [cargando, setCargando] = useState(false)
+  const [cargado, setCargado] = useState(false)
   const [error, setError] = useState(null)
   const [solicitarLogin, setSolicitarLogin] = useState(false)
   const carritoRef = useRef(null)
   const itemsRef = useRef([])
   const seqRef = useRef(0)
-  // El catálogo vive en un ref para que el enriquecimiento del carrito no
-  // dependa del `productos` capturado por la closure de `cargarCarrito`: al
-  // recargar la página el carrito puede responder DESPUÉS de que el catálogo
-  // ya cargó, y sin esto se enriquecía con una lista vacía (precio $0).
   const productosRef = useRef(productos)
+  const cargadoRef = useRef(false)
+  const cargaEnCursoRef = useRef(null)
 
   const syncItems = useCallback((carrito) => {
     carritoRef.current = carrito
@@ -54,8 +53,11 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     if (isLoggedIn) {
-      cargarCarrito()
+      if (!cargadoRef.current) cargarCarrito()
     } else {
+      cargadoRef.current = false
+      cargaEnCursoRef.current = null
+      setCargado(false)
       syncItems(null)
       setError(null)
     }
@@ -69,18 +71,28 @@ export function CartProvider({ children }) {
     }
   }, [productos, syncItems])
 
-  async function cargarCarrito() {
-    if (!isLoggedIn) return
-    setCargando(true)
-    try {
+  async function cargarCarrito(forzar = false) {
+    if (!isLoggedIn && !forzar) return
+    if (cargaEnCursoRef.current) return cargaEnCursoRef.current 
+
+    const promesa = (async () => {
+      setCargando(true)
+      try {
       const { carrito } = await carritoApi.obtener()
       syncItems(carrito)
+      cargadoRef.current = true
     } catch (err) {
       console.error('Error al cargar carrito:', err)
       setError(err.message)
     } finally {
+      setCargado(true)
       setCargando(false)
+      cargaEnCursoRef.current = null
     }
+    })()
+
+    cargaEnCursoRef.current = promesa
+    return promesa
   }
 
   function actualizarItems(actualizar) {
@@ -249,10 +261,12 @@ function reversarAgregar(producto) {
     [items]
   )
 
+  const cargandoCarrito = cargando || (isLoggedIn && !cargado)
+
   return (
     <CartContext.Provider
       value={{
-        items, total, cantidadTotal, cargando, error,
+        items, total, cantidadTotal, cargando: cargandoCarrito, error,
         requiereLogin: !isLoggedIn, solicitarLogin,
         cargarCarrito, abrirLogin, cerrarLogin,
         agregarProducto, quitarItem, actualizarCantidadItem, vaciarCarrito, repetirPedido,

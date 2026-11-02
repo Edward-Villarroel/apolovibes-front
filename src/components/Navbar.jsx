@@ -15,7 +15,7 @@ import SeguridadModal from './SeguridadModal.jsx'
 import ConfirmModal from './ConfirmModal.jsx'
 
 export default function Navbar() {
-  const { items, cantidadTotal, solicitarLogin, abrirLogin, cerrarLogin, quitarItem, actualizarCantidadItem, total, requiereLogin } = useCart()
+  const { items, cantidadTotal, solicitarLogin, abrirLogin, cerrarLogin, quitarItem, actualizarCantidadItem, total, requiereLogin, cargando: cargandoCarrito } = useCart()
   const { isLoggedIn, isAdmin, logout, user, cargando: authCargando } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const [scrolled, setScrolled] = useState(false)
@@ -69,8 +69,8 @@ export default function Navbar() {
   }, [abrirLogin])
 
   useEffect(() => {
-    if (isLoggedIn && solicitarLogin) cerrarLogin()
-  }, [isLoggedIn, solicitarLogin, cerrarLogin])
+    if (isLoggedIn && solicitarLogin && !cargandoCarrito) cerrarLogin()
+  }, [isLoggedIn, solicitarLogin, cargandoCarrito, cerrarLogin])
 
   useEffect(() => {
     function interceptarNavegacion(e) {
@@ -517,7 +517,7 @@ export default function Navbar() {
                           onClick={() => { setCartOpen(false); abrirLogin() }}
                           style={{ color: 'var(--text)' }}
                         >
-                          <LogIn size={16} /> Iniciar sesión
+                           Iniciar sesión
                         </button>
                       </div>
                     ) : items.length === 0 ? (
