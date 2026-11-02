@@ -533,15 +533,15 @@ export default function Navbar() {
                               window.location.pathname.includes('/checkout')
                             )
                             if (estaEnCheckout) {
-                              window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/carrito' } }))
+                              window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/categorias' } }))
                               setCartOpen(false)
                               return
                             }
-                            setCartOpen(false); navigate('/carrito')
+                            setCartOpen(false); navigate('/categorias')
                           }}
                           style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: 'var(--text)', background: 'var(--surface)' }}
                         >
-                          Continuar con la compra
+                          Ver catálogo
                         </button>
                       </div>
                     ) : (
@@ -639,7 +639,7 @@ export default function Navbar() {
                     )}
                   </div>
                   <div className="separador-suave" style={{ display: 'flex', flexDirection: 'column', fontSize: 16, color: 'var(--text)' }}></div>
-                  {!requiereLogin && items.length > 0 && (
+                 {!requiereLogin && items.length > 0 && (
                     <div style={{ padding: '14px 16px', borderTop: '1px solid var(--bg)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, fontWeight: 600, color: 'var(--surface)', marginBottom: 12 }}>
                         <span>Total</span>
@@ -654,15 +654,15 @@ export default function Navbar() {
                             window.location.pathname.includes('/checkout')
                           )
                           if (estaEnCheckout) {
-                            window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/categorias' } }))
+                            window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/carrito' } }))
                             setCartOpen(false)
                             return
                           }
-                          setCartOpen(false); navigate('/categorias')
+                          setCartOpen(false); navigate('/carrito')
                         }}
                         style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: 'var(--text)', background: 'var(--surface)' }}
                       >
-                        Ver catálogo
+                        Continuar con la compra
                       </button>
                     </div>
                   )}
