@@ -263,11 +263,7 @@ export default function SeguridadModal({ onClose }) {
                                 <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: '0 0 10px', lineHeight: 1.6 }}>
                                     Tu cuenta inicia sesión con Google{user?.email ? ` (${user.email})` : ''}. La contraseña se
                                     administra desde tu cuenta de Google, por eso no se cambia desde ApoloVibes.
-                                </p>
-                                <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>
-                                    Puedes activar aquí la verificación en dos pasos de ApoloVibes como una capa
-                                    adicional de seguridad.
-                                </p>
+                                </p>                    
                             </div>
                         )}
 
@@ -485,7 +481,7 @@ export default function SeguridadModal({ onClose }) {
                     <p style={{ fontSize: 12, color: 'var(--text-dim)', textAlign: 'center', marginTop: -30, marginBottom: 10 }}>
                         {tienePassword
                             ? 'Protege tu cuenta con autenticación de dos factores y gestiona tu contraseña.'
-                            : 'Tu contraseña se gestiona desde Google. Aquí administras la verificación en dos pasos de ApoloVibes.'}
+                            : 'Protege tu cuenta con autenticación de dos factores de ApoloVibes.'}
                     </p>
                 </div>
                 <div style={{ padding: '20px 32px', borderTop: '1px solid var(--line)', background: 'var(--surface)' }} />

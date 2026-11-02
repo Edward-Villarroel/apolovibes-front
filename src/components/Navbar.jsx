@@ -919,6 +919,19 @@ export default function Navbar() {
                 {theme === 'dark' ? <><Sun size={18} /> Modo claro</> : <><Moon size={18} /> Modo oscuro</>}
               </button>
             </div>
+
+            {/* Logo pie del menu */}
+            <div className="nm-footer">
+              <img
+              src={mediaPath('nombrelogo2.webp')}
+              alt="Apolo Vibes 3D"
+              loading="lazy"
+              decoding="async"
+              width="512"
+              height="171"
+              onClick={() => handleMobileNav('/')} 
+              />
+             </div>
           </div>
         </div>,
         document.body

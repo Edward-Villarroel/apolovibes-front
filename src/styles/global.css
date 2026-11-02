@@ -431,6 +431,25 @@ label {
   color: #FBF7EE;
 }
 
+.nav-mobile-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.nm-footer {
+  margin-top: auto;
+  padding: 28px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.nm-footer img {
+  width: 140px;
+  height: auto;
+  opacity: .9;
+  cursor: pointer;
+}
+
 /* ─── Breakpoints ─── */
 
 /* Tablet: ≤ 1024px */
