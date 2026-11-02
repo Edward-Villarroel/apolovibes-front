@@ -271,7 +271,7 @@ export default function Navbar() {
             <button
               onClick={() => {
                 if (authCargando) return
-                sLoggedIn ? setUserMenuOpen(v => !v) : abrirLogin()
+                isLoggedIn ? setUserMenuOpen(v => !v) : abrirLogin()
               }}
               aria-label="Mi cuenta"
               style={{
