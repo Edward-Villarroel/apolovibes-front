@@ -263,9 +263,6 @@ export default function Cotizacion() {
 
   return (
     <section className="wrap" style={{ paddingTop: '48px', paddingBottom: '80px', maxWidth: 1100 }}>
-      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--accent)', textTransform: 'uppercase' }}>
-        Cotización personalizada
-      </span>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, margin: '10px 0 8px', color: 'var(--surface)' }}>Cotiza tu producto</h1>
       <p style={{ color: 'var(--text-dim)', marginBottom: 32, lineHeight: 1.6 }}>
         Sube una imagen de lo que necesitas imprimir. Nuestra IA generará un modelo 3D de referencia para ti
