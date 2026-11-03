@@ -192,7 +192,7 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
   const fechaIa = formatearFecha(c.ia_calculado_en)
   const estilo = estilosEstado[c.estado] || estilosEstado.pendiente
 
-  async fuction manejarAprobacion() {
+  async function manejarAprobacion() {
     setAccionEnCurso('aprobar')
 
     try {
