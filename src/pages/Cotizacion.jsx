@@ -255,7 +255,7 @@ export default function Cotizacion() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 12 }}>Solicitud enviada</h1>
         <p style={{ color: 'var(--text-dim)' }}>
           Recibimos tu pieza de referencia{modeloValido ? ' y el modelo 3D generado' : ''}.
-          Nuestro equipo revisará tu cotización. Te enviaremos la cotización dentro de 24 a 48 horas hábiles a tu correo: {form.email}.
+          Nuestro equipo revisará tu cotización. Te enviaremos la cotización dentro de 24 a 48 horas hábiles a tu correo: {form.email}, también puedes revisar Mis-cotizaciones.
         </p>
       </section>
     )
