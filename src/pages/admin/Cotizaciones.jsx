@@ -563,7 +563,7 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
                       opacity: accionEnCurso !== null ? 0.6 : 1,
                     }}
                   >
-                    {accionEnCurso === 'Rechazar' ? 'Rechazando...' : 'Rechazar'}
+                    {accionEnCurso === 'rechazar' ? 'Rechazando...' : 'Rechazar'}
                   </button>
 
                   <button
@@ -582,7 +582,7 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
                       opacity: accionEnCurso !== null ? 0.6 : 1,
                     }}
                   >
-                   {accionEnCurso === 'Aprobar' ? 'Aprobando...' : 'Aprobar cotización'}
+                   {accionEnCurso === 'aprobar' ? 'Aprobando...' : 'Aprobar cotización'}
                   </button>
                 </div>
               </div>
@@ -597,9 +597,12 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
         }}>
           <button
             onClick={onClose}
+            disabled={accionEnCurso !== null}
             style={{
               width: '100%', padding: '12px 0', borderRadius: 10, border: 'none',
-              background: 'var(--accent)', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer',
+              background: 'var(--accent)', color: '#fff', fontSize: 14, fontWeight: 600,
+              cursor: accionEnCurso !== null ? 'not-allowed' : 'pointer',
+              opacity: accionEnCurso !== null ? 0.6 : 1,
             }}
           >
             Cerrar
