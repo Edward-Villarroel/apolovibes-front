@@ -178,6 +178,8 @@ function FilaDatoModal({ icono: Icono, etiqueta, valor }) {
 
 function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usarSugerido, aprobar, rechazar }) {
   useBloqueoScroll()
+  const [accionEnCurso, setAccionEnCurso] = useState(null)
+
   const c = cotizacion
   const desc = leerDescripcion(c.descripcion)
   const medidas = [c.alto, c.ancho, c.largo].filter(Boolean).length
@@ -190,6 +192,26 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
   const fechaIa = formatearFecha(c.ia_calculado_en)
   const estilo = estilosEstado[c.estado] || estilosEstado.pendiente
 
+  async fuction manejarAprobacion() {
+    setAccionEnCurso('aprobar')
+
+    try {
+      await aprobar(c.id)
+    } finally {
+      setAccionEnCurso(null)
+    }
+  }
+
+  async function manejarRechazo() {
+    setAccionEnCurso('rechazar')
+
+    try {
+      await rechazar(c.id)
+    } finally {
+      setAccionEnCurso(null)
+    }
+  }
+ 
   return (
     <div
       style={{
@@ -527,36 +549,40 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
                 >
                   <button
                     type="button"
-                    onClick={() => rechazar(c.id)}
+                    onClick={manejarRechazo}
+                    disabled={accionEnCurso !== null}
                     style={{
                       height: 44,
                       borderRadius: 10,
                       fontSize: 14,
                       fontWeight: 600,
-                      cursor: 'pointer',
+                      cursor: accionEnCurso !== null ? 'not-allowed' : 'pointer',
                       background: 'transparent',
                       border: '1px solid rgba(239,68,68,.9)',
                       color: '#f87171',
+                      opacity: accionEnCurso !== null ? 0.6 : 1,
                     }}
                   >
-                    Rechazar
+                    {accionEnCurso === 'Rechazar' ? 'Rechazando...' : 'Rechazar'}
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => aprobar(c.id)}
+                    onClick={manejarAprobacion}
+                    disabled={accionEnCurso !== null}
                     style={{
                       height: 44,
                       borderRadius: 10,
                       fontSize: 14,
                       fontWeight: 600,
-                      cursor: 'pointer',
+                      cursor: accionEnCurso !== null ? 'not-allowed' : 'pointer',
                       background: '#1D9E75',
                       border: '1px solid #1D9E75',
                       color: '#fff',
+                      opacity: accionEnCurso !== null ? 0.6 : 1,
                     }}
                   >
-                    Aprobar cotización
+                   {accionEnCurso === 'Aprobar' ? 'Aprobando...' : 'Aprobar cotización'}
                   </button>
                 </div>
               </div>
@@ -601,10 +627,6 @@ export default function Cotizaciones() {
     setCargando(true)
     setError(null)
     try {
-      // Con el cliente HTTP de la app, no `fetch('/api/cotizaciones')`: en
-      // produccion el front (V2NET) y la API (Render) son origenes distintos, y
-      // una ruta relativa se pide al hosting estatico, que responde 403. Ademas
-      // el cliente agrega el token y renueva la sesion si expiro.
       const data = await api.get('/cotizaciones')
       const lista = Array.isArray(data) ? data : []
       setItems(lista)
