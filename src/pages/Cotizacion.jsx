@@ -365,7 +365,7 @@ export default function Cotizacion() {
                     />
                   )}
 
-                {/* Validación de seguridad: debajo */}
+                {/* Validación de seguridad*/}
                 <div>
                   <p
                     style={{
@@ -376,6 +376,7 @@ export default function Cotizacion() {
                       textTransform: 'uppercase',
                       letterSpacing: '.05em',
                       marginBottom: 8,
+                      marginTop: 12,
                     }}
                   >
                     Validación de seguridad
