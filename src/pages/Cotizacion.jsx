@@ -594,13 +594,6 @@ export default function Cotizacion() {
             {error}
           </p>
         )}
-
-        {calculandoEstimacion && (
-          <p role="status" style={{ color: 'var(--text-dim)', fontSize: 13, marginBottom: 12 }}>
-            Calculando estimación con IA, espera unos segundos...
-          </p>
-        )}
-
         <button
           className="btn btn-primary"
           type="submit"
