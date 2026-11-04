@@ -3,7 +3,7 @@ import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { AlertTriangle, Eye, Info, X, User, Mail, Phone, Clock,
     Lock, CheckCircle2, ChevronLeft, ChevronRight, Ruler, Hash, Layers, Tag, Palette, ImageOff } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
-import { mediaPath, urlMedia } from '../utils/media.js';
+import { mediaPath } from '../utils/media.js';
 import { useBloqueoScroll } from '../hooks/useBloqueoScroll.js';
 import { api } from '../services/api.js';
 
@@ -67,18 +67,20 @@ function leerDescripcion(descripcion) {
         const m = texto.match(new RegExp(`^${clave}:\\s*(.+)$`, 'mi'));
         return m ? m[1].trim() : '';
     };
-    const tieneEstructura = /^(Tamaño|Cantidad|Uso|Color):/mi.test(texto);
+    const marcas = texto.match(/(?:^|\n|\/)\s*(?:Tamaño|Cantidad|Uso|Color|Detalles|Precio estimado IA|Material IA|Complejidad IA):/gi) || [];
+    const heredado = /^Tamaño:\s*/i.test(texto) && marcas.length >= 2;
+    const detallesHeredado = texto.match(/Detalles:\s*([^\n]*?)(?:\s*\/\s*(?:Tamaño|Cantidad|Uso|Color|Precio estimado IA|Material IA|Complejidad IA):|$)/i);
     return {
         tamano: tomar('Tamaño'),
         uso: tomar('Uso'),
         color: tomar('Color'),
-        detalles: tieneEstructura ? tomar('Detalles') : texto.trim(),
+        detalles: heredado ? (detallesHeredado ? detallesHeredado[1].trim() : '') : texto.trim(),
     };
 }
 
 function MiniaturaModal({ src, nombre }) {
     const [fallo, setFallo] = useState(false);
-    const url = urlMedia(src);
+    const url = src ? (src.startsWith('http') ? src : `/api/uploads/${src.replace(/\\/g, '/')}`) : '';
 
     return (
         <div style={{ width: 96, height: 96, borderRadius: 12, overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--input-bg)', border: `1px solid ${LINEA}`, color: COLOR_APAGADO }}>

@@ -196,17 +196,6 @@ export default function Cotizacion() {
     const cotizacion = cotizacionIA
     const firma = cotizacion ? (cotizacion.firma || firmaEspecificaciones(form)) : firmaEspecificaciones(form)
 
-    const resumen = [
-      `Tamaño: ${form.alto} x ${form.ancho} x ${form.largo} ${form.unidad}`,
-      `Cantidad: ${form.cantidad}`,
-      `Uso: ${form.uso}`,
-      `Color: ${colorFinal}`,
-      form.descripcion.trim() ? `Detalles: ${form.descripcion.trim()}` : '',
-      cotizacion ? `Precio estimado IA: $${Number(cotizacion.precio_estimado_ia ?? cotizacion.precio_clp ?? 0).toLocaleString('es-CL')}` : '',
-      cotizacion ? `Material IA: ${cotizacion.material_sugerido_ia || cotizacion.material_detectado || ''}` : '',
-      cotizacion ? `Complejidad IA: ${cotizacion.complejidad_ia || cotizacion.complejidad || ''}` : '',
-    ].filter(Boolean).join('\n')
-
     const data = new FormData()
     data.append('nombre', form.nombre.trim())
     data.append('email', form.email.trim())
@@ -219,7 +208,7 @@ export default function Cotizacion() {
     data.append('cantidad', form.cantidad)
     data.append('uso', form.uso)
     data.append('color', colorFinal)
-    data.append('descripcion', resumen)
+    data.append('descripcion', form.descripcion.trim())
 
     if (cotizacion) {
       data.append('estimacion_firma', firma)
@@ -255,7 +244,7 @@ export default function Cotizacion() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 12 }}>Solicitud enviada</h1>
         <p style={{ color: 'var(--text-dim)' }}>
           Recibimos tu pieza de referencia{modeloValido ? ' y el modelo 3D generado' : ''}.
-          Nuestro equipo revisará tu cotización. Te enviaremos la cotización dentro de 24 a 48 horas hábiles a tu correo: {form.email}, también puedes revisar Mis-cotizaciones.
+          Nuestro equipo revisará tu cotización. Te enviaremos la cotización dentro de 24 a 48 horas hábiles a tu correo: {form.email}.
         </p>
       </section>
     )
@@ -263,6 +252,9 @@ export default function Cotizacion() {
 
   return (
     <section className="wrap" style={{ paddingTop: '48px', paddingBottom: '80px', maxWidth: 1100 }}>
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--accent)', textTransform: 'uppercase' }}>
+        Cotización personalizada
+      </span>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, margin: '10px 0 8px', color: 'var(--surface)' }}>Cotiza tu producto</h1>
       <p style={{ color: 'var(--text-dim)', marginBottom: 32, lineHeight: 1.6 }}>
         Sube una imagen de lo que necesitas imprimir. Nuestra IA generará un modelo 3D de referencia para ti
