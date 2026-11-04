@@ -64,16 +64,18 @@ function capitalizar(texto) {
 
 function leerDescripcion(descripcion) {
   const texto = descripcion || ''
+  const etiquetas = '(?:Tamaño|Cantidad|Uso|Color|Detalles|Precio estimado IA|Material IA|Complejidad IA)'
   const tomar = clave => {
-    const m = texto.match(new RegExp(`^${clave}:\\s*(.+)$`, 'mi'))
+    const m = texto.match(new RegExp(`(?:^|\\n|/)\\s*${clave}:\\s*([^\\n]*?)(?:\\s*/\\s*${etiquetas}:|$)`, 'mi'))
     return m ? m[1].trim() : ''
   }
-  const tieneEstructura = /^(Tamaño|Cantidad|Uso|Color):/mi.test(texto)
+  const marcas = texto.match(new RegExp(`(?:^|\\n|/)\\s*${etiquetas}:`, 'gi')) || []
+  const heredado = /^Tamaño:\s*/i.test(texto) && marcas.length >= 2
   return {
     tamano: tomar('Tamaño'),
     uso: tomar('Uso'),
     color: tomar('Color'),
-    detalles: tieneEstructura ? tomar('Detalles') : texto.trim(),
+    detalles: heredado ? tomar('Detalles') : texto.trim(),
   }
 }
 

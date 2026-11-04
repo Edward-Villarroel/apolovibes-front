@@ -63,18 +63,18 @@ function capitalizar(texto) {
 
 function leerDescripcion(descripcion) {
     const texto = descripcion || '';
+    const etiquetas = '(?:Tamaño|Cantidad|Uso|Color|Detalles|Precio estimado IA|Material IA|Complejidad IA)';
     const tomar = (clave) => {
-        const m = texto.match(new RegExp(`^${clave}:\\s*(.+)$`, 'mi'));
+        const m = texto.match(new RegExp(`(?:^|\\n|/)\\s*${clave}:\\s*([^\\n]*?)(?:\\s*/\\s*${etiquetas}:|$)`, 'mi'));
         return m ? m[1].trim() : '';
     };
-    const marcas = texto.match(/(?:^|\n|\/)\s*(?:Tamaño|Cantidad|Uso|Color|Detalles|Precio estimado IA|Material IA|Complejidad IA):/gi) || [];
+    const marcas = texto.match(new RegExp(`(?:^|\\n|/)\\s*${etiquetas}:`, 'gi')) || [];
     const heredado = /^Tamaño:\s*/i.test(texto) && marcas.length >= 2;
-    const detallesHeredado = texto.match(/Detalles:\s*([^\n]*?)(?:\s*\/\s*(?:Tamaño|Cantidad|Uso|Color|Precio estimado IA|Material IA|Complejidad IA):|$)/i);
     return {
         tamano: tomar('Tamaño'),
         uso: tomar('Uso'),
         color: tomar('Color'),
-        detalles: heredado ? (detallesHeredado ? detallesHeredado[1].trim() : '') : texto.trim(),
+        detalles: heredado ? tomar('Detalles') : texto.trim(),
     };
 }
 
