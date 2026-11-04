@@ -1,16 +1,13 @@
 import { useState, useRef, useLayoutEffect } from 'react'
 import { api } from '../services/api.js'
 import { firmaEspecificaciones, estimarPieza } from '../services/cotizador.js'
-import { generarModelo3DMock } from '../services/ai-model.js'
+import { validarImagenSegura } from '../services/validacion-imagen.js'
 import ModelViewer from '../components/ModelViewer.jsx'
 import GenerationProgress from '../components/GenerationProgress.jsx'
 import SelectOpciones from '../components/SelectOpciones.jsx'
-import { Upload, X, FileImage } from 'lucide-react'
+import { Upload, X } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
-import ConfirmModal from '../components/ConfirmModal.jsx'
-import { createPortal } from 'react-dom'
 import { mediaPath } from '../utils/media.js'
-import ModalValidacion from '../components/ModalValidacion.jsx'
 
 const ESTADO_INICIAL = {
   nombre: '', email: '', telefono: '',
@@ -68,20 +65,15 @@ export default function Cotizacion() {
   })
   const [archivo, setArchivo] = useState(null)
   const [previsualizacion, setPrevisualizacion] = useState(null)
-  const [generando, setGenerando] = useState(false)
   const [progreso, setProgreso] = useState({ status: 'idle', percent: 0, message: '' })
-  const [modeloUrl, setModeloUrl] = useState(null)
+  const [estadoImagen, setEstadoImagen] = useState('idle')
   const [enviando, setEnviando] = useState(false)
   const [enviado, setEnviado] = useState(false)
   const [error, setError] = useState(null)
   const [tocado, setTocado] = useState({})
   const fileInputRef = useRef(null)
   const timerReestimacion = useRef(null)
-  const [visorFallo, setVisorFallo] = useState(false)
-  const [mostrarModalImagenInvalida, setMostrarModalImagenInvalida] = useState(false)
-  const [mensajeImagenInvalida, setMensajeImagenInvalida] = useState('La imagen seleccionada no es válida o contiene contenido no permitido. Por favor sube una imagen JPG, PNG o WebP.')
   const [validandoImagen, setValidandoImagen] = useState(false)
-  const [progresoValidacion, setProgresoValidacion] = useState({ status: 'idle', percent: 0, message: '' })
   const [cotizacionIA, setCotizacionIA] = useState(null)
   const [calculandoEstimacion, setCalculandoEstimacion] = useState(false)
 
@@ -108,17 +100,10 @@ export default function Cotizacion() {
   const borde = campo => (errorDe(campo) ? { borderColor: '#ef4444' } : undefined)
   const marcar = campo => setTocado(prev => (prev[campo] ? prev : { ...prev, [campo]: true }))
 
-  const procesando = validandoImagen || generando
-  const paso1Completo = !!archivo && !procesando
+  const procesando = validandoImagen
+  const paso1Completo = !!archivo && estadoImagen === 'valida' && !procesando
   const paso2Completo = paso1Completo && !erroresCampo.nombre && !erroresCampo.email && !erroresCampo.telefono
   const paso3Completo = paso2Completo && !erroresCampo.tamano && !erroresCampo.cantidad && !erroresCampo.color
-
-  const modeloValido = !!modeloUrl && !visorFallo
-
-  function manejarErrorVisor() {
-    setVisorFallo(true)
-    setProgreso({ status: 'failed', percent: 0, message: 'No se pudo cargar el modelo 3D' })
-  }
 
   const camposQueReestiman = ['alto', 'ancho', 'largo', 'cantidad', 'uso', 'material', 'color', 'unidad']
 
@@ -148,26 +133,28 @@ export default function Cotizacion() {
     setError(null)
     setArchivo(file)
     setPrevisualizacion(URL.createObjectURL(file))
-    setModeloUrl(null)
-    setVisorFallo(false)
-    setProgreso({ status: 'idle', percent: 0, message: '' })
-    setCotizacionIA(null) 
+    setCotizacionIA(null)
+    setEstadoImagen('validando')
 
-    setGenerando(true)
+    setValidandoImagen(true)
     try {
-      const resultado = await generarModelo3DMock(file, setProgreso)
-      setModeloUrl(resultado.modelUrl)
-    } catch { setError('No pudimos generar el modelo 3D.') }
-    finally { setGenerando(false) }
-
-    if (file) estimar()
+      await validarImagenSegura(file, setProgreso)
+      setEstadoImagen('valida')
+      await estimar(file)
+    } catch (err) {
+      setEstadoImagen('invalida')
+      setProgreso(prev => ({ ...prev, status: 'failed', message: err?.message || 'La imagen no es válida.' }))
+      setError(err?.message || 'La imagen seleccionada no es válida. Por favor sube una imagen JPG, PNG o WebP.')
+    } finally {
+      setValidandoImagen(false)
+    }
   }
 
-  async function estimar() {
-    if (!archivo) return
+  async function estimar(referencia = archivo) {
+    if (!referencia) return
     setCalculandoEstimacion(true)
     try {
-      const resultado = await estimarPieza(archivo, form)
+      const resultado = await estimarPieza(referencia, form)
       setCotizacionIA(resultado)
     } catch (err) {
       console.warn('Fallo la estimacion IA en el upload', err)
@@ -181,10 +168,8 @@ export default function Cotizacion() {
     setCotizacionIA(null)
     setArchivo(null)
     setPrevisualizacion(null)
-    setModeloUrl(null)
-    setVisorFallo(false)
+    setEstadoImagen('idle')
     setProgreso({ status: 'idle', percent: 0, message: '' })
-    setProgresoValidacion({ status: 'idle', percent: 0, message: '' })
     setValidandoImagen(false)
     setError(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
@@ -229,7 +214,6 @@ export default function Cotizacion() {
     }
 
     data.append('imagen', archivo)
-    if (modeloValido && modeloUrl) data.append('modeloUrl', modeloUrl)
 
     try {
       await api.post('/cotizaciones', data)
@@ -248,8 +232,8 @@ export default function Cotizacion() {
         <img src={mediaPath('logoExitoCompra.webp')} alt="" loading="lazy" decoding="async" style={estiloImagen} />
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 12 }}>Solicitud enviada</h1>
         <p style={{ color: 'var(--text-dim)' }}>
-          Recibimos tu pieza de referencia{modeloValido ? ' y el modelo 3D generado' : ''}.
-          Nuestro equipo revisará tu cotización. Te enviaremos la cotización dentro de 24 a 48 horas hábiles a tu correo: {form.email}.
+          Recibimos tu pieza de referencia.
+          Nuestro equipo revisará tu cotización. Te avisaremos dentro de 24 a 48 horas hábiles a tu correo: {form.email}. También puedes revisar el estado en Mis-cotizaciones.
         </p>
       </section>
     )
@@ -257,18 +241,14 @@ export default function Cotizacion() {
 
   return (
     <section className="wrap" style={{ paddingTop: '48px', paddingBottom: '80px', maxWidth: 1100 }}>
-      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--accent)', textTransform: 'uppercase' }}>
-        Cotización personalizada
-      </span>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, margin: '10px 0 8px', color: 'var(--surface)' }}>Cotiza tu producto</h1>
       <p style={{ color: 'var(--text-dim)', marginBottom: 32, lineHeight: 1.6 }}>
-        Sube una imagen de lo que necesitas imprimir. Nuestra IA generará un modelo 3D de referencia para ti
-        y nuestro equipo revisará la cotización. Una vez enviada tu cotización nuestro equipo te confirmará el precio final.
+        Sube una imagen de lo que necesitas imprimir. Nuestro equipo revisará la cotización. Una vez enviada tu cotización te confirmaremos mediante correo, puedes revisar también Mis-cotizaciones.
       </p>
 
       <form noValidate onSubmit={enviarSolicitud}>
-        {/* ─── Paso 1: Imagen + generación 3D ─── */}
-        <Paso titulo="Imagen de referencia" completo={paso1Completo} bloqueado={false}>
+        {/* ─── Paso 1: Imagen + validación de seguridad ─── */}
+        <Paso titulo="Sube tu imagen" completo={paso1Completo} bloqueado={false}>
           {!archivo ? (
             <label
               htmlFor="imagen-input"
@@ -294,7 +274,7 @@ export default function Cotizacion() {
               {/* Imagen original */}
               <div>
                 <p style={{ fontSize: 11, textAlign: 'center', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 8 }}>
-                  Imagen original
+                  Imagen de referencia
                 </p>
                 <div style={{
                   position: 'relative', borderRadius: 10, overflow: 'hidden',
@@ -327,41 +307,15 @@ export default function Cotizacion() {
                 </div>
               </div>
 
-              {/* Modelo 3D generado */}
+              {/* Validación de seguridad de la imagen */}
               <div>
                 <p style={{ fontSize: 11, textAlign: 'center', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 8 }}>
-                  Modelo 3D generado
+                  Validación de seguridad
                 </p>
-                {modeloUrl ? (
-                  <ModelViewer modelUrl={modeloUrl} height={280} onError={manejarErrorVisor} />
-                ) : (
-                  <div style={{
-                    height: 280, borderRadius: 10, border: '1px solid var(--line)',
-                    background: 'var(--input-bg)'
-                    , display: 'flex', alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    {generando ? (
-                      <div style={{ textAlign: 'center' }}>
-                        <div style={{
-                          width: 40, height: 40, margin: '0 auto 10px',
-                          border: '3px solid rgba(255,255,255,.08)',
-                          borderTopColor: 'var(--accent)',
-                          borderRadius: '50%',
-                          animation: 'spin 1s linear infinite',
-                        }} />
-                        <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>Generando...</span>
-                      </div>
-                    ) : (
-                      <div style={{ textAlign: 'center', padding: 20 }}>
-                        <FileImage size={28} color="var(--text-dim)" strokeWidth={1.5} style={{ marginBottom: 8 }} />
-                        <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>
-                          El modelo 3D aparecerá aquí
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
+                <ModelViewer
+                  estado={estadoImagen === 'idle' ? 'validando' : estadoImagen}
+                  height={280}
+                />
               </div>
             </div>
           )}
@@ -376,7 +330,7 @@ export default function Cotizacion() {
           />
 
           {/* Barra de progreso */}
-          {(generando || progreso.status === 'completed' || progreso.status === 'failed') && (
+          {(validandoImagen || progreso.status === 'completed' || progreso.status === 'failed') && (
             <GenerationProgress
               status={progreso.status}
               percent={progreso.percent}
@@ -597,26 +551,6 @@ export default function Cotizacion() {
           {enviando ? 'Enviando...' : 'Enviar solicitud de cotización'}
         </button>
       </form>
-
-      {validandoImagen && (
-        <ModalValidacion
-          percent={progresoValidacion.percent}
-          completado={progresoValidacion.status === 'completed'}
-        />
-      )}
-
-      {mostrarModalImagenInvalida && createPortal(
-        <ConfirmModal
-          titulo="Imagen no válida"
-          mensaje={mensajeImagenInvalida}
-          textoCancelar="Entendido"
-          textoConfirmar="Cerrar"
-          confirmarPeligro={false}
-          onCancel={() => setMostrarModalImagenInvalida(false)}
-          onConfirm={() => setMostrarModalImagenInvalida(false)}
-        />,
-        document.body
-      )}
 
       <style>{`
      @keyframes spin {

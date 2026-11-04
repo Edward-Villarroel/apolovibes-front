@@ -42,7 +42,7 @@ function reconstruirFormData(partes) {
 function errorDeRespuesta(res, path) {
   return res.clone().json()
     .then(body => {
-      const e = new Error(body.mensaje || `Error ${res.status} al llamar ${path}`)
+      const e = new Error(body.mensaje || body.error || `Error ${res.status} al llamar ${path}`)
       e.datos = body
       e.status = res.status
       return e
@@ -212,19 +212,23 @@ export const api = {
   },
 }
  
+function postFormData(path, formData) {
+  return conErrorAmigable(
+    fetchConTimeout(
+      `${BASE_URL}${path}`,
+      {
+        method: 'POST',
+        body: formData
+      },
+      TIMEOUT_SUBIDA_MS
+    ).then(async res => {
+      if (!res.ok) throw await errorDeRespuesta(res, path)
+      return res.json()
+    })
+  )
+}
+
 export const apiCotizador = {
-  estimar: (formData) =>
-    conErrorAmigable(
-      fetchConTimeout(
-        `${BASE_URL}/cotizaciones/estimar-ia`,
-        {
-          method: 'POST',
-          body: formData
-        },
-        TIMEOUT_SUBIDA_MS
-      ).then(async res => {
-        if (!res.ok) throw await errorDeRespuesta(res, '/cotizaciones/estimar-ia')
-        return res.json()
-      })
-    ),
+  estimar: (formData) => postFormData('/cotizaciones/estimar-ia', formData),
+  validarImagen: (formData) => postFormData('/cotizaciones/validar-imagen', formData),
 } 

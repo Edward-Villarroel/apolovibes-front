@@ -11,8 +11,8 @@ const STATUS_CONFIG = {
 
 const STEPS = [
   { key: 'uploading', label: 'Subiendo imagen' },
-  { key: 'processing', label: 'Creando modelo 3D' },
-  { key: 'completed', label: 'Generación completada' },
+  { key: 'processing', label: 'Revisando contenido' },
+  { key: 'completed', label: 'Imagen segura' },
 ]
 
 export default function GenerationProgress({ status = 'idle', percent = 0, message = '' }) {
@@ -38,14 +38,14 @@ export default function GenerationProgress({ status = 'idle', percent = 0, messa
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <Icon
-            size={50}
+            size={20}
             color={config.color}
             style={isSpinning ? { animation: 'spin 1s linear infinite' } : {}}
           />
         </div>
         <div>
           <p style={{ fontSize: 14, fontWeight: 600, color: esOscuro ? 'var(--text)' : 'var(--surface)', margin: 0 }}>
-            {status === 'failed' ? 'Generación de modelo 3D fallido' : status === 'completed' ? 'Generación de modelo 3D completado' : 'Analizando imagen'}
+            {status === 'failed' ? 'Imagen no permitida' : status === 'completed' ? 'Imagen segura' : 'Validando imagen...'}
           </p>
           <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>
             {message || 'Esperando...'}
