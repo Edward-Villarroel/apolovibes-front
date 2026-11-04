@@ -19,7 +19,7 @@ const ESTADO_INICIAL = {
   descripcion: '',
 }
 
-const estiloImagen = { display: 'block', width: 200, height: 200, objectFit: 'contain', margin: '0 auto 12px'}
+const estiloImagen = { display: 'block', width: 200, height: 200, objectFit: 'contain', margin: '0 auto 12px' }
 
 const MATERIALES = ['PLA', 'PLA+', 'ABS+', 'No estoy seguro']
 const USOS = ['Decorativo', 'Funcional', 'Prototipo', 'Exterior', 'Otro']
@@ -123,12 +123,12 @@ export default function Cotizacion() {
     actualizar(campo, partes.length > 1 ? partes[0] + '.' + partes.slice(1).join('') : limpio)
   }
 
- 
+
   async function manejarArchivo(e) {
     const file = e.target.files[0]
     if (!file) return
-    if (!file.type.startsWith('image/')) return 
-    if (file.size > 8 * 1024 * 1024) return 
+    if (!file.type.startsWith('image/')) return
+    if (file.size > 8 * 1024 * 1024) return
 
     setError(null)
     setArchivo(file)
@@ -248,43 +248,80 @@ export default function Cotizacion() {
 
       <form noValidate onSubmit={enviarSolicitud}>
         {/* ─── Paso 1: Imagen + validación de seguridad ─── */}
+
         <Paso titulo="Sube tu imagen" completo={paso1Completo} bloqueado={false}>
           {!archivo ? (
             <label
               htmlFor="imagen-input"
               style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                border: '2px dashed var(--line)', borderRadius: 10, padding: '48px 20px',
-                cursor: 'pointer', background: 'var(--input-bg)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '2px dashed var(--line)',
+                borderRadius: 10,
+                padding: '48px 20px',
+                cursor: 'pointer',
+                background: 'var(--input-bg)',
                 transition: 'border-color .2s',
               }}
               onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
               onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--line)'}
             >
-              <Upload size={32} color="var(--text-dim)" strokeWidth={1.5} style={{ marginBottom: 12 }} />
+              <Upload
+                size={32}
+                color="var(--text-dim)"
+                strokeWidth={1.5}
+                style={{ marginBottom: 12 }}
+              />
+
               <span style={{ fontSize: 14, color: 'var(--text-dim)', fontWeight: 500, marginBottom: 4 }}>
                 Haz clic para subir una imagen
               </span>
+
               <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>
                 JPG, PNG o WEBP · máx. 8MB
               </span>
             </label>
           ) : (
             <div className="grid-2" style={{ marginBottom: 16 }}>
+
               {/* Imagen original */}
               <div>
-                <p style={{ fontSize: 11, textAlign: 'center', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 8 }}>
+                <p
+                  style={{
+                    fontSize: 11,
+                    textAlign: 'center',
+                    fontWeight: 600,
+                    color: 'var(--text-dim)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '.05em',
+                    marginBottom: 8,
+                  }}
+                >
                   Imagen de referencia
                 </p>
-                <div style={{
-                  position: 'relative', borderRadius: 10, overflow: 'hidden',
-                  border: '1px solid var(--line)', background: 'var(--input-bg)',
-                }}>
+
+                <div
+                  style={{
+                    position: 'relative',
+                    borderRadius: 10,
+                    overflow: 'hidden',
+                    border: '1px solid var(--line)',
+                    background: 'var(--input-bg)',
+                  }}
+                >
                   <img
                     src={previsualizacion}
                     alt="Referencia subida"
-                    style={{ width: '100%', maxHeight: 280, objectFit: 'cover', display: 'block' }}
+                    style={{
+                      width: '100%',
+                      maxHeight: 280,
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
                   />
+
                   <button
                     type="button"
                     onClick={quitarImagen}
@@ -292,14 +329,21 @@ export default function Cotizacion() {
                     title={procesando ? 'Espera que termine el proceso' : 'Quitar imagen'}
                     disabled={procesando}
                     style={{
-                      position: 'absolute', top: 8, right: 8,
-                      width: 28, height: 28, borderRadius: 8,
-                      background: 'rgba(0,0,0,.6)', border: 'none',
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      width: 28,
+                      height: 28,
+                      borderRadius: 8,
+                      background: 'rgba(0,0,0,.6)',
+                      border: 'none',
                       color: '#fff',
                       cursor: procesando ? 'not-allowed' : 'pointer',
                       opacity: procesando ? 0.4 : 1,
                       transition: 'opacity .2s',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
                     <X size={14} />
@@ -307,15 +351,41 @@ export default function Cotizacion() {
                 </div>
               </div>
 
-              {/* Validación de seguridad de la imagen */}
+              {/* Progreso + validación de seguridad */}
               <div>
-                <p style={{ fontSize: 11, textAlign: 'center', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 8 }}>
-                  Validación de seguridad
-                </p>
-                <ModelViewer
-                  estado={estadoImagen === 'idle' ? 'validando' : estadoImagen}
-                  height={280}
-                />
+
+                {/* Barra de progreso: primero */}
+                {(validandoImagen ||
+                  progreso.status === 'completed' ||
+                  progreso.status === 'failed') && (
+                    <GenerationProgress
+                      status={progreso.status}
+                      percent={progreso.percent}
+                      message={progreso.message}
+                    />
+                  )}
+
+                {/* Validación de seguridad: debajo */}
+                <div>
+                  <p
+                    style={{
+                      fontSize: 11,
+                      textAlign: 'center',
+                      fontWeight: 600,
+                      color: 'var(--text-dim)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '.05em',
+                      marginBottom: 8,
+                    }}
+                  >
+                    Validación de seguridad
+                  </p>
+
+                  <ModelViewer
+                    estado={estadoImagen === 'idle' ? 'validando' : estadoImagen}
+                    height={280}
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -328,15 +398,6 @@ export default function Cotizacion() {
             onChange={manejarArchivo}
             style={{ display: 'none' }}
           />
-
-          {/* Barra de progreso */}
-          {(validandoImagen || progreso.status === 'completed' || progreso.status === 'failed') && (
-            <GenerationProgress
-              status={progreso.status}
-              percent={progreso.percent}
-              message={progreso.message}
-            />
-          )}
         </Paso>
 
         {/* ─── Paso 2: Datos de contacto ─── */}
