@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useLayoutEffect } from 'react'
 import { api } from '../services/api.js'
 import { firmaEspecificaciones, estimarPieza } from '../services/cotizador.js'
 import { generarModelo3DMock } from '../services/ai-model.js'
@@ -84,6 +84,11 @@ export default function Cotizacion() {
   const [progresoValidacion, setProgresoValidacion] = useState({ status: 'idle', percent: 0, message: '' })
   const [cotizacionIA, setCotizacionIA] = useState(null)
   const [calculandoEstimacion, setCalculandoEstimacion] = useState(false)
+
+
+  useLayoutEffect(() => {
+    if (enviado) window.scrollTo(0, 0)
+  }, [enviado])
 
   const email = form.email.trim()
   const telefono = form.telefono.trim()

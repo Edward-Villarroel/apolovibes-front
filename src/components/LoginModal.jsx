@@ -156,8 +156,8 @@ export default function LoginModal({ onClose }) {
                 codigo: codigoMfa.trim(),
             })
             login({ token: data.access_token, user: data.user })
-            await cargarCarrito(true)
             onClose()
+            await cargarCarrito(true)
         } catch (err) {
             const d = err.datos || {}
             if (d.espera_seg) setEsperaBlanqueoMfa(d.espera_seg)
@@ -240,8 +240,11 @@ export default function LoginModal({ onClose }) {
                 return
             }
             login({ token: data.access_token, user: data.user })
-            await cargarCarrito(true)
+            // Cerrar antes de refrescar el carrito: si el admin no tiene MFA,
+            // AvisoMfaAdmin abre su modal apenas cambia `user`. Si el login
+            // sigue montado se apilan dos overlays y el fondo se ve más oscuro.
             onClose()
+            await cargarCarrito(true)
         } catch (err) {
             if (captchaRequerido) setCaptchaToken('')
             const msg = err.message || ''
