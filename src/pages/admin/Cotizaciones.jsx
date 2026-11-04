@@ -714,9 +714,9 @@ export default function Cotizaciones() {
             <thead>
               <tr style={{ color: 'var(--surface)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
                 <th style={{ padding: '0 10px 12px' }}>Cotización</th>
-                <th style={{ padding: '0 10px 12px' }}>Cliente</th>
-                <th style={{ padding: '0 10px 12px' }}>Correo</th>
                 <th style={{ padding: '0 10px 12px' }}>Fecha/Hora</th>
+                <th style={{ padding: '0 10px 12px' }}>Cliente</th>
+                <th style={{ padding: '0 10px 12px' }}>Correo</th>   
                 <th style={{ padding: '0 10px 12px' }}>Material</th>
                 <th style={{ padding: '0 10px 12px' }}>Precio sugerido</th>
                 <th style={{ padding: '0 10px 12px' }}>Detalle</th>
@@ -732,13 +732,13 @@ export default function Cotizaciones() {
                     <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', fontSize: 11 }}>
                       {c.id.slice(0, 8)}
                     </td>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{fecha}</td>
                     <td style={{ padding: '13px 10px', textAlign: 'center' }}>
                       <div style={{ color: 'var(--text-dim)' }}>{c.nombre}</div>
                     </td>
                     <td style={{ padding: '13px 10px', textAlign: 'center' }}>
                       <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{c.email}</div>
                     </td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{fecha}</td>
                     <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{c.material}</td>
                     <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)' }}>
                       {c.precio_estimado_ia ? `$${formatearPrecio(c.precio_estimado_ia)}` : <span style={{ color: 'var(--text-dim)' }}>—</span>}

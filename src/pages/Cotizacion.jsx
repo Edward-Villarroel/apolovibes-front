@@ -354,7 +354,7 @@ export default function Cotizacion() {
               {/* Progreso + validación de seguridad */}
               <div>
 
-                {/* Barra de progreso: primero */}
+                {/* Barra de progreso*/}
                 {(validandoImagen ||
                   progreso.status === 'completed' ||
                   progreso.status === 'failed') && (
