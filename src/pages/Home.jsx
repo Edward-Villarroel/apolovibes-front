@@ -10,7 +10,7 @@ import { rutaDeCategoria } from '../utils/categorias.js'
 const CATEGORY_BACKGROUNDS = {
   videoJuegos: mediaPath('banerAnime.webp'),
   animales: mediaPath('Animales.webp'),
-  llaveros: mediaPath('banerllaveros.webp'),
+  llaveros: mediaPath('llaveros.webp'),
   diseno: mediaPath('banerdiseño.webp'),
   accesorios: mediaPath('AccesoriosBaner.webp'),
   articulados: mediaPath('ArticuladosBaner.webp')
@@ -31,8 +31,6 @@ function fondoDeCategoria(nombre) {
 
 export default function Home() {
   const { productos, categorias, cargando } = useProductos()
-  // La semana la decide el backend: si la actual no tiene mas de 4 productos
-  // distintos vendidos, devuelve la anterior y lo informa en `semana.tipo`.
   const rankingSemanal = useMasVendidos('semana', 10)
   const lanzamientos = useMemo(
     () => productos

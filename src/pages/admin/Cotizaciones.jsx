@@ -81,7 +81,7 @@ function leerDescripcion(descripcion) {
 
 function MiniaturaModal({ src, nombre }) {
   const [fallo, setFallo] = useState(false)
-  const url = urlMedia(src)
+  const url = src ? urlMedia(src) : ''
 
   return (
     <div style={{ width: 96, height: 96, borderRadius: 12, overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--input-bg)', border: `1px solid ${LINEA}`, color: COLOR_APAGADO }}>
