@@ -1313,7 +1313,8 @@ label {
   padding: 48px 32px;
 }
 
-.pedidos-tarjetas {
+.pedidos-tarjetas,
+.cotizaciones-tarjetas {
   display: none;
 }
 
@@ -1374,11 +1375,13 @@ label {
     min-height: 0;
   }
 
-  .pedidos-tabla {
+  .pedidos-tabla,
+  .cotizaciones-tarjetas{
     display: none;
   }
 
-  .pedidos-tarjetas {
+  .pedidos-tarjetas,
+  .cotizaciones-tarjetas {
     display: block;
   }
 }

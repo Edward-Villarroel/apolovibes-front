@@ -587,7 +587,9 @@ export default function MisPedidos() {
   const [pagandoId, setPagandoId] = useState(null);
   const [eliminando, setEliminando] = useState(null);
   const [pagina, setPagina] = useState(1);
-  const filasPorPagina = 10;
+  const [filasPorPagina, setFilasPorFagina] = useState(
+    () => window.innerWidth <= 768 ? 5 : 10)
+  );
 
   async function cargar(silencioso = false) {
     if (!silencioso) {
@@ -605,6 +607,12 @@ export default function MisPedidos() {
       if (!silencioso) setCargando(false);
     }
   }
+
+  useEffect(() => {
+    const ajustar = () => setFilasPorFagina(window.innerWidth <= 768 ? 5 : 10);
+    window.addEventListener('resize', ajustar);
+    return () => window.removeEventListener('resize', ajustar);
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) cargar(hayCache);
