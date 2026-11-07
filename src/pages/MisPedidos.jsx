@@ -727,7 +727,7 @@ export default function MisPedidos() {
   }
 
   return (
-    <div className="wrap" style={{ minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
+    <div className="wrap cot-pagina" style={{ minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--surface)' }}>
         Mis pedidos
       </h1>
