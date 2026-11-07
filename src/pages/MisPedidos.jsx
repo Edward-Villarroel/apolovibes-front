@@ -1026,7 +1026,7 @@ export default function MisPedidos() {
                         disabled={pagandoId === p.id}
                         className="pedido-card-btn"
                         style={{
-                          background: 'var(--green, #22c55e)', color: '#06210f', border: 'none',
+                          background: 'var(--green, #22c55e)', color: '#fff', border: 'none',
                           opacity: pagandoId === p.id ? 0.6 : 1
                         }}
                       >
@@ -1057,10 +1057,11 @@ export default function MisPedidos() {
                         type="button"
                         onClick={() => setResenando(p)}
                         className="pedido-card-btn"
-                        style={{ background: 'transparent', color: 'var(--surface)', border: '1px solid var(--surface-3)' }}
+                        style={{ position: 'relative', background: 'transparent', color: 'var(--surface)', border: '1px solid var(--surface-3)'  }}
                       >
                         <Star size={16} />
-                        Valorar{p.resenas_pendientes > 0 ? ` (${p.resenas_pendientes})` : ''}
+                        Valorar
+                        <span className="cart-badge">{p.resenas_pendientes}</span>
                       </button>
                     )}
 
@@ -1069,10 +1070,13 @@ export default function MisPedidos() {
                         type="button"
                         onClick={() => abrirAviso(p)}
                         className="pedido-card-btn"
-                        style={{ background: 'transparent', color: 'var(--surface)', border: '1px solid var(--surface-3)' }}
+                        style={{ position: 'relative', background: 'transparent', color: 'var(--surface)', border: '1px solid var(--surface-3)' }}
                       >
                         <Info size={16} />
-                        Ver anulación{p.aviso_cancelacion_pendiente ? ' (1)' : ''}
+                        Ver anulación
+                        {p.aviso_cancelacion_pendiente && (
+                          <span className="cart-badge">1</span>
+                        )}
                       </button>
                     )}
 

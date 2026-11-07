@@ -1442,6 +1442,7 @@ label {
   gap: 6px;
   cursor: pointer;
 }
+.pedido-card-btn .cart-badge { top: -8px; right: 8px; }
 
 .pedido-card-icono {
   width: 40px;
