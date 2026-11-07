@@ -287,7 +287,7 @@ export default function Cotizacion() {
             <div className="grid-2" style={{ marginBottom: 16 }}>
 
               {/* Imagen original */}
-              <div>
+              <div className="cot-ref">
                 <p
                   style={{
                     fontSize: 11,
@@ -302,25 +302,8 @@ export default function Cotizacion() {
                   Imagen de referencia
                 </p>
 
-                <div
-                  style={{
-                    position: 'relative',
-                    borderRadius: 10,
-                    overflow: 'hidden',
-                    border: '1px solid var(--line)',
-                    background: 'var(--input-bg)',
-                  }}
-                >
-                  <img
-                    src={previsualizacion}
-                    alt="Referencia subida"
-                    style={{
-                      width: '100%',
-                      maxHeight: 280,
-                      objectFit: 'cover',
-                      display: 'block',
-                    }}
-                  />
+                <div className="cot-ref-marco">
+                  <img src={previsualizacion} alt="Referencia subida"/>
 
                   <button
                     type="button"
@@ -344,6 +327,7 @@ export default function Cotizacion() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      zIndex: 1,
                     }}
                   >
                     <X size={14} />
@@ -384,7 +368,7 @@ export default function Cotizacion() {
 
                   <ModelViewer
                     estado={estadoImagen === 'idle' ? 'validando' : estadoImagen}
-                    height={280}
+                    height={240}
                   />
                 </div>
               </div>
