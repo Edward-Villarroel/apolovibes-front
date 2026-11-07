@@ -25,6 +25,8 @@ const ESTILO_ESTADO = {
   cancelado: { bg: '#FFD9D9', color: '#8C1212' },
 };
 
+const ESTILO_LISTO_RETIRO = { bg: '#DCE9FF', color: '#123F8C'};
+
 const ETIQUETA_ENTREGA = {
   envio: 'Envío a domicilio',
   retiro: 'Retiro',
@@ -55,6 +57,11 @@ const fechaLarga = (f) => f ? new Date(f).toLocaleDateString('es-CL', { day: 'nu
 function etiquetaPaso(paso, entrega) {
   if (paso === 'enviado' && entrega === 'retiro') return 'Listo para retirar';
   return ETIQUETAS_ESTADO[paso];
+}
+
+function etiquetaEstado(estado, entrega) {
+  if (estado === 'enviado' && entrega === 'retiro') return 'Listo para retirar';
+  return ETIQUETAS_ESTADO[estado] || estado;
 }
 
 function formatoTelefono(t) {
@@ -134,7 +141,8 @@ function DetalleModal({ pedido, onClose, onPagar, procesando, onCancelado, onMen
   const esRetiro = pedido.entrega === 'retiro';
   const itemsPedido = pedido.items || [];
   const sinItems = itemsPedido.length === 0;
-  const estilo = ESTILO_ESTADO[estado] || { bg: '#E5E7EB', color: '#374151' };
+  const estilo = (estado === 'enviado' && pedido.entrega === 'retiro')
+    ? ESTILO_LISTO_RETIRO : (ESTILO_ESTADO[estado] || { bg: '#E5E7EB', color: '#374151'  })
   const IconoEstado = estado === 'entregado' ? CircleCheck : estado === 'cancelado' ? X : Clock;
   const pagoPendiente = puedePagar({ ...pedido, estado });
   const puedeCancelar = PAGOS_CONFIRMADOS.has(pedido.estado_pago)
@@ -252,7 +260,7 @@ function DetalleModal({ pedido, onClose, onPagar, procesando, onCancelado, onMen
                 fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 999,
               }}>
                 <IconoEstado size={14} />
-                {ETIQUETAS_ESTADO[estado] || estado}
+                {etiquetaEstado(estado, pedido.entrega)}
               </span>
             )}
           </div>
@@ -815,7 +823,12 @@ export default function MisPedidos() {
                     <td style={{ padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center' }}>
                       {(() => {
                         const esPagoPendiente = puedePagar(p);
-                        const estiloBadge = esPagoPendiente ? ESTILO_ESTADO.pendiente : (ESTILO_ESTADO[p.estado] || ESTILO_ESTADO.pendiente);
+                        const estiloBadge = esPagoPendiente
+                          ? ESTILO_ESTADO.pendiente
+                          : (p.estado === 'enviado' && p.entrega === 'retiro')
+                          ? ESTILO_LISTO_RETIRO
+                          : (ESTILO_ESTADO[p.estado] || ESTILO_ESTADO.pendiente);
+
                         const IconoBadge = esPagoPendiente
                           ? Clock
                           : p.estado === 'entregado' ? CircleCheck : p.estado === 'cancelado' ? X : Clock;
@@ -826,7 +839,7 @@ export default function MisPedidos() {
                             fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 999,
                           }}>
                             <IconoBadge size={14} />
-                            {esPagoPendiente ? 'Pago pendiente' : (ETIQUETAS_ESTADO[p.estado] || p.estado)}
+                            {esPagoPendiente ? 'Pago pendiente' : etiquetaEstado(p.estado, p.entrega)}
                           </span>
                         );
                       })()}
@@ -943,7 +956,7 @@ export default function MisPedidos() {
                         }}
                       >
                         <Info size={15} />
-                        {requiereAnulacion && p.aviso_cancelacion_pendiente && (
+                        {requiereAnulacion(p) && p.aviso_cancelacion_pendiente && (
                           <span className="cart-badge">1</span>
                         )}
                       </span>

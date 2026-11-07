@@ -27,6 +27,8 @@ const ESTILO_ESTADO = {
   cancelado: { bg: '#FFD9D9', color: '#8C1212' },
 };
 
+const ESTILO_LISTO_RETIRO = { bg: '#DCE9FF', color: '#123F8C' };
+
 const ETIQUETA_ENTREGA = {
   envio: 'Envío a domicilio',
   retiro: 'Retiro',
@@ -77,6 +79,11 @@ function BadgeDespacho({ estado }) {
   return <span style={{ ...ESTILO_BADGE, background: estilo.bg, color: estilo.color }}>{estilo.texto}</span>
 }
 
+function etiquetaEstado(estado, entrega) {
+  if (estado === 'enviado' && entrega === 'retiro') return 'Listo para retirar';
+  return ETIQUETAS_ESTADO[estado] || estado;
+}
+
 const formatoPesos = (valor) => '$' + Number(valor).toLocaleString('es-CL');
 
 const fechaTexto = (f) => f ? new Date(f).toLocaleDateString('es-CL') : '—';
@@ -120,7 +127,7 @@ function ChipEstado({ pedido, onClick }) {
     <span
       onClick={onClick}
       title="Marcar como entregado"
-      style={{ ...estiloBase, background: 'rgba(250,204,21,.16)', color: '#b45309' }}
+      style={{ ...estiloBase, background: 'rgba(34,197,94,.16)', color: 'var(--green, #22c55e)' }}
     >
       Marcar entregado
     </span>
@@ -269,7 +276,9 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
   const esFactura = cliente.tipoDocumento === 'factura';
   const esRetiro = pedido.entrega === 'retiro';
   const itemsPedido = pedido.items || [];
-  const estilo = ESTILO_ESTADO[estado] || { bg: '#E5E7EB', color: '#374151' };
+  const estilo = (estado === 'enviado' && pedido.entrega === 'retiro')
+    ? ESTILO_LISTO_RETIRO
+    : (ESTILO_ESTADO[estado] || { bg: '#E5E7EB', color: '#374151' });
   const IconoEstado = estado === 'entregado' ? CircleCheck : estado === 'cancelado' ? X : Clock;
 
   const neto = Math.round(Number(pedido.total) / 1.19);
@@ -392,7 +401,7 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
               fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 999,
             }}>
               <IconoEstado size={14} />
-              {ETIQUETAS_ESTADO[estado] || estado}
+              {etiquetaEstado(estado, pedido.entrega)}
             </span>
           </div>
         </div>
