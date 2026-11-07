@@ -85,6 +85,7 @@ function ChipEstado({ pedido, onClick }) {
   const estiloBase = {
     display: 'inline-block', padding: '4px 10px', borderRadius: 999,
     fontSize: 11, fontWeight: 600, cursor: onClick ? 'pointer' : 'default',
+    whiteSpace: 'nowrap',
   }
   if (pedido.estado === 'entregado') {
     return (
@@ -100,13 +101,28 @@ function ChipEstado({ pedido, onClick }) {
       </span>
     )
   }
+
+  const esRetiro = pedido.entrega === 'retiro'
+
+  if (esRetiro && pedido.estado !== 'enviado'){
+    return (
+      <span 
+       onClick={onClick}
+       title="Marcar como listo para retirar"
+       style={{ ...estiloBase, background: 'rgba(250,204,21,.16)', color: '#b45309' }}
+      >
+        Marcar listo para retirar
+      </span>
+    )
+  }
+
   return (
     <span
       onClick={onClick}
       title="Marcar como entregado"
       style={{ ...estiloBase, background: 'rgba(250,204,21,.16)', color: '#b45309' }}
     >
-      {pedido.entrega === 'retiro' ? 'Listo para retirar' : 'Marcar entregado'}
+      Marcar entregado
     </span>
   )
 }
@@ -784,6 +800,20 @@ export default function Pedidos() {
   const [busqueda, setBusqueda] = useState('');
   const [pagina, setPagina] = useState(1);
   const [filasPorPagina, setFilasPorPagina] = useState(6);
+  const [listoPedido, setListoPedido] = useState(null);
+
+ async function marcarListoRetiro(pedido) {
+  setMensaje(null);
+  try {
+    await pedidosApi.cambiarEstado(pedido.id, 'enviado');
+    setListoPedido(null);
+    setMensaje({ tipo: 'ok', texto: `Pedido #${pedido.id.slice(0, 8)} listo para retirar.` });
+    await cargar();
+  } catch (err) {
+    setListoPedido(null);
+    setMensaje({ tipo: 'error', texto: err.message });
+  }
+}
 
   const cargar = useCallback(async () => {
     setCargando(true);
@@ -1033,12 +1063,9 @@ export default function Pedidos() {
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexWrap: 'wrap' }}>
                           {p.estado === 'entregado' || p.estado === 'cancelado' ? (
                             <ChipEstado pedido={p} />
-                          ) : p.codigo_seguimiento && normalizarEstado(claveDespacho(p)) === 'en_ruta_de_entrega' ? (
-                            // "En ruta de entrega" es el ultimo paso antes de entregado:
-                            // se reemplaza el badge por el chip de accion final.
+                          ) : p.codigo_seguimiento && normalizarEstado(claveDespacho(p)) === 'en_ruta_de_entrega' ? (                
                             <ChipEstado pedido={p} onClick={() => setEntregarPedido(p)} />
                           ) : p.codigo_seguimiento ? (
-                            // Cualquier estado activo: badge del estado al lado del chip de accion.
                             <>
                               <BadgeDespacho estado={claveDespacho(p)} />
                               <ChipEstado pedido={p} onClick={() => setEntregarPedido(p)} />
@@ -1050,10 +1077,26 @@ export default function Pedidos() {
                       )}
                     </td>
                     <td style={{ padding: '13px 10px', textAlign: 'center' }}>
-                      {p.entrega === 'retiro' ? (
-                        <ChipEstado pedido={p} onClick={() => setEntregarPedido(p)} />
+                      {esRetiro ? (
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexWrap: 'wrap' }}>
+                          {bloqueado ? (
+                            <ChipEstado pedido={p} />
+                          ) : p.estado === 'enviado' ? (
+                          <>
+                          <span style={{
+                            display: 'inline-block', padding: '4px 10px', borderRadius: 999, fontSize: 11,
+                            fontWeight: 600, whiteSpace: 'nowrap',
+                            background: 'rgba(59,130,246,.16)', color: '#1d4ed8',
+                            }}>Listo para retirar
+                          </span>
+                          <ChipEstado pedido={p} onClick={() => setEntregarPedido(p)} />
+                            </>
+                            ) : (
+                            <ChipEstado pedido={p} onClick={() => setListoPedido(p)} />
+                            )}
+                        </div>
                       ) : null}
-                    </td>
+                  </td>
                     <td style={{ padding: '13px 10px', textAlign: 'center' }}>
                       <span
                         style={{
@@ -1158,6 +1201,22 @@ export default function Pedidos() {
           mostrarLogo={true}
           onConfirm={() => marcarEntregado(entregarPedido)}
           onCancel={() => setEntregarPedido(null)}
+        />
+      )}
+
+      {listoPedido && (
+        <ConfirmModal
+        titulo="Marcar listo para retirar"
+        mensaje={`¿Confirmas que el pedido #${listoPedido.id.slice(0, 8)} ya está listo para que el cliente lo retire en tienda?`}
+        textoCancelar="Cancelar"
+        textoConfirmar="Sí, está listo"
+        textoCargando="Guardando…"
+        confirmarPeligro={false}
+        colorConfirmar="var(--green, #22c55e)"
+        colorTextoConfirmar="#06210f"
+        mostrarLogo={true}
+        onConfirm={() => marcarListoRetiro(listoPedido)}
+        onCancel={() => setListoPedido(null)}
         />
       )}
 
