@@ -11,7 +11,7 @@ const CONTENT = {
     actualizacion: fechaLegalLarga(),
     texto:
       `1. Identificación del Proveedor
-El sitio de Apolo Vibes 3D es operado por Apolo Vibes SPA, RUT: 78.064.166-5 con domicilio en calle Pasaje el Boldo Nro:33, Viña del Mar, Chile. Puede contactarnos en apolovibes3d@gmail.com.
+El sitio de Apolo Vibes 3D es operado por Apolo Vibes SPA, RUT: 78.064.166-5 con domicilio en calle Pasaje el Boldo Nro:33, Viña del Mar, Chile. Puede contactarnos en contacto@apolovibes3d.cl.
 
 2. Aceptación de los Términos
 Al acceder y utilizar el Sitio, usted acepta estos Términos y Condiciones. Si no está de acuerdo con ellos, le solicitamos no utilizar el Sitio.
@@ -23,7 +23,7 @@ Apolo Vibes 3D es una tienda en línea de figuras de colección y artículos imp
 Los productos están sujetos a disponibilidad. Los precios se expresan en pesos chilenos (CLP) e incluyen IVA. El precio que se respeta es el vigente al momento de confirmar su pedido; los cambios de precio solo afectan compras futuras. Las imágenes son referenciales y pueden diferir ligeramente del producto final. Emitimos boleta o factura según el documento que seleccione al confirmar su pedido.
 
 5. Pedidos, Confirmación y Cotizaciones
-Los pedidos están sujetos a confirmación de stock. Si un producto pagado no estuviera disponible, se lo informaremos y le devolveremos el dinero por el mismo medio de pago. Cuando su pago se confirme, le enviaremos por correo el comprobante con el detalle del pedido. Si no lo recibe, puede solicitarlo a apolovibes3d@gmail.com.
+Los pedidos están sujetos a confirmación de stock. Si un producto pagado no estuviera disponible, se lo informaremos y le devolveremos el dinero por el mismo medio de pago. Cuando su pago se confirme, le enviaremos por correo el comprobante con el detalle del pedido. Si no lo recibe, puede solicitarlo a contacto@apolovibes3d.cl.
 Las cotizaciones generadas con nuestro cotizador automatizado son estimaciones y pueden variar según la complejidad del diseño, los materiales y las condiciones de fabricación. El precio definitivo será confirmado por nuestro equipo antes de producir.
 
 6. Formas de Pago
@@ -34,13 +34,13 @@ Puede elegir envío a domicilio o retiro en Álvarez 1106, Viña del Mar, según
 
 8. Derecho de Retracto
 De acuerdo con la Ley 19.496, en las compras realizadas a través del Sitio usted puede arrepentirse dentro de 10 días contados desde la recepción del producto, sin necesidad de expresar causa.
-Para ejercerlo, escríbanos a apolovibes3d@gmail.com indicando su número de pedido. El producto debe devolverse sin uso, completo y con su embalaje original. Le reembolsaremos el precio pagado por el mismo medio de pago, dentro del plazo legal. Los costos de devolución serán de cargo del cliente.
+Para ejercerlo, escríbanos a contacto@apolovibes3d.cl indicando su número de pedido. El producto debe devolverse sin uso, completo y con su embalaje original. Le reembolsaremos el precio pagado por el mismo medio de pago, dentro del plazo legal. Los costos de devolución serán de cargo del cliente.
 El retracto no aplica a productos confeccionados según las especificaciones del cliente o claramente personalizados (por ejemplo, diseños a medida), ni a los demás casos de exclusión que establece la ley.
 Ejercer o no el retracto no afecta su derecho a la garantía legal.
 
 9. Garantía Legal
 Si un producto presenta fallas o defectos, o no es apto para su uso, usted tiene derecho a la garantía legal de 6 meses desde la recepción del producto (para productos nuevos). Puede elegir la reposición del producto o la devolución de lo pagado, en los términos de los artículos 19 a 21 de la Ley 19.496.
-Para solicitarla, escríbanos a apolovibes3d@gmail.com con su número de pedido y, si es posible, fotografías del problema. No se aplica cuando el defecto se debe a mal uso, manipulación indebida o desgaste normal.
+Para solicitarla, escríbanos a contacto@apolovibes3d.cl con su número de pedido y, si es posible, fotografías del problema. No se aplica cuando el defecto se debe a mal uso, manipulación indebida o desgaste normal.
 
 10. Pedidos Personalizados y Cancelación
 Los diseños a medida son orientativos: el producto final puede diferir de la visualización o referencia aprobada. La fabricación comienza una vez aprobado el diseño definitivo y confirmado el pago.
@@ -56,7 +56,7 @@ Los textos, gráficos, logotipos, imágenes, modelos 3D y software del Sitio son
 Apolo Vibes 3D responde en los términos que establece la ley. Nada en estos Términos limita o excluye los derechos irrenunciables que la Ley 19.496 reconoce a los consumidores.
 
 14. Reclamos y Solución de Controversias
-Si tiene un problema, escríbanos primero a apolovibes3d@gmail.com y buscaremos una solución. También puede acudir al SERNAC o al Juzgado de Policía Local competente, conforme a la Ley 19.496.
+Si tiene un problema, escríbanos primero a contacto@apolovibes3d.cl y buscaremos una solución. También puede acudir al SERNAC o al Juzgado de Policía Local competente, conforme a la Ley 19.496.
 
 15. Legislación Aplicable
 Estos Términos se rigen por las leyes de la República de Chile.
@@ -65,14 +65,14 @@ Estos Términos se rigen por las leyes de la República de Chile.
 Podemos modificar estos Términos en cualquier momento. Los cambios se aplican desde su publicación en el Sitio y no afectan las compras ya realizadas.
 
 17. Contacto
-Para consultas sobre estos Términos: apolovibes3d@gmail.com`,
+Para consultas sobre estos Términos: contacto@apolovibes3d.cl`,
   },
   privacidad: {
     titulo: 'Política de Privacidad',
     actualizacion: fechaLegalLarga(),
     texto:
       `1. Responsable del Tratamiento
-El responsable de sus datos personales es Apolo Vibes SPA, RUT 78.064.166-5, con domicilio en calle Pasaje el Boldo Nro: 33, Viña del Mar, Chile. Puede contactarnos en apolovibes3d@gmail.com.
+El responsable de sus datos personales es Apolo Vibes SPA, RUT 78.064.166-5, con domicilio en calle Pasaje el Boldo Nro: 33, Viña del Mar, Chile. Puede contactarnos en seguridad@apolovibes3d.cl.
 
 2. Datos que Recopilamos
 - Datos de identificación y contacto: nombre, apellidos, RUT, correo y teléfono.
@@ -127,14 +127,14 @@ Usamos solo cookies esenciales para el funcionamiento del Sitio y no utilizamos 
 - Cotizaciones que no se concretan: 12 meses.
 - Archivos e imágenes de cotización: mientras la relación comercial esté activa o hasta que usted solicite su eliminación.
 - Registros de seguridad: durante el tiempo necesario para prevenir fraudes y atender reclamos.
-Puede solicitar en cualquier momento la eliminación total de sus archivos y cotizaciones escribiendo a apolovibes3d@gmail.com. Ejecutaremos la eliminación en nuestros sistemas activos en un máximo de 48 horas desde que verifiquemos su identidad. Esta eliminación no alcanza a los datos y documentos que debamos conservar por obligaciones legales o tributarias (por ejemplo, boletas y facturas, que se conservan por 6 años).
+Puede solicitar en cualquier momento la eliminación total de sus archivos y cotizaciones escribiendo a seguridad@apolovibes3d.cl. Ejecutaremos la eliminación en nuestros sistemas activos en un máximo de 48 horas desde que verifiquemos su identidad. Esta eliminación no alcanza a los datos y documentos que debamos conservar por obligaciones legales o tributarias (por ejemplo, boletas y facturas, que se conservan por 6 años).
 Una vez cumplidos esos plazos, eliminamos o anonimizamos los datos. No usamos sus datos para marketing, por lo que no mantenemos información con esa finalidad.
 
 9. Seguridad
 Aplicamos medidas técnicas y organizativas razonables para proteger sus datos contra acceso no autorizado, pérdida o alteración. Las contraseñas se almacenan con hash, ofrecemos verificación en dos pasos y usamos reCAPTCHA en el registro y el inicio de sesión. Usamos conexiones cifradas (TLS) para el sitio y la API. Nuestras prácticas se inspiran en la norma ISO/IEC 27001:2022, aunque no contamos con certificación en esa norma. Ningún sistema es completamente infalible. Si ocurre una brecha de seguridad que afecte sus datos, actuaremos y notificaremos según exige la ley.
 
 10. Sus Derechos
-Usted puede solicitar el acceso, la rectificación, la supresión, la oposición al tratamiento, la portabilidad de sus datos y el bloqueo temporal, además de retirar su consentimiento en cualquier momento. Para ejercer estos derechos, escríbanos a apolovibes3d@gmail.com indicando su nombre y qué solicita. Le responderemos dentro de los plazos legales. Estas solicitudes se tramitan conforme a la normativa chilena de protección de datos personales, incluida la Ley N° 21.719 en las disposiciones que se encuentren vigentes. Si considera que no atendimos su solicitud, puede reclamar ante la autoridad de protección de datos competente.
+Usted puede solicitar el acceso, la rectificación, la supresión, la oposición al tratamiento, la portabilidad de sus datos y el bloqueo temporal, además de retirar su consentimiento en cualquier momento. Para ejercer estos derechos, escríbanos a seguridad@apolovibes3d.cl indicando su nombre y qué solicita. Le responderemos dentro de los plazos legales. Estas solicitudes se tramitan conforme a la normativa chilena de protección de datos personales, incluida la Ley N° 21.719 en las disposiciones que se encuentren vigentes. Si considera que no atendimos su solicitud, puede reclamar ante la autoridad de protección de datos competente.
 
 11. Menores de Edad
 El Sitio no está dirigido a menores de 18 años y no recopilamos intencionalmente sus datos personales.
@@ -143,7 +143,7 @@ El Sitio no está dirigido a menores de 18 años y no recopilamos intencionalmen
 Podemos actualizar esta Política. Publicaremos los cambios en esta página con la fecha de última actualización. Si el cambio es relevante, lo informaremos por los canales de contacto del Sitio.
 
 13. Contacto
-- Correo: apolovibes3d@gmail.com
+- Correo: contacto@apolovibes3d.cl
 - Dirección: calle Pasaje el Boldo Nro: 33, Viña del Mar, Chile.
 
 14. Principios de Seguridad de la Información
@@ -202,18 +202,18 @@ Puede solicitar el cambio de un producto por otro modelo, color o variante dentr
 Los productos confeccionados según las especificaciones del cliente o claramente personalizados (por ejemplo, diseños a medida o piezas basadas en una referencia aprobada) no admiten cambio por elección del cliente. Si el producto llega con fallas, daños o no corresponde a lo aprobado, aplica la garantía legal.
 
 4. Derecho de Retracto
-En las compras realizadas a través del Sitio, usted puede arrepentirse dentro de 10 días contados desde la recepción del producto, sin necesidad de expresar causa, conforme a la Ley 19.496. Para ejercerlo, escríbanos a apolovibes3d@gmail.com indicando su número de pedido. El producto debe devolverse sin uso, completo y con su embalaje original. Le reembolsaremos el precio pagado por el mismo medio de pago, dentro del plazo legal. Los costos de devolución serán de cargo del cliente.
+En las compras realizadas a través del Sitio, usted puede arrepentirse dentro de 10 días contados desde la recepción del producto, sin necesidad de expresar causa, conforme a la Ley 19.496. Para ejercerlo, escríbanos a contacto@apolovibes3d.cl indicando su número de pedido. El producto debe devolverse sin uso, completo y con su embalaje original. Le reembolsaremos el precio pagado por el mismo medio de pago, dentro del plazo legal. Los costos de devolución serán de cargo del cliente.
 El retracto no aplica a productos confeccionados según las especificaciones del cliente o claramente personalizados, ni a los demás casos de exclusión que establece la ley.
 
 5. Devoluciones por Garantía Legal
 Si un producto presenta fallas o defectos, o no es apto para su uso, usted tiene derecho a la garantía legal de 6 meses desde la recepción del producto (para productos nuevos). Puede elegir la reposición del producto o la devolución de lo pagado, en los términos de los artículos 19 a 21 de la Ley 19.496.
-Para solicitarla, escríbanos a apolovibes3d@gmail.com con su número de pedido y, si es posible, fotografías del problema. Revisaremos el caso y le responderemos dentro de 2 días hábiles. No se aplica cuando el defecto se debe a mal uso, manipulación indebida o desgaste normal.
+Para solicitarla, escríbanos a contacto@apolovibes3d.cl con su número de pedido y, si es posible, fotografías del problema. Revisaremos el caso y le responderemos dentro de 2 días hábiles. No se aplica cuando el defecto se debe a mal uso, manipulación indebida o desgaste normal.
 
 6. Productos Dañados en el Transporte
-Si su pedido llega dañado, repórtelo dentro de 48 horas desde la entrega a apolovibes3d@gmail.com con su número de pedido y fotografías del embalaje y del producto. Coordinaremos el reemplazo o la solución que corresponda con la empresa de transporte. Este plazo es solo para agilizar el reclamo al transporte y no limita su garantía legal.
+Si su pedido llega dañado, repórtelo dentro de 48 horas desde la entrega a contacto@apolovibes3d.cl con su número de pedido y fotografías del embalaje y del producto. Coordinaremos el reemplazo o la solución que corresponda con la empresa de transporte. Este plazo es solo para agilizar el reclamo al transporte y no limita su garantía legal.
 
 7. Cómo Solicitar un Cambio o Devolución
-Escríbanos a apolovibes3d@gmail.com indicando:
+Escríbanos a contacto@apolovibes3d.cl indicando:
 - Nombre completo y número de pedido.
 - Producto que desea cambiar o devolver.
 - Motivo de la solicitud.
@@ -227,7 +227,7 @@ En los cambios por elección del cliente y en las devoluciones por retracto, el 
 Los reembolsos se realizan por el mismo medio de pago utilizado en la compra, dentro del plazo legal desde que confirmamos la devolución. Si el pago se realizó con tarjeta, el abono puede tardar algunos días en reflejarse según los plazos del banco o de la plataforma de pago.
 
 10. Contacto
-Para consultas sobre cambios, devoluciones o garantías: apolovibes3d@gmail.com`,
+Para consultas sobre cambios, devoluciones o garantías: contacto@apolovibes3d.cl`,
   },
   cookies: {
     titulo: 'Política de Cookies',
@@ -265,7 +265,7 @@ Tratamos los datos obtenidos a través de cookies conforme a nuestra Política d
 Podemos actualizar esta Política cuando incorporemos nuevas cookies o cambie la normativa aplicable. Publicaremos la versión vigente en esta página con su fecha de actualización.
 
 8. Contacto
-Para consultas sobre el uso de cookies: apolovibes3d@gmail.com`,
+Para consultas sobre el uso de cookies: contacto@apolovibes3d.cl`,
   },
 }
 

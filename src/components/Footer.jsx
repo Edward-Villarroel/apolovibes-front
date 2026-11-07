@@ -280,7 +280,7 @@ export default function Footer() {
               abierta={seccionesAbiertas.contacto}
               alAlternar={() => alternar('contacto')}
             >
-              <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>apolovibes3d@gmail.com</span>
+              <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>contacto@apolovibes3d.cl</span>
               <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>Viña del Mar, Chile</span>
             </SeccionFooter>
           </div>
