@@ -25,7 +25,7 @@ const ESTILO_ESTADO = {
   cancelado: { bg: '#FFD9D9', color: '#8C1212' },
 };
 
-const ESTILO_LISTO_RETIRO = { bg: '#DCE9FF', color: '#123F8C'};
+const ESTILO_LISTO_RETIRO = { bg: '#DCE9FF', color: '#123F8C' };
 
 const ETIQUETA_ENTREGA = {
   envio: 'Envío a domicilio',
@@ -142,7 +142,7 @@ function DetalleModal({ pedido, onClose, onPagar, procesando, onCancelado, onMen
   const itemsPedido = pedido.items || [];
   const sinItems = itemsPedido.length === 0;
   const estilo = (estado === 'enviado' && pedido.entrega === 'retiro')
-    ? ESTILO_LISTO_RETIRO : (ESTILO_ESTADO[estado] || { bg: '#E5E7EB', color: '#374151'  })
+    ? ESTILO_LISTO_RETIRO : (ESTILO_ESTADO[estado] || { bg: '#E5E7EB', color: '#374151' })
   const IconoEstado = estado === 'entregado' ? CircleCheck : estado === 'cancelado' ? X : Clock;
   const pagoPendiente = puedePagar({ ...pedido, estado });
   const puedeCancelar = PAGOS_CONFIRMADOS.has(pedido.estado_pago)
@@ -762,7 +762,7 @@ export default function MisPedidos() {
             style={{ display: 'block', height: 100, width: 'auto', margin: '0 auto 0' }}
           />
           <p style={{ margin: '0 0 12px', color: 'var(--text-dim)' }}>Para realizar pedidos haz click en el enlace de aca abajo</p>
-         <Link to="/categorias" style={{ color: 'var(--accent)' }}>Ir a catálogo</Link>
+          <Link to="/categorias" style={{ color: 'var(--accent)' }}>Ir a catálogo</Link>
         </div>
       ) : (
         <>
@@ -771,202 +771,329 @@ export default function MisPedidos() {
               {mensaje.texto}
             </p>
           )}
-        <div className="cot-tabla-wrap">
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, textAlign: 'center' }}>
-            <thead style={{ borderBottom: '1px solid var(--surface-3)' }}>
-              <tr
-                style={{
-                  color: 'var(--surface)',
-                  textAlign: 'center',
-                  fontSize: 11,
-                  textTransform: 'uppercase',
-                }}
-              >
-                <th style={{ padding: '0 10px 12px', textAlign: 'left' }}>Pedido</th>
-                <th style={{ padding: '0 10px 12px' }}>Fecha</th>
-                <th style={{ padding: '0 10px 12px' }}>Detalles</th>
-                <th style={{ padding: '0 10px 12px' }}>Total</th>
-                <th style={{ padding: '0 10px 12px' }}>Estado</th>
-                <th style={{ padding: '0 10px 12px' }}>Código seguimiento</th>
-                <th style={{ padding: '0 10px 12px' }}>Estado de envío</th>
-                <th style={{ padding: '0 10px 12px' }}></th>
-                <th style={{ padding: '0 10px 12px' }}></th>
-                <th style={{ padding: '0 10px 12px' }}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {pedidosPagina.map((p) => {
-                const bloqueadoSinc = p.entrega === 'retiro' || p.estado === 'entregado';
-                return (
-                  <tr key={p.id} style={{ borderBottom: '1px solid var(--surface-3)' }}>
-                    <td style={{ padding: '14px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', fontSize: 11 }}>
-                      {p.id.slice(0, 8)}
-                    </td>
-                    <td style={{ padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center' }}>{fecha(p.fecha)}</td>
-                    <td style={{ padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                        <span
-                          onClick={() => setDetalle(p)}
-                          title="Ver detalle del pedido"
-                          style={{
-                            cursor: 'pointer', display: 'inline-flex', alignItems: 'center',
-                            justifyContent: 'center', color: 'var(--surface-2)'
-                          }}
-                        >
-                          <Eye size={15} style={{ color: 'var(--text-dim)' }} />
-                        </span>
-                      </div>
-                    </td>
-                    <td style={{ padding: '14px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', textAlign: 'center' }}>
-                      ${p.total.toLocaleString('es-CL')}
-                    </td>
-                    <td style={{ padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center' }}>
-                      {(() => {
-                        const esPagoPendiente = puedePagar(p);
-                        const estiloBadge = esPagoPendiente
-                          ? ESTILO_ESTADO.pendiente
-                          : (p.estado === 'enviado' && p.entrega === 'retiro')
-                          ? ESTILO_LISTO_RETIRO
-                          : (ESTILO_ESTADO[p.estado] || ESTILO_ESTADO.pendiente);
-
-                        const IconoBadge = esPagoPendiente
-                          ? Clock
-                          : p.estado === 'entregado' ? CircleCheck : p.estado === 'cancelado' ? X : Clock;
-                        return (
-                          <span style={{
-                            display: 'inline-flex', alignItems: 'center', gap: 6,
-                            background: estiloBadge.bg, color: estiloBadge.color,
-                            fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 999,
-                          }}>
-                            <IconoBadge size={14} />
-                            {esPagoPendiente ? 'Pago pendiente' : etiquetaEstado(p.estado, p.entrega)}
+          <div className="cot-tabla-wrap pedidos-tabla">
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, textAlign: 'center' }}>
+              <thead style={{ borderBottom: '1px solid var(--surface-3)' }}>
+                <tr
+                  style={{
+                    color: 'var(--surface)',
+                    textAlign: 'center',
+                    fontSize: 11,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  <th style={{ padding: '0 10px 12px', textAlign: 'left' }}>Pedido</th>
+                  <th style={{ padding: '0 10px 12px' }}>Fecha</th>
+                  <th style={{ padding: '0 10px 12px' }}>Detalles</th>
+                  <th style={{ padding: '0 10px 12px' }}>Total</th>
+                  <th style={{ padding: '0 10px 12px' }}>Estado</th>
+                  <th style={{ padding: '0 10px 12px' }}>Código seguimiento</th>
+                  <th style={{ padding: '0 10px 12px' }}>Estado de envío</th>
+                  <th style={{ padding: '0 10px 12px' }}></th>
+                  <th style={{ padding: '0 10px 12px' }}></th>
+                  <th style={{ padding: '0 10px 12px' }}></th>
+                </tr>
+              </thead>
+              <tbody>
+                {pedidosPagina.map((p) => {
+                  const bloqueadoSinc = p.entrega === 'retiro' || p.estado === 'entregado';
+                  return (
+                    <tr key={p.id} style={{ borderBottom: '1px solid var(--surface-3)' }}>
+                      <td style={{ padding: '14px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', fontSize: 11 }}>
+                        {p.id.slice(0, 8)}
+                      </td>
+                      <td style={{ padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center' }}>{fecha(p.fecha)}</td>
+                      <td style={{ padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                          <span
+                            onClick={() => setDetalle(p)}
+                            title="Ver detalle del pedido"
+                            style={{
+                              cursor: 'pointer', display: 'inline-flex', alignItems: 'center',
+                              justifyContent: 'center', color: 'var(--surface-2)'
+                            }}
+                          >
+                            <Eye size={15} style={{ color: 'var(--text-dim)' }} />
                           </span>
-                        );
-                      })()}
-                    </td>
-                    <td
-                      style={{
-                        padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center',
-                        opacity: p.entrega === 'retiro' ? 0.35 : 1,
-                        cursor: p.entrega === 'retiro' ? 'not-allowed' : 'default',
-                      }}
-                      title={p.entrega === 'retiro' ? 'No aplica para retiros' : undefined}
-                    >
-                      {p.entrega === 'retiro' ? '—' : (p.codigo_seguimiento || '—')}
-                    </td>
-                    <td
-                      style={{
-                        padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center',
-                        opacity: p.entrega === 'retiro' ? 0.35 : 1,
-                        cursor: p.entrega === 'retiro' ? 'not-allowed' : 'default',
-                      }}
-                      title={p.entrega === 'retiro' ? 'No aplica para retiros' : undefined}
-                    >
-                      {p.entrega === 'retiro' ? 'No aplica para retiros' : estadoSeguimiento(p)}
-                    </td>
-                    <td style={{ padding: '14px 10px', textAlign: 'center' }}>
-                      {puedePagar(p) || puedeEliminar(p) ? (
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-                          {puedePagar(p) && (
-                            <button
-                              onClick={() => pagar(p)}
-                              disabled={pagandoId === p.id}
-                              style={{
-                                display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 12px',
-                                borderRadius: 8, border: 'none', background: 'var(--green, #22c55e)',
-                                color: '#fff', fontSize: 12, fontWeight: 600,
-                                cursor: pagandoId === p.id ? 'wait' : 'pointer',
-                                opacity: pagandoId === p.id ? 0.6 : 1,
-                              }}
-                            >
-                              <CreditCard size={13} />
-                              {pagandoId === p.id ? 'Redirigiendo…' : 'Pagar'}
-                            </button>
-                          )}
-                          {puedeEliminar(p) && (
-                            <button
-                              onClick={() => setEliminando(p)}
-                              title="Eliminar pedido"
-                              aria-label="Eliminar pedido"
-                              style={{
-                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                width: 30, height: 30, borderRadius: 8,
-                                border: '1px solid var(--surface-3)', background: 'transparent',
-                                color: 'var(--red, #ef4444)', cursor: 'pointer',
-                              }}
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          )}
                         </div>
-                      ) : (
-                        <button
-                          onClick={() => sincronizar(p)}
-                          disabled={bloqueadoSinc || sincronizandoId === p.id}
-                          title={bloqueadoSinc
-                            ? (p.entrega === 'retiro' ? 'No aplica para retiros' : 'El pedido ya fue entregado')
-                            : undefined}
+                      </td>
+                      <td style={{ padding: '14px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', textAlign: 'center' }}>
+                        ${p.total.toLocaleString('es-CL')}
+                      </td>
+                      <td style={{ padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center' }}>
+                        {(() => {
+                          const esPagoPendiente = puedePagar(p);
+                          const estiloBadge = esPagoPendiente
+                            ? ESTILO_ESTADO.pendiente
+                            : (p.estado === 'enviado' && p.entrega === 'retiro')
+                              ? ESTILO_LISTO_RETIRO
+                              : (ESTILO_ESTADO[p.estado] || ESTILO_ESTADO.pendiente);
+
+                          const IconoBadge = esPagoPendiente
+                            ? Clock
+                            : p.estado === 'entregado' ? CircleCheck : p.estado === 'cancelado' ? X : Clock;
+                          return (
+                            <span style={{
+                              display: 'inline-flex', alignItems: 'center', gap: 6,
+                              background: estiloBadge.bg, color: estiloBadge.color,
+                              fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 999,
+                            }}>
+                              <IconoBadge size={14} />
+                              {esPagoPendiente ? 'Pago pendiente' : etiquetaEstado(p.estado, p.entrega)}
+                            </span>
+                          );
+                        })()}
+                      </td>
+                      <td
+                        style={{
+                          padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center',
+                          opacity: p.entrega === 'retiro' ? 0.35 : 1,
+                          cursor: p.entrega === 'retiro' ? 'not-allowed' : 'default',
+                        }}
+                        title={p.entrega === 'retiro' ? 'No aplica para retiros' : undefined}
+                      >
+                        {p.entrega === 'retiro' ? '—' : (p.codigo_seguimiento || '—')}
+                      </td>
+                      <td
+                        style={{
+                          padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center',
+                          opacity: p.entrega === 'retiro' ? 0.35 : 1,
+                          cursor: p.entrega === 'retiro' ? 'not-allowed' : 'default',
+                        }}
+                        title={p.entrega === 'retiro' ? 'No aplica para retiros' : undefined}
+                      >
+                        {p.entrega === 'retiro' ? 'No aplica para retiros' : estadoSeguimiento(p)}
+                      </td>
+                      <td style={{ padding: '14px 10px', textAlign: 'center' }}>
+                        {puedePagar(p) || puedeEliminar(p) ? (
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                            {puedePagar(p) && (
+                              <button
+                                onClick={() => pagar(p)}
+                                disabled={pagandoId === p.id}
+                                style={{
+                                  display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 12px',
+                                  borderRadius: 8, border: 'none', background: 'var(--green, #22c55e)',
+                                  color: '#fff', fontSize: 12, fontWeight: 600,
+                                  cursor: pagandoId === p.id ? 'wait' : 'pointer',
+                                  opacity: pagandoId === p.id ? 0.6 : 1,
+                                }}
+                              >
+                                <CreditCard size={13} />
+                                {pagandoId === p.id ? 'Redirigiendo…' : 'Pagar'}
+                              </button>
+                            )}
+                            {puedeEliminar(p) && (
+                              <button
+                                onClick={() => setEliminando(p)}
+                                title="Eliminar pedido"
+                                aria-label="Eliminar pedido"
+                                style={{
+                                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                  width: 30, height: 30, borderRadius: 8,
+                                  border: '1px solid var(--surface-3)', background: 'transparent',
+                                  color: 'var(--red, #ef4444)', cursor: 'pointer',
+                                }}
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            )}
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => sincronizar(p)}
+                            disabled={bloqueadoSinc || sincronizandoId === p.id}
+                            title={bloqueadoSinc
+                              ? (p.entrega === 'retiro' ? 'No aplica para retiros' : 'El pedido ya fue entregado')
+                              : undefined}
+                            style={{
+                              display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 12px',
+                              borderRadius: 8, border: '1px solid var(--surface-3)', background: 'transparent',
+                              color: 'var(--surface-2)', fontSize: 12,
+                              cursor: bloqueadoSinc ? 'not-allowed' : sincronizandoId === p.id ? 'wait' : 'pointer',
+                              opacity: bloqueadoSinc ? 0.35 : sincronizandoId === p.id ? 0.5 : 1,
+                            }}
+                          >
+                            <RefreshCw size={13} />
+                            {sincronizandoId === p.id ? 'Actualizando…' : 'Actualizar'}
+                          </button>
+                        )}
+                      </td>
+                      <td style={{ padding: '14px 10px', textAlign: 'center', position: 'relative' }}>
+                        <span
+                          onClick={puedeValorar(p) ? () => setResenando(p) : undefined}
+                          title={yaValorado(p)
+                            ? 'Ya valoraste este pedido'
+                            : puedeValorar(p)
+                              ? 'Valorar productos de este pedido'
+                              : 'Solo puedes valorar pedidos entregados'}
                           style={{
-                            display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 12px',
-                            borderRadius: 8, border: '1px solid var(--surface-3)', background: 'transparent',
-                            color: 'var(--surface-2)', fontSize: 12,
-                            cursor: bloqueadoSinc ? 'not-allowed' : sincronizandoId === p.id ? 'wait' : 'pointer',
-                            opacity: bloqueadoSinc ? 0.35 : sincronizandoId === p.id ? 0.5 : 1,
+                            display: 'inline-flex', position: 'relative', alignItems: 'center',
+                            cursor: puedeValorar(p) ? 'pointer' : 'not-allowed',
+                            opacity: puedeValorar(p) ? 1 : 0.35,
+                            color: 'var(--text-dim)',
                           }}
                         >
-                          <RefreshCw size={13} />
-                          {sincronizandoId === p.id ? 'Actualizando…' : 'Actualizar'}
-                        </button>
+                          <Star size={15} />
+                          {p.resenas_pendientes > 0 && (
+                            <span className="cart-badge">{p.resenas_pendientes}</span>
+                          )}
+                        </span>
+                      </td>
+                      <td style={{ padding: '14px 10px', textAlign: 'center', position: 'relative' }}>
+                        <span
+                          onClick={avisoActivo(p) ? () => abrirAviso(p) : undefined}
+                          title={avisoActivo(p)
+                            ? 'Ver el estado de la anulación'
+                            : avisoVisto(p)
+                              ? 'Ya viste el aviso de anulación'
+                              : 'Solo hay avisos en pedidos pagados que fueron cancelados'}
+                          style={{
+                            display: 'inline-flex', position: 'relative', alignItems: 'center',
+                            cursor: avisoActivo(p) ? 'pointer' : 'not-allowed',
+                            opacity: avisoActivo(p) ? 1 : 0.35,
+                            color: 'var(--text-dim)',
+                          }}
+                        >
+                          <Info size={15} />
+                          {requiereAnulacion(p) && p.aviso_cancelacion_pendiente && (
+                            <span className="cart-badge">1</span>
+                          )}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="pedidos-tarjetas">
+            {pedidosPagina.map((p) => {
+              const esRetiro = p.entrega === 'retiro';
+              const bloqueadoSinc = esRetiro || p.estado === 'entregado';
+              const esPagoPendiente = puedePagar(p);
+              const estiloBadge = esPagoPendiente
+                ? ESTILO_ESTADO.pendiente
+                : (p.estado === 'enviado' && esRetiro)
+                  ? ESTILO_LISTO_RETIRO
+                  : (ESTILO_ESTADO[p.estado] || ESTILO_ESTADO.pendiente);
+              const IconoBadge = esPagoPendiente
+                ? Clock
+                : p.estado === 'entregado' ? CircleCheck : p.estado === 'cancelado' ? X : Clock;
+              const lineaEntrega = esRetiro
+                ? 'Retiro en tienda'
+                : p.codigo_seguimiento
+                  ? `${p.transportista === 'bluexpress' ? 'Bluexpress' : 'Starken'} · ${p.codigo_seguimiento}`
+                  : 'Envío a domicilio';
+
+              return (
+                <div key={p.id} className="pedido-card">
+                  <div className="pedido-card-fila">
+                    <span className="pedido-card-id">#{p.id.slice(0, 8).toUpperCase()}</span>
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 6,
+                      background: estiloBadge.bg, color: estiloBadge.color,
+                      fontSize: 12, fontWeight: 600, padding: '5px 10px', borderRadius: 999,
+                    }}>
+                      <IconoBadge size={14} />
+                      {esPagoPendiente ? 'Pago pendiente' : etiquetaEstado(p.estado, p.entrega)}
+                    </span>
+                  </div>
+
+                  <div className="pedido-card-fila" style={{ alignItems: 'flex-end', marginTop: 10 }}>
+                    <div>
+                      <div className="pedido-card-meta">{fechaLarga(p.fecha)} · {lineaEntrega}</div>
+                      {!esRetiro && p.codigo_seguimiento && p.estado !== 'cancelado' && (
+                        <div className="pedido-card-meta">{estadoSeguimiento(p)}</div>
                       )}
-                    </td>
-                    <td style={{ padding: '14px 10px', textAlign: 'center', position: 'relative' }}>
-                      <span
-                        onClick={puedeValorar(p) ? () => setResenando(p) : undefined}
-                        title={yaValorado(p)
-                          ? 'Ya valoraste este pedido'
-                          : puedeValorar(p)
-                            ? 'Valorar productos de este pedido'
-                            : 'Solo puedes valorar pedidos entregados'}
+                      <div className="pedido-card-total">{formatoPesos(p.total)}</div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setDetalle(p)}
+                      aria-label="Ver detalle del pedido"
+                      className="pedido-card-icono"
+                    >
+                      <Eye size={18} />
+                    </button>
+                  </div>
+
+                  <div className="pedido-card-acciones">
+                    {puedePagar(p) && (
+                      <button
+                        type="button"
+                        onClick={() => pagar(p)}
+                        disabled={pagandoId === p.id}
+                        className="pedido-card-btn"
                         style={{
-                          display: 'inline-flex', position: 'relative', alignItems: 'center',
-                          cursor: puedeValorar(p) ? 'pointer' : 'not-allowed',
-                          opacity: puedeValorar(p) ? 1 : 0.35,
-                          color: 'var(--text-dim)',
+                          background: 'var(--green, #22c55e)', color: '#06210f', border: 'none',
+                          opacity: pagandoId === p.id ? 0.6 : 1
                         }}
                       >
-                        <Star size={15} />
-                        {p.resenas_pendientes > 0 && (
-                          <span className="cart-badge">{p.resenas_pendientes}</span>
-                        )}
-                      </span>
-                    </td>
-                    <td style={{ padding: '14px 10px', textAlign: 'center', position: 'relative' }}>
-                      <span
-                        onClick={avisoActivo(p) ? () => abrirAviso(p) : undefined}
-                        title={avisoActivo(p)
-                          ? 'Ver el estado de la anulación'
-                          : avisoVisto(p)
-                            ? 'Ya viste el aviso de anulación'
-                            : 'Solo hay avisos en pedidos pagados que fueron cancelados'}
+                        <CreditCard size={16} />
+                        {pagandoId === p.id ? 'Redirigiendo…' : 'Pagar ahora'}
+                      </button>
+                    )}
+
+                    {!puedePagar(p) && !bloqueadoSinc && (
+                      <button
+                        type="button"
+                        onClick={() => sincronizar(p)}
+                        disabled={sincronizandoId === p.id}
+                        className="pedido-card-btn"
                         style={{
-                          display: 'inline-flex', position: 'relative', alignItems: 'center',
-                          cursor: avisoActivo(p) ? 'pointer' : 'not-allowed',
-                          opacity: avisoActivo(p) ? 1 : 0.35,
-                          color: 'var(--text-dim)',
+                          background: 'transparent', color: 'var(--surface)',
+                          border: '1px solid var(--surface-3)',
+                          opacity: sincronizandoId === p.id ? 0.5 : 1
                         }}
                       >
-                        <Info size={15} />
-                        {requiereAnulacion(p) && p.aviso_cancelacion_pendiente && (
-                          <span className="cart-badge">1</span>
-                        )}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                        <RefreshCw size={16} />
+                        {sincronizandoId === p.id ? 'Actualizando…' : 'Actualizar seguimiento'}
+                      </button>
+                    )}
+
+                    {puedeValorar(p) && (
+                      <button
+                        type="button"
+                        onClick={() => setResenando(p)}
+                        className="pedido-card-btn"
+                        style={{ background: 'transparent', color: 'var(--surface)', border: '1px solid var(--surface-3)' }}
+                      >
+                        <Star size={16} />
+                        Valorar{p.resenas_pendientes > 0 ? ` (${p.resenas_pendientes})` : ''}
+                      </button>
+                    )}
+
+                    {avisoActivo(p) && (
+                      <button
+                        type="button"
+                        onClick={() => abrirAviso(p)}
+                        className="pedido-card-btn"
+                        style={{ background: 'transparent', color: 'var(--surface)', border: '1px solid var(--surface-3)' }}
+                      >
+                        <Info size={16} />
+                        Ver anulación{p.aviso_cancelacion_pendiente ? ' (1)' : ''}
+                      </button>
+                    )}
+
+                    {puedeEliminar(p) && (
+                      <button
+                        type="button"
+                        onClick={() => setEliminando(p)}
+                        aria-label="Eliminar pedido"
+                        className="pedido-card-icono"
+                        style={{ color: 'var(--red, #ef4444)' }}
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+
           {pedidos.length > 0 && (
             <div
               style={{

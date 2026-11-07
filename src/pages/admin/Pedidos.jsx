@@ -547,7 +547,7 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
                style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 padding: '9px 14px', borderRadius: 10,
-                border: '1px solid #3B82F6',  
+                border: '1px solid #2b59a3',  
                 background: 'var(--surface-2)',
                 color: '#fff', fontSize: 13, fontWeight: 600, 
                 cursor: abriendoTuu ? 'wait' : 'pointer',
