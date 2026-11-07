@@ -51,6 +51,7 @@ src/
 
 5. **Subir Cambios al front de produccion**
    - en la terminal de v2network (usando cpanel):
+       - source /home/hykmxzej/nodevenv/repositories/apolovibes-front/22/bin/activate && cd /home/hykmxzej/repositories/apolovibes-front (activa el entorno virtual)
        - git pull
        - rm -rf dist (para eliminar el dist anterior)
        - npm run build
