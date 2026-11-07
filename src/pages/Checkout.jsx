@@ -813,7 +813,7 @@ export default function Checkout() {
                       backgroundColor: activa ? 'var(--surface-3)' : '#fff',
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div className="entrega-cuerpo" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <input
                         type="radio"
                         name="entrega"
@@ -822,14 +822,14 @@ export default function Checkout() {
                         style={{ margin: 0, padding: 0, width: 18, height: 18, flexShrink: 0 }}
                       />
                       <div>
-                        <p style={{ fontWeight: 600, fontSize: 14, margin: '0 0 2px', color: activa ? 'var(--surface)' : 'var(--text-dim)' }}>
+                        <p className="entrega-titulo" style={{ fontWeight: 600, fontSize: 14, margin: '0 0 2px', color: activa ? 'var(--surface)' : 'var(--text-dim)' }}>
                           {op.titulo}
                         </p>
                         <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>{op.detalle}</p>
                       </div>
                     </div>
                     <span
-                      className="entrega-opcion"
+                      className="entrega-precio"
                       style={{
                         fontWeight: 700,
                         fontSize: 14,

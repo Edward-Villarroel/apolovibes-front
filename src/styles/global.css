@@ -1035,20 +1035,6 @@ label {
   box-shadow: 0 8px 22px rgba(0, 0, 0, .4);
 }
 
-@media (max-width: 768px) {
-  .whatsapp-flotante {
-    right: 14px;
-    bottom: 40px;
-    width: 54px;
-    height: 54px;
-  }
-  cot-ref-marco {
-    flex: none;
-    height: 260px;
-    min-height: 0;
-  }
-}
-
 /* ── Admin: códigos de descuento ── */
 .cup-tabla { width: 100%; border-collapse: collapse; font-size: 13px; }
 
@@ -1204,7 +1190,18 @@ label {
     font-size: 12px !important;
     white-space: nowrap;
   }
-}
 
+    .whatsapp-flotante {
+    right: 14px;
+    bottom: 40px;
+    width: 54px;
+    height: 54px;
+  }
+  .cot-ref-marco {
+    flex: none;
+    height: 260px;
+    min-height: 0;
+  }
+}
 
 
