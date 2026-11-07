@@ -178,15 +178,7 @@ Cuando sea necesario realizar una notificación, esta se efectuará por los medi
 
 17. Revisión de la Política
 
-Esta Política será revisada cada 6 meses y cada vez que se produzcan cambios relevantes en la infraestructura tecnológica, los proveedores de servicios, las operaciones de ApoloVibes 3D o la normativa aplicable.
-
-Próxima revisión programada: mayo de 2027.
-
-
-Historial de versiones
-
-- v1.1 — Noviembre de 2026.
-- v1.2 — Noviembre de 2026.`,
+Esta Política será revisada cada 6 meses y cada vez que se produzcan cambios relevantes en la infraestructura tecnológica, los proveedores de servicios, las operaciones de ApoloVibes 3D o la normativa aplicable.`,
   },
   cambios: {
     titulo: 'Cambios y Devoluciones',
