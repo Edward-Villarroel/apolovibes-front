@@ -17,7 +17,7 @@ const ETIQUETAS_ESTADO = {
   cancelado: 'Cancelado',
 };
 
-const URL_TUU_FACTURAS = 'https://accounts.haulmer.com/realms/haulmer-users/login-actions/authenticate?execution=ad7b5164-7d31-4ec6-88a9-6bf462a87ec9&client_id=workspace-prod&tab_id=YrHjw5gCrpQ&client_data=eyJydSI6Imh0dHBzOi8vZXNwYWNpby5oYXVsbWVyLmNvbS8iLCJydCI6ImNvZGUiLCJybSI6ImZyYWdtZW50Iiwic3QiOiJkZGRhNjE0OC03Mzc0LTRhOGMtYTU4Zi03ZTk3ODc0N2M2NDYifQ'
+const URL_TUU_FACTURAS = 'https://accounts.haulmer.com/realms/haulmer-users/protocol/openid-connect/auth?client_id=workspace-prod&redirect_uri=https%3A%2F%2Fespacio.haulmer.com%2F&state=0d3b319c-6a9c-4f48-9aec-e6a943474956&response_mode=fragment&response_type=code&scope=openid&nonce=944fbcd0-ed17-4348-849f-1c2aee35c50f&code_challenge=CGbVZtYzBNzMg7V4vn1n8pEH3Y2VNUCr90ElTkjpIyw&code_challenge_method=S256'
 
 const ESTILO_ESTADO = {
   pendiente: { bg: '#FFF1D6', color: '#7A4B00' },
@@ -547,6 +547,7 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
                style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 padding: '9px 14px', borderRadius: 10,
+                border: '1px solid #3B82F6',  
                 background: 'var(--surface-2)',
                 color: '#fff', fontSize: 13, fontWeight: 600, 
                 cursor: abriendoTuu ? 'wait' : 'pointer',
