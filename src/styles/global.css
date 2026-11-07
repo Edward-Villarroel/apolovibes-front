@@ -1161,3 +1161,23 @@ label {
         margin-bottom: 6px !important;
     }
 }
+
+/* Mis cotizaciones */
+.cot-tabla-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .cot-tabla { min-width: 560px; }
+  .cot-tabla.cot-tabla-pedidos { min-width: 880px; }
+
+  .cot-tabla th,
+  .cot-tabla td { padding-left: 6px !important; padding-right: 6px !important; }
+}
+
+.cot-pagina { padding: 48px 32px; }
+@media (max-width: 768px) {
+  .cot-pagina { padding: 32px 16px; }
+}

@@ -723,7 +723,7 @@ export default function MisPedidos() {
   }
 
   return (
-    <div className="wrap" style={{ padding: '48px 32px', minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
+    <div className="wrap" style={{ minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--surface)' }}>
         Mis pedidos
       </h1>
@@ -759,7 +759,7 @@ export default function MisPedidos() {
               {mensaje.texto}
             </p>
           )}
-
+        <div className="cot-tabla-wrap">
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, textAlign: 'center' }}>
             <thead style={{ borderBottom: '1px solid var(--surface-3)' }}>
               <tr
@@ -949,6 +949,7 @@ export default function MisPedidos() {
               })}
             </tbody>
           </table>
+        </div>
           {pedidos.length > 0 && (
             <div
               style={{
