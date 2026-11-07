@@ -31,6 +31,7 @@ function fondoDeCategoria(nombre) {
 
 export default function Home() {
   const { productos, categorias, cargando } = useProductos()
+
   const rankingSemanal = useMasVendidos('semana', 10)
   const lanzamientos = useMemo(
     () => productos
@@ -45,7 +46,14 @@ export default function Home() {
   )
 
   const hayRanking = !rankingSemanal.cargando && !rankingSemanal.error
-  const esSemanaAnterior = rankingSemanal.semana?.tipo === 'anterior'
+  const tipoSemana = rankingSemanal.semana?.tipo
+
+  const esSemanaAnterior = tipoSemana === 'anterior'
+  const tituloRanking = !hayRanking
+    ? 'Nuestros productos'
+    : esSemanaAnterior
+      ? 'Los más vendidos de la semana anterior'
+      : 'Los más vendidos de la semana'
 
   return (
     <>
@@ -53,9 +61,7 @@ export default function Home() {
       <section className="wrap section-py-mobile" style={{ paddingTop: '80px' }}>
         <hr className="separador" />
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--surface)' }}>
-          {hayRanking
-            ? (esSemanaAnterior ? 'Los más vendidos de la semana anterior' : 'Los más vendidos de la semana')
-            : 'Nuestros productos'}
+          {tituloRanking}
         </h2>
         {rankingSemanal.cargando && (
           <p style={{ textAlign: 'center', color: 'var(--text-dim)' }}>Cargando productos…</p>
