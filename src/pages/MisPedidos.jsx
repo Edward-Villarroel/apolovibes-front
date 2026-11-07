@@ -588,7 +588,7 @@ export default function MisPedidos() {
   const [eliminando, setEliminando] = useState(null);
   const [pagina, setPagina] = useState(1);
   const [filasPorPagina, setFilasPorFagina] = useState(
-    () => window.innerWidth <= 768 ? 5 : 10)
+    () => (window.innerWidth <= 768 ? 5 : 10)
   );
 
   async function cargar(silencioso = false) {
