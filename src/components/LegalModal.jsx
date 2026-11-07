@@ -147,7 +147,6 @@ Podemos actualizar esta Política. Publicaremos los cambios en esta página con 
 - Dirección: calle Pasaje el Boldo Nro: 33, Viña del Mar, Chile.
 
 14. Principios de Seguridad de la Información
-
 Apolo Vibes SPA orienta sus prácticas de seguridad de la información conforme a los siguientes principios:
 
 a) Confidencialidad: los archivos e imágenes que proporciona el cliente son utilizados exclusivamente para la cotización y fabricación del producto solicitado. No se venden, comparten ni reutilizan para otras finalidades.
@@ -160,12 +159,10 @@ d) Privacidad: adecuamos nuestras prácticas al marco normativo chileno de prote
 
 
 15. Compromiso de la Dirección
-
 La dirección de Apolo Vibes SPA se compromete a destinar los recursos necesarios para mantener y mejorar continuamente las medidas de seguridad de la información, procurando proteger la confidencialidad, integridad y disponibilidad de los datos tratados por la organización.
 
 
 16. Gestión de Incidentes de Seguridad
-
 Ante un incidente que pueda afectar la seguridad de la información o los datos personales, Apolo Vibes SPA adoptará las medidas que correspondan para:
 
 - Investigar el incidente y determinar su alcance.
@@ -177,7 +174,6 @@ Cuando sea necesario realizar una notificación, esta se efectuará por los medi
 
 
 17. Revisión de la Política
-
 Esta Política será revisada cada 6 meses y cada vez que se produzcan cambios relevantes en la infraestructura tecnológica, los proveedores de servicios, las operaciones de ApoloVibes 3D o la normativa aplicable.`,
   },
   cambios: {
@@ -349,7 +345,7 @@ function ContenidoLegal({ titulo, actualizacion, texto, onClose }) {
           className="modal-scroll"
           style={{
             padding: '20px 24px', overflowY: 'auto', flex: 1, minHeight: 0,
-            fontSize: 14, lineHeight: 1.7, color: 'var(--text-dim)',
+            fontSize: 14, lineHeight: 1.7, color: 'var(--text-dim)', textAlign: 'justify',
             whiteSpace: 'pre-wrap',
           }}
         >
