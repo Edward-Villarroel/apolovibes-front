@@ -535,7 +535,11 @@ export default function MisCotizaciones() {
                                             <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{fecha || '—'}</td>
                                             <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{c.material || '—'}</td>
                                             <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)' }}>
-                                                {c.precio != null ? `$${formatearPrecio(c.precio)}` : <span style={{ color: 'var(--text-dim)' }}>-</span>}
+                                                {c.estado === 'rechazada' ? null : c.precio != null ? (
+                                                    `$${formatearPrecio(c.precio)}`
+                                                ) : (
+                                                    <span style={{ color: 'var(--text-dim)' }}>Esperando precio</span>
+                                                )}
                                             </td>
                                             <td style={{ padding: '13px 10px', textAlign: 'center' }}>
                                                 <button
@@ -605,9 +609,22 @@ export default function MisCotizaciones() {
                                             <div className="pedido-card-meta">
                                                 {formatearFechaLarga(c.creado_en)}{c.material ? ` · ${c.material}` : ''}
                                             </div>
-                                            <div className="pedido-card-total">
-                                                {c.precio != null ? `$${formatearPrecio(c.precio)}` : 'Sin precio aún'}
-                                            </div>
+                                            {c.estado === 'rechazada' ? null : c.precio != null ? (
+                                                <div className="pedido-card-total">
+                                                    ${formatearPrecio(c.precio)}
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    className="pedido-card-total"
+                                                    style={{
+                                                        fontSize: 14,
+                                                        fontWeight: 500,
+                                                        color: 'var(--text-dim)'
+                                                    }}
+                                                >
+                                                    Esperando precio
+                                                </div>
+                                            )}
                                         </div>
                                         <button
                                             type="button"
