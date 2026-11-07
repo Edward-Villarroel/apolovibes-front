@@ -801,6 +801,7 @@ export default function Checkout() {
                 return (
                   <label
                     key={op.valor}
+                    className="entrega-opcion"
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -828,6 +829,7 @@ export default function Checkout() {
                       </div>
                     </div>
                     <span
+                      className="entrega-opcion"
                       style={{
                         fontWeight: 700,
                         fontSize: 14,

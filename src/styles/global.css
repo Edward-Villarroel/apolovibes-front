@@ -1169,15 +1169,42 @@ label {
   -webkit-overflow-scrolling: touch;
 }
 
+.cot-pagina { padding: 48px 32px; }
+
 @media (max-width: 768px) {
   .cot-tabla { min-width: 560px; }
   .cot-tabla.cot-tabla-pedidos { min-width: 880px; }
 
   .cot-tabla th,
   .cot-tabla td { padding-left: 6px !important; padding-right: 6px !important; }
+
+  .cot-pagina { padding: 32px 16px; }
+
+  .entrega-opcion {
+    position: relative;
+    align-items: flex-start !important;
+  }
+
+  .entrega-cuerpo {
+    align-items: flex-start !important;
+  }
+
+  .entrega-cuerpo input[type="radio"] {
+    margin-top: 2px !important;
+  }
+
+  .entrega-titulo {
+    padding-right: 84px;
+  }
+
+  .entrega-precio {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 12px !important;
+    white-space: nowrap;
+  }
 }
 
-.cot-pagina { padding: 48px 32px; }
-@media (max-width: 768px) {
-  .cot-pagina { padding: 32px 16px; }
-}
+
+
