@@ -547,7 +547,7 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
                style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 padding: '9px 14px', borderRadius: 10,
-                border: '1px solid rgba(250,127,25,.75)', background: FONDO_TARJETA,
+                border: '1px solid rgba(250,127,25,.75)', background: 'var(--surface-2)',
                 color: '#fff', fontSize: 13, fontWeight: 600, 
                 cursor: abriendoTuu ? 'wait' : 'pointer',
                 opacity: abriendoTuu ? 0.7 : 1,
