@@ -17,6 +17,7 @@ const ETIQUETAS_ESTADO = {
   cancelado: 'Cancelado',
 };
 
+const URL_TUU_FACTURAS = 'https://accounts.haulmer.com/realms/haulmer-users/login-actions/authenticate?execution=ad7b5164-7d31-4ec6-88a9-6bf462a87ec9&client_id=workspace-prod&tab_id=iW18GkpINYM&client_data=eyJydSI6Imh0dHBzOi8vZXNwYWNpby5oYXVsbWVyLmNvbS8iLCJydCI6ImNvZGUiLCJybSI6ImZyYWdtZW50Iiwic3QiOiJkZGRhNjE0OC03Mzc0LTRhOGMtYTU4Zi03ZTk3ODc0N2M2NDYifQ'
 
 const ESTILO_ESTADO = {
   pendiente: { bg: '#FFF1D6', color: '#7A4B00' },
@@ -149,6 +150,7 @@ const PASOS = ['pendiente', 'en_produccion', 'enviado', 'entregado'];
 const COLOR_TEXTO = '#FFFFFF';
 const COLOR_APAGADO = '#B9C6DA';
 const FONDO_TARJETA = 'rgba(255,255,255,.06)';
+const FONDO_TARJETA_FACTURA = 'rgba(255,255,255,.06)';
 const LINEA = 'rgba(255,255,255,.18)';
 const ACENTO = '#FA7F19';
 
@@ -245,6 +247,7 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
   const [avisoEnviado, setAvisoEnviado] = useState(
     Boolean(pedido.aviso_cancelacion_en),
   );
+  const [abriendoTuu, setAbriendoTuu] = useState(false);
   const puedeCancelar = estado === 'pendiente' || estado === 'en_produccion';
   const cliente = pedido.cliente || {};
   const esFactura = cliente.tipoDocumento === 'factura';
@@ -310,6 +313,13 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
     } finally {
       setAvisando(false);
     }
+  }
+
+  function irATuu(){
+    if (abriendoTuu) return;
+    setAbriendoTuu(true);
+    window.open(URL_TUU_FACTURAS, '_blank', 'noopener,noreferrer');
+    setTimeout(() => setAbriendoTuu(false), 200);
   }
 
   return (
@@ -491,6 +501,37 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
               {datos.map((d, i) => (
                 <FilaDato key={i} icono={d.icono} etiqueta={d.etiqueta} valor={d.valor} />
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Gestion de factura */}
+        {estado === 'entregado' && esFactura && (
+          <div style={{ background: FONDO_TARJETA_FACTURA, border: '1px solid rgba(250,127,25,.4)', borderRadius: 12, padding: 14, marginBottom: 18 }}>
+            <p style={{ margin: '0 0 6px', fontSize: 13, fontWeight: 600, color: '#FFB877', textAlign: 'center' }}>
+              Pedido con factura
+            </p>
+            <p style={{ margin: '0 0 12px', textAlign: 'center', fontSize: 12, color: COLOR_APAGADO, lineHeight: 1.5 }}>
+              Este pedido fue pagado con factura. Emítela o revisa su estado en Tuu con los datos de facturación de arriba.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <button 
+               type="button"
+               onClick={irATuu}
+               disabled={abriendoTuu}
+               style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                padding: '9px 14px', borderRadius: 10,
+                border: '1px solid rgba(250,127,25,.75)', background: ACENTO,
+                color: '#fff', fontSize: 13, fontWeight: 600, 
+                cursor: abriendoTuu ? 'wait' : 'pointer',
+                opacity: abriendoTuu ? 0.7 : 1,
+                transition: 'opacity .15s'
+               }}
+            >
+              <span>{abriendoTuu ? 'Reedireccionado a ' : 'Gestionar factura en '}</span>
+              <img src={mediaPath('tuu.webp')} alt="Tuu" style={{ height: 16, verticalAlign: 'middle'}} />
+              </button>
             </div>
           </div>
         )}
