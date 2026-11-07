@@ -447,7 +447,7 @@ function DetalleModal({ pedido, onClose, onPagar, procesando, onCancelado, onMen
                 disabled={procesando}
                 style={{
                   flex: 1, padding: '12px 0', borderRadius: 10, border: 'none',
-                  background: 'var(--accent)', color: '#fff', fontSize: 14, fontWeight: 600,
+                  background: 'var(--green, #22c55e)', color: '#fff', fontSize: 14, fontWeight: 600,
                   cursor: procesando ? 'wait' : 'pointer',
                   opacity: procesando ? 0.6 : 1,
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
@@ -697,10 +697,14 @@ export default function MisPedidos() {
     && !((p.resenas_pendientes || 0) > 0);
   const puedeValorar = (p) => p.estado === 'entregado' && !yaValorado(p);
 
-  const avisoVisto = (p) => p.estado === 'cancelado'
+  const requiereAnulacion = (p) => p.estado === 'cancelado'
+    && !PAGOS_FALLIDOS.has(p.estado_pago);
+
+  const avisoVisto = (p) => requiereAnulacion(p)
     && !!p.aviso_cancelacion_en
     && !p.aviso_cancelacion_pendiente;
-  const avisoActivo = (p) => p.estado === 'cancelado' && !avisoVisto(p);
+  const avisoActivo = (p) => requiereAnulacion(p) && !avisoVisto(p);
+
   const estadoSeguimiento = (p) => {
     if (p.estado === 'entregado') return 'Recibido';
     if (p.estado === 'cancelado') return 'Cancelado';
@@ -856,7 +860,7 @@ export default function MisPedidos() {
                               disabled={pagandoId === p.id}
                               style={{
                                 display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 12px',
-                                borderRadius: 8, border: 'none', background: 'var(--accent)',
+                                borderRadius: 8, border: 'none', background: 'var(--green, #22c55e)',
                                 color: '#fff', fontSize: 12, fontWeight: 600,
                                 cursor: pagandoId === p.id ? 'wait' : 'pointer',
                                 opacity: pagandoId === p.id ? 0.6 : 1,
@@ -930,7 +934,7 @@ export default function MisPedidos() {
                           ? 'Ver el estado de la anulación'
                           : avisoVisto(p)
                             ? 'Ya viste el aviso de anulación'
-                            : 'Solo hay avisos en pedidos cancelados'}
+                            : 'Solo hay avisos en pedidos pagados que fueron cancelados'}
                         style={{
                           display: 'inline-flex', position: 'relative', alignItems: 'center',
                           cursor: avisoActivo(p) ? 'pointer' : 'not-allowed',
@@ -939,7 +943,7 @@ export default function MisPedidos() {
                         }}
                       >
                         <Info size={15} />
-                        {p.estado === 'cancelado' && p.aviso_cancelacion_pendiente && (
+                        {requiereAnulacion && p.aviso_cancelacion_pendiente && (
                           <span className="cart-badge">1</span>
                         )}
                       </span>
