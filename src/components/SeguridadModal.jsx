@@ -256,7 +256,7 @@ export default function SeguridadModal({ onClose }) {
                 <div className="modal-scroll" style={{ overflowY: 'auto', flex: 1, minHeight: 0 }}>
                     <div style={{ padding: '20px 32px 0px' }}>
                         {!tienePassword && (
-                            <div style={...seccionStyle, marginBottom: 0 }>
+                            <div style={{...seccionStyle, marginBottom: 0 }}>
                                 <h3 style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 600, color: 'var(--text)', margin: '0 0 8px' }}>
                                     <ShieldCheck size={16} /> Cuenta conectada con Google
                                 </h3>
