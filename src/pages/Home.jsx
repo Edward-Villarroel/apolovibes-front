@@ -60,7 +60,7 @@ export default function Home() {
       <HeroVideo />
       <section className="wrap section-py-mobile" style={{ paddingTop: '80px' }}>
         <hr className="separador" />
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text)' }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text-on-bg)' }}>
           {tituloRanking}
         </h2>
         {rankingSemanal.cargando && (
@@ -92,7 +92,7 @@ export default function Home() {
 
       <section className="wrap" style={{ paddingTop: 32, paddingBottom: 32 }}>
         <hr className="separador" />
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text)' }}>Destacados</h2>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text-on-bg)' }}>Destacados</h2>
         <div className="grid-destacados">
           {['DesDragon.webp', 'DesCubone.webp', 'destacados.webp'].map(f => (
             <div key={f} className="destacado-card">
@@ -119,7 +119,7 @@ export default function Home() {
       {lanzamientos.length > 0 && (
         <section className="wrap" style={{ paddingTop: 32, paddingBottom: 32 }}>
           <hr className="separador" />
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text)' }}>Nuevos Lanzamientos</h2>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text-on-bg)' }}>Nuevos Lanzamientos</h2>
           <ProductCarousel productos={lanzamientos} />
         </section>
       )}
@@ -167,7 +167,7 @@ export default function Home() {
                   }} />
                 )}
                 <div style={{ position: 'relative', zIndex: 1, padding: '0 16px' }}>
-                  <h3 style={{ fontSize: 18, marginTop: -5, color: bg ? '#fff' : 'var(--text)' }}>
+                  <h3 style={{ fontSize: 18, marginTop: -5, color: bg ? '#fff' : 'var(--text-on-bg)' }}>
                     <Link to={rutaDeCategoria(cat)} className="cat-titulo">
                       {cat.nombre}
                     </Link>
