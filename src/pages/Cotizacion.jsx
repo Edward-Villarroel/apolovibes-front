@@ -38,7 +38,7 @@ function Paso({ titulo, completo, bloqueado, textoBloqueo, children }) {
       padding: 24, marginBottom: 24, opacity: bloqueado ? 0.4 : 1,
       transition: 'opacity .2s'
     }}>
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, marginBottom: 16, color: 'var(--surface)' }}>{titulo}</h2>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, marginBottom: 16, color: 'var(--text)' }}>{titulo}</h2>
 
       {bloqueado && (
         <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: '0 0 12px' }}>{textoBloqueo}</p>
@@ -241,7 +241,7 @@ export default function Cotizacion() {
 
   return (
     <section className="wrap" style={{ paddingTop: '48px', paddingBottom: '80px', maxWidth: 1100 }}>
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, margin: '10px 0 8px', color: 'var(--surface)' }}>Cotiza tu producto</h1>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, margin: '10px 0 8px', color: 'var(--text)' }}>Cotiza tu producto</h1>
       <p style={{ color: 'var(--text-dim)', marginBottom: 32, lineHeight: 1.6 }}>
         Sube una imagen de lo que necesitas imprimir. Nuestro equipo revisará la cotización. Una vez enviada tu cotización te confirmaremos mediante correo, puedes revisar también Mis-cotizaciones.
       </p>

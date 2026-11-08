@@ -124,7 +124,7 @@ export default function Carrito() {
       <div className="carrito-grid" style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
         <div style={{ flex: 2, minWidth: 340 }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 6 }}>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, margin: 0, color: 'var(--surface)' }}> Tu carrito</h1>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, margin: 0, color: 'var(--text)' }}> Tu carrito</h1>
             <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
               ({cantidadTotal} {cantidadTotal === 1 ? 'producto' : 'productos'})
             </span>
@@ -202,7 +202,7 @@ export default function Carrito() {
 
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <p style={{ fontWeight: 600, margin: '0 0 6px', fontSize: 15, color: 'var(--surface)' }}>
+                  <p style={{ fontWeight: 600, margin: '0 0 6px', fontSize: 15, color: 'var(--text)' }}>
                     {item.nombre}
                   </p>
                   <button
@@ -348,11 +348,11 @@ export default function Carrito() {
               </div>
               <div className="separador-suave" style={{ display: 'flex', flexDirection: 'column', fontSize: 16, color: 'var(--text)', marginBottom: 20 }}></div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 15, color: 'var(--text-dim)', marginBottom: 8, fontWeight: 600 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--surface)' }}>Total</span>
-                <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--surface)' }}>${montoConIva.toLocaleString('es-CL')}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>Total</span>
+                <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>${montoConIva.toLocaleString('es-CL')}</span>
               </div>
             </div>
-            <h1 style={{ fontSize: 14, color: 'var(--surface)', textAlign: 'justify', margin: '0 0 5px' }}>
+            <h1 style={{ fontSize: 14, color: 'var(--text)', textAlign: 'justify', margin: '0 0 5px' }}>
               Información Del Pago
             </h1>
             <p style={{ fontSize: 11, marginTop: -5, color: 'var(--text-dim)', textAlign: 'justify', margin: '0 0 10px' }}>

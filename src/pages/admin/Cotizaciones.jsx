@@ -697,7 +697,7 @@ export default function Cotizaciones() {
   return (
     <>
       <div className="admin-page-header">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--surface)' }}>Cotizaciones</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text)' }}>Cotizaciones</h1>
       </div>
 
 
@@ -713,7 +713,7 @@ export default function Cotizaciones() {
           <div className="admin-table-wrap">
           <table className="admin-table admin-table--cotizaciones" style={{ textAlign: 'center' }}>
             <thead>
-              <tr style={{ color: 'var(--surface)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
+              <tr style={{ color: 'var(--text)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
                 <th style={{ padding: '0 10px 12px' }}>Cotización</th>
                 <th style={{ padding: '0 10px 12px' }}>Fecha/Hora</th>
                 <th style={{ padding: '0 10px 12px' }}>Cliente</th>

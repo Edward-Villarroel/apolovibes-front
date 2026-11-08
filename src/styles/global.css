@@ -303,7 +303,7 @@ label {
   top: -8px;
   right: -10px;
   background: #e53935;
-  color: white;
+  color: var(--text);
   border-radius: 50%;
   min-width: 18px;
   height: 18px;
@@ -415,7 +415,7 @@ label {
   gap: 36px;
   font-size: 16px;
   font-weight: 700;
-  color: #FBF7EE;
+  color: var(--text);
 }
 
 .nav-mobile-overlay {
@@ -428,7 +428,7 @@ label {
   border: none;
   cursor: pointer;
   padding: 4px;
-  color: #FBF7EE;
+  color: var(--text);
 }
 
 .nav-mobile-menu {
@@ -639,7 +639,7 @@ label {
     min-width: 0;
     font-size: 15px;
     font-weight: 600;
-    color: #FBF7EE;
+    color: var(--text);
   }
 
   .nm-user span {
@@ -662,7 +662,7 @@ label {
     background: none;
     border: none;
     padding: 4px;
-    color: #FBF7EE;
+    color: var(--text);
     cursor: pointer;
   }
 
@@ -672,8 +672,8 @@ label {
     padding: 12px;
     border: none;
     border-radius: 999px;
-    background: #FFFFFF;
-    color: #FA7F19;
+    background: var(--bg);
+    color: var(--text);
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
@@ -681,7 +681,7 @@ label {
   }
 
   .nm-login:hover {
-    background: #fff1e4;
+    background: color-mix(in srgb, var(--bg) 20%, var(--accent));
   }
 
   .nm-login:active {
@@ -694,7 +694,7 @@ label {
     font-weight: 700;
     letter-spacing: .08em;
     text-transform: uppercase;
-    color: rgba(251, 247, 238, .85);
+    color: var(--text);
   }
 
   .nm-item {
@@ -705,7 +705,7 @@ label {
     padding: 15px 20px;
     background: none;
     border: none;
-    color: #FBF7EE;
+    color: var(--text);
     font-size: 15px;
     text-align: left;
     cursor: pointer;
@@ -986,7 +986,6 @@ label {
   background-color: #fff !important;
   color: #1E3A5F !important;
   caret-color: #1E3A5F;
-  color-scheme: light;
 }
 
 
@@ -996,15 +995,15 @@ label {
 }
 
 .checkout-form input::placeholder {
-  color: #8a94a3 !important;
+  color: var(--text-dim);
   opacity: 1;
 }
 
 .checkout-form input:-webkit-autofill,
 .checkout-form input:-webkit-autofill:hover,
 .checkout-form input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #1E3A5F !important;
-  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset !important;
+  -webkit-text-fill-color: var(--text) !important;
 }
 
 .hero-media img {
@@ -1037,7 +1036,7 @@ label {
   height: 58px;
   border-radius: 50%;
   background: #25D366;
-  color: #fff;
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1143,7 +1142,7 @@ label {
 }
 
 .cup-icono:hover {
-  color: var(--surface);
+  color: var(--text);
 }
 
 .cup-icono.peligro:hover {
@@ -1195,7 +1194,7 @@ label {
   border-radius: 10px;
   border: 1px solid var(--line);
   background: #fff;
-  color: var(--surface);
+  color: var(--text);
   font-size: 13px;
   box-sizing: border-box;
 }
@@ -1416,7 +1415,7 @@ label {
 .pedido-card-total {
   font-size: 18px;
   font-weight: 600;
-  color: var(--surface);
+  color: var(--text);
   margin-top: 2px;
 }
 

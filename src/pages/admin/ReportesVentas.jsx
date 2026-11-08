@@ -101,7 +101,7 @@ export default function ReporteVentas() {
             <div className="admin-table-wrap">
             <table className="admin-table admin-table--reportes">
               <thead>
-                <tr style={{ color: 'var(--surface)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
+                <tr style={{ color: 'var(--text)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                   <th style={{ padding: '0 10px 12px' }}>Lugar</th>
                   <th style={{ padding: '0 10px 12px' }}>Fecha</th>
                   <th style={{ padding: '0 10px 12px' }}>Ventas</th>

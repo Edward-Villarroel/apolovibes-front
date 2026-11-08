@@ -13,11 +13,11 @@ function numero(valor) {
 function TarjetaResumen({ icon: Icon, label, valor, detalle, color }) {
   return (
     <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12, padding: 20 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--surface)', marginBottom: 6 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text)', marginBottom: 6 }}>
         <Icon size={15} style={{ color: color || 'var(--accent)' }} />
         {label}
       </div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--surface)' }}>{valor}</div>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--text)' }}>{valor}</div>
       {detalle && (
         <div style={{ fontSize: 11.5, color: 'var(--text-dim)', marginTop: 6 }}>{detalle}</div>
       )}
@@ -297,8 +297,8 @@ export default function Usuarios() {
     <>
       <div className="admin-page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Users size={22} style={{ color: 'var(--surface)' }} />
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--surface)' }}>Usuarios</h1>
+          <Users size={22} style={{ color: 'var(--text)' }} />
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text)' }}>Usuarios</h1>
         </div>
         <div className="admin-header-actions">
           <div className="admin-search">
@@ -315,7 +315,7 @@ export default function Usuarios() {
               style={{
                 width: '100%', padding: '9px 12px 9px 34px', borderRadius: 10,
                 border: '1px solid var(--line)', background: 'var(--input-bg)',
-                color: 'var(--surface)', fontSize: 13, boxSizing: 'border-box',
+                color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
               }}
             />
           </div>
@@ -346,7 +346,7 @@ export default function Usuarios() {
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 12px',
               borderRadius: 8, border: '1px solid var(--line)', background: 'var(--surface-3)',
-              color: 'var(--surface)', fontSize: 12.5, cursor: 'pointer',
+              color: 'var(--text)', fontSize: 12.5, cursor: 'pointer',
             }}
           >
             <RefreshCw size={13} />
@@ -379,7 +379,7 @@ export default function Usuarios() {
             <div className="admin-table-wrap">
               <table className="admin-table admin-table--usuarios">
                 <thead>
-                  <tr style={{ color: 'var(--surface)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
+                  <tr style={{ color: 'var(--text)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                     <th style={{ padding: '0 10px 12px' }}>Nombre</th>
                     <th style={{ padding: '0 10px 12px' }}>Correo</th>
                     <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Productos comprados</th>
@@ -396,7 +396,7 @@ export default function Usuarios() {
                     return (
                       <>
                       <tr key={u.id} style={{ borderTop: '1px solid var(--surface-3)' }}>
-                        <td style={{ padding: '13px 10px', color: 'var(--surface)' }}>
+                        <td style={{ padding: '13px 10px', color: 'var(--text)' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             <span>{u.nombre_completo || '—'}</span>
                             {u.rol === 'admin' && (

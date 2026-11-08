@@ -1,7 +1,8 @@
-﻿import { useState } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
-import { Menu, LogOut, LayoutDashboard, ClipboardList, Package, FileText, ShoppingCart, User, Tag, Users } from 'lucide-react'
+import { useTheme } from '../../context/ThemeContext.jsx'
+import { Menu, LogOut, LayoutDashboard, ClipboardList, Package, FileText, ShoppingCart, User, Tag, Users, Sun, Moon } from 'lucide-react'
 import ConfirmModal from '../../components/ConfirmModal.jsx'
 import '../../styles/admin.css'
 
@@ -24,7 +25,7 @@ const itemStyle = ({ isActive }) => ({
   borderRadius: 8,
   fontSize: 13,
   marginBottom: 2,
-  color: isActive ? 'var(--surface)' : 'var(--text)',
+  color: isActive ? 'var(--text)' : 'var(--text)',
   background: isActive ? 'var(--surface-3)' : 'transparent',
   fontWeight: isActive ? 600 : 400,
   textDecoration: 'none',
@@ -38,7 +39,7 @@ const sidebarBtnStyle = {
   textAlign: 'left', cursor: 'pointer', fontWeight: 500,
 }
 
-function SidebarContent({ onLogout, user }) {
+function SidebarContent({ onLogout, user, theme, toggleTheme }) {
   const nombreCompleto = [user?.nombre, user?.apellido].filter(Boolean).join(' ') || user?.email || 'Mi cuenta'
   const rolLabel = user?.rol === 'admin' ? 'Admin' : user?.rol || ''
 
@@ -92,10 +93,26 @@ function SidebarContent({ onLogout, user }) {
               {nombreCompleto}
             </div>
             {rolLabel && (
-              <div style={{ fontSize: 11.5, color: 'var(--surface)' }}>
+              <div style={{ fontSize: 11.5, color: 'var(--text)' }}>
                 {rolLabel}
               </div>
             )}
+            <button
+              style={{
+                marginLeft: 12, padding: '6px 12px', borderRadius: '50%',
+                border: '1.5px solid rgba(251,247,238,.3)',
+                background: 'rgba(251,247,238,.1)', color: '#FBF7EE',
+                fontSize: 12, cursor: 'pointer',
+                transition: 'border-color .2s, background .2s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(251,247,238,.6)'; e.currentTarget.style.background = 'rgba(251,247,238,.15)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(251,247,238,.3)'; e.currentTarget.style.background = 'rgba(251,247,238,.1)' }}
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+              title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+            >
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
           </div>
         </div>
       </div>
@@ -121,6 +138,13 @@ export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { logout, user } = useAuth()
   const navigate = useNavigate()
+  const { theme, toggleTheme } = useTheme()
+
+  // Set dark mode by default for admin panel
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    localStorage.setItem('apolovibes_theme', 'dark')
+  }, [])
 
   const handleLogout = async () => {
     try {
@@ -139,7 +163,7 @@ export default function AdminLayout() {
         background: 'var(--accent)', borderRight: '1px solid var(--line)',
         padding: '24px 18px', display: 'flex', flexDirection: 'column',
       }}>
-        <SidebarContent onLogout={() => setShowConfirm(true)} user={user} />
+        <SidebarContent onLogout={() => setShowConfirm(true)} user={user} theme={theme} toggleTheme={toggleTheme} />
       </aside>
 
       {/* Mobile sidebar overlay */}
@@ -151,7 +175,7 @@ export default function AdminLayout() {
         background: 'var(--accent)', borderRight: '1px solid var(--line)',
         padding: '24px 18px', flexDirection: 'column',
       }}>
-        <SidebarContent onLogout={() => setShowConfirm(true)} user={user} />
+        <SidebarContent onLogout={() => setShowConfirm(true)} user={user} theme={theme} toggleTheme={toggleTheme} />
       </aside>
 
       <button

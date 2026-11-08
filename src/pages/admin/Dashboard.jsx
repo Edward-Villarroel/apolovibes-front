@@ -117,7 +117,7 @@ function Panel({ title, action, children }) {
   return (
     <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12, padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--surface)' }}>{title}</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>{title}</div>
         {action && (
           <span style={{ fontSize: 12, color: 'var(--accent)', cursor: 'pointer', fontWeight: 500 }}>{action}</span>
         )}
@@ -240,9 +240,9 @@ export default function Dashboard() {
         ) : (
           stats.map(s => (
             <div key={s.label} style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12, padding: 20 }}>
-              <div style={{ fontSize: 13, color: 'var(--surface)', marginBottom: 6 }}>{s.label}</div>
+              <div style={{ fontSize: 13, color: 'var(--text)', marginBottom: 6 }}>{s.label}</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 10 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--surface)' }}>{s.valor}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--text)' }}>{s.valor}</span>
               </div>
             </div>
           ))
@@ -279,7 +279,7 @@ export default function Dashboard() {
                 const pct = (p.ingresos / maxMonto) * 100
                 return (
                   <div key={p.id}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, color: 'var(--surface)', marginBottom: 5 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, color: 'var(--text)', marginBottom: 5 }}>
                       <span>{p.nombre}</span>
                       <span style={{ fontFamily: 'var(--font-mono)' }}>
                         ${Number(p.ingresos).toLocaleString('es-CL')} CLP
@@ -309,9 +309,9 @@ export default function Dashboard() {
               <tbody>
                 {pedidosRecientes.map(p => (
                   <tr key={p.id} style={{ borderTop: '1px solid var(--line)' }}>
-                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--surface)' }}>{p.id}</td>
-                    <td style={{ padding: '10px 6px', color: 'var(--surface)' }}>{p.cliente}</td>
-                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--surface)' }}>{p.monto}</td>
+                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>{p.id}</td>
+                    <td style={{ padding: '10px 6px', color: 'var(--text)' }}>{p.cliente}</td>
+                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>{p.monto}</td>
                     <td style={{ padding: '10px 6px' }}>
                       <span style={{
                         fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 20,
@@ -344,7 +344,7 @@ export default function Dashboard() {
                     }}>
                       <Icon size={15} />
                     </div>
-                    <div style={{ flex: 1, fontSize: 12.5, color: 'var(--surface)' }}>{a.texto}</div>
+                    <div style={{ flex: 1, fontSize: 12.5, color: 'var(--text)' }}>{a.texto}</div>
                     <div style={{ fontSize: 11.5, color: 'var(--text-dim)', whiteSpace: 'nowrap' }}>{a.tiempo ? formatearFecha(a.tiempo) : ''}</div>
                   </div>
                 )

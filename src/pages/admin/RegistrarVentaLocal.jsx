@@ -262,7 +262,7 @@ export default function RegistrarVentaLocal() {
               onChange={(e) => { setCategoriaActual(e.target.value); setProductoActual(''); }}
               style={{
                 flex: 1, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--line)',
-                background: 'var(--surface-3)', color: 'var(--surface)', fontSize: 13,
+                background: 'var(--surface-3)', color: 'var(--text)', fontSize: 13,
               }}
             >
               <option value="">Todas las categorías</option>
@@ -275,7 +275,7 @@ export default function RegistrarVentaLocal() {
               onChange={(e) => setProductoActual(e.target.value)}
               style={{
                 flex: 1, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--line)',
-                background: 'var(--surface-3)', color: 'var(--surface)', fontSize: 13,
+                background: 'var(--surface-3)', color: 'var(--text)', fontSize: 13,
               }}
             >
               <option value="">Selecciona un producto</option>
@@ -293,7 +293,7 @@ export default function RegistrarVentaLocal() {
               onChange={(e) => setCantidad(e.target.value)}
               style={{
                 width: 90, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--line)',
-                background: 'var(--surface-3)', color: 'var(--surface)', fontSize: 13,
+                background: 'var(--surface-3)', color: 'var(--text)', fontSize: 13,
               }}
             />
           </div>
@@ -384,7 +384,7 @@ export default function RegistrarVentaLocal() {
             <div className="admin-table-wrap">
             <table className="admin-table">
               <thead>
-                <tr style={{ color: 'var(--surface)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
+                <tr style={{ color: 'var(--text)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                   <th style={{ padding: '0 10px 12px' }}>Hora</th>
                   <th style={{ padding: '0 10px 12px' }}>Medio de pago</th>
                   <th style={{ padding: '0 10px 12px' }}>Total</th>

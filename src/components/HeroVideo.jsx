@@ -10,7 +10,7 @@ export default function HeroEstatico() {
     <section className="hero-section">
       <div className="hero-media">
         <img
-          src={mediaPath(oscuro ? 'ApoloHeroDark.webp' : 'apolohero2.webp')}
+          src={mediaPath(oscuro ? 'testModoOscuro.jfif' : 'apolohero2.webp')}
           alt=""
           aria-hidden="true"
           fetchpriority="high"

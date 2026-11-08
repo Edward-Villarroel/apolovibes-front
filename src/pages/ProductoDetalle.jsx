@@ -138,7 +138,7 @@ export default function ProductoDetalle() {
         marginBottom: 5,
       }}>
         <span></span>
-        <Link to="/categorias" style={{ color: 'var(--surface)' }}>Catálogo /</Link>
+        <Link to="/categorias" style={{ color: 'var(--text)' }}>Catálogo /</Link>
         {categoria && (
           <>
             <span></span>
@@ -146,7 +146,7 @@ export default function ProductoDetalle() {
           </>
         )}
         <span></span>
-        <span style={{ color: 'var(--surface)' }}>{producto.nombre}</span>
+        <span style={{ color: 'var(--text)' }}>{producto.nombre}</span>
       </div>
 
       <div style={{
@@ -160,7 +160,7 @@ export default function ProductoDetalle() {
         marginTop: -10
       }}>
         <span></span>
-        <span style={{ color: 'var(--surface)' }}>{producto.nombre}</span>
+        <span style={{ color: 'var(--text)' }}>{producto.nombre}</span>
       </div>
 
       <div style={{
@@ -316,7 +316,7 @@ export default function ProductoDetalle() {
             </p>
           )}
 
-          <p style={{ fontSize: 14, color: 'var(--surface)', lineHeight: 1.6, marginBottom: 12, textAlign: 'left' }}>
+          <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.6, marginBottom: 12, textAlign: 'left' }}>
             Detalles:
           </p>
 
@@ -380,7 +380,7 @@ export default function ProductoDetalle() {
             <span style={{
               fontSize: 30,
               fontWeight: 600,
-              color: 'var(--surface)'
+              color: 'var(--text)'
             }}>
               ${producto.precio.toLocaleString('es-CL')} CLP
             </span>

@@ -744,7 +744,7 @@ export default function MisPedidos() {
 
   return (
     <div className="wrap cot-pagina" style={{ minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--surface)' }}>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--text)' }}>
         Mis pedidos
       </h1>
       <p style={{ margin: '0 0 28px', fontSize: 14, color: 'var(--text-dim)' }}>
@@ -784,7 +784,7 @@ export default function MisPedidos() {
               <thead style={{ borderBottom: '1px solid var(--surface-3)' }}>
                 <tr
                   style={{
-                    color: 'var(--surface)',
+                    color: 'var(--text)',
                     textAlign: 'center',
                     fontSize: 11,
                     textTransform: 'uppercase',
@@ -1050,7 +1050,7 @@ export default function MisPedidos() {
                         disabled={sincronizandoId === p.id}
                         className="pedido-card-btn"
                         style={{
-                          background: 'transparent', color: 'var(--surface)',
+                          background: 'transparent', color: 'var(--text)',
                           border: '1px solid var(--surface-3)',
                           opacity: sincronizandoId === p.id ? 0.5 : 1
                         }}
@@ -1065,7 +1065,7 @@ export default function MisPedidos() {
                         type="button"
                         onClick={() => setResenando(p)}
                         className="pedido-card-btn"
-                        style={{ position: 'relative', background: 'transparent', color: 'var(--surface)', border: '1px solid var(--surface-3)'  }}
+                        style={{ position: 'relative', background: 'transparent', color: 'var(--text)', border: '1px solid var(--surface-3)'  }}
                       >
                         <Star size={16} />
                         Valorar
@@ -1078,7 +1078,7 @@ export default function MisPedidos() {
                         type="button"
                         onClick={() => abrirAviso(p)}
                         className="pedido-card-btn"
-                        style={{ position: 'relative', background: 'transparent', color: 'var(--surface)', border: '1px solid var(--surface-3)' }}
+                        style={{ position: 'relative', background: 'transparent', color: 'var(--text)', border: '1px solid var(--surface-3)' }}
                       >
                         <Info size={16} />
                         Ver anulación

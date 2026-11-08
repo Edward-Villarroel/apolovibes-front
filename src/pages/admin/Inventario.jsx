@@ -181,7 +181,7 @@ export default function Inventario() {
           <div className="admin-table-wrap">
             <table className="admin-table admin-table--inventario">
               <thead>
-                <tr style={{ color: 'var(--surface)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
+                <tr style={{ color: 'var(--text)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                   <th style={{ padding: '0 10px 12px' }}>Pedido</th>
                   <th style={{ padding: '0 10px 12px' }}>Categoría</th>
                   <th style={{ padding: '0 10px 12px' }}>Nombre</th>

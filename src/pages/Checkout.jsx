@@ -19,7 +19,7 @@ import {
 const ENVIO_GRATIS_DESDE = 50000
 const clp = n => `$${n.toLocaleString('es-CL')}`
 
-const tituloSeccion = { fontFamily: 'var(--font-display)', fontSize: 20, marginBottom: 16, color: 'var(--surface)' }
+const tituloSeccion = { fontFamily: 'var(--font-display)', fontSize: 20, marginBottom: 16, color: 'var(--text)' }
 const estiloAyuda = { fontSize: 12, color: 'var(--text-dim)', margin: '4px 0 0' }
 const estiloError = { color: '#ef4444', fontSize: 12, margin: '6px 0 0' }
 const sinBorde = { border: 'none', padding: 0, margin: 0 }
@@ -489,7 +489,7 @@ export default function Checkout() {
       <div className="checkout-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr .8fr', gap: 48 }}>
         <form className="checkout-form" noValidate onSubmit={pagar}>
           {/* Paso 1: Contacto */}
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, marginBottom: 16, color: 'var(--surface)' }}>Contacto</h2>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, marginBottom: 16, color: 'var(--text)' }}>Contacto</h2>
           <Campo
             id="email"
             label="Email"
@@ -822,7 +822,7 @@ export default function Checkout() {
                         style={{ margin: 0, padding: 0, width: 18, height: 18, flexShrink: 0 }}
                       />
                       <div>
-                        <p className="entrega-titulo" style={{ fontWeight: 600, fontSize: 14, margin: '0 0 2px', color: activa ? 'var(--surface)' : 'var(--text-dim)' }}>
+                        <p className="entrega-titulo" style={{ fontWeight: 600, fontSize: 14, margin: '0 0 2px', color: activa ? 'var(--text)' : 'var(--text-dim)' }}>
                           {op.titulo}
                         </p>
                         <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>{op.detalle}</p>
@@ -833,7 +833,7 @@ export default function Checkout() {
                       style={{
                         fontWeight: 700,
                         fontSize: 14,
-                        color: activa ? (op.valor === 'retiro' ? 'var(--green)' : 'var(--surface)') : 'var(--text-dim)',
+                        color: activa ? (op.valor === 'retiro' ? 'var(--green)' : 'var(--text)') : 'var(--text-dim)',
                       }}
                     >
                       {etiquetaEnvio(op.valor)}
@@ -938,8 +938,8 @@ export default function Checkout() {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 15, fontWeight: 600, marginBottom: 8 }}>
-              <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--surface)' }}>Total</span>
-              <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--surface)' }}>{clp(totalFinal)}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>Total</span>
+              <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>{clp(totalFinal)}</span>
             </div>
 
             {entrega === 'envio' && !envioGratis && (
@@ -990,7 +990,7 @@ export default function Checkout() {
                 </div>
 
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, margin: '0 0 4px', color: 'var(--surface)' }}>{item.nombre}</p>
+                  <p style={{ fontSize: 13, fontWeight: 600, margin: '0 0 4px', color: 'var(--text)' }}>{item.nombre}</p>
                   {item.color && (
                     <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>
                       Color: {item.color}
