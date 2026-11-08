@@ -478,7 +478,7 @@ export default function Navbar() {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', borderBottom: '1px solid var(--bg)' }}>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: 'var(--text)' }}> Tu carrito</h1>
+                      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: 'var(--text-on-bg)' }}> Tu carrito</h1>
                       <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
                         ({cantidadTotal} {cantidadTotal === 1 ? 'producto' : 'productos'})
                       </span>
@@ -596,7 +596,7 @@ export default function Navbar() {
 
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-                              <p style={{ fontWeight: 600, fontSize: 13, color: 'var(--text)', margin: '0 0 4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              <p style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-on-bg)', margin: '0 0 4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                 {item.nombre}
                               </p>
                               <button
@@ -624,9 +624,9 @@ export default function Navbar() {
                                     color: 'inherit', cursor: 'pointer',
                                   }}
                                 >
-                                  <Minus size={13} style={{ color: 'var(--text)' }} />
+                                  <Minus size={13} style={{ color: 'var(--text-on-bg)' }} />
                                 </button>
-                                <span style={{ minWidth: 26, textAlign: 'center', fontSize: 13, color: 'var(--text)' }}>
+                                <span style={{ minWidth: 26, textAlign: 'center', fontSize: 13, color: 'var(--text-on-bg)' }}>
                                   {item.cantidad}
                                 </span>
                                 <button
@@ -639,7 +639,7 @@ export default function Navbar() {
                                     color: 'inherit', cursor: 'pointer',
                                   }}
                                 >
-                                  <Plus size={13} style={{ color: 'var(--text)' }} />
+                                  <Plus size={13} style={{ color: 'var(--text-on-bg)' }} />
                                 </button>
                               </div>
                               <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 800, color: 'var(--surface-2)' }}>
@@ -651,10 +651,10 @@ export default function Navbar() {
                       ))
                     )}
                   </div>
-                  <div className="separador-suave" style={{ display: 'flex', flexDirection: 'column', fontSize: 16, color: 'var(--text)' }}></div>
+                  <div className="separador-suave" style={{ display: 'flex', flexDirection: 'column', fontSize: 16, color: 'var(--text-on-bg)' }}></div>
                  {!requiereLogin && items.length > 0 && (
                     <div style={{ padding: '14px 16px', borderTop: '1px solid var(--bg)' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, fontWeight: 600, color: 'var(--text)', marginBottom: 12 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, fontWeight: 600, color: 'var(--text-on-bg)', marginBottom: 12 }}>
                         <span>Total</span>
                         <span style={{ fontFamily: 'var(--font-mono)' }}>${total.toLocaleString('es-CL')} CLP</span>
                       </div>
