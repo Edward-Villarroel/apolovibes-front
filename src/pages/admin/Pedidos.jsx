@@ -17,7 +17,7 @@ const ETIQUETAS_ESTADO = {
   cancelado: 'Cancelado',
 };
 
-const URL_TUU_FACTURAS = 'https://accounts.haulmer.com/realms/haulmer-users/login-actions/authenticate?execution=ad7b5164-7d31-4ec6-88a9-6bf462a87ec9&client_id=workspace-prod&tab_id=iW18GkpINYM&client_data=eyJydSI6Imh0dHBzOi8vZXNwYWNpby5oYXVsbWVyLmNvbS8iLCJydCI6ImNvZGUiLCJybSI6ImZyYWdtZW50Iiwic3QiOiJkZGRhNjE0OC03Mzc0LTRhOGMtYTU4Zi03ZTk3ODc0N2M2NDYifQ'
+const URL_TUU_FACTURAS = 'https://accounts.haulmer.com/realms/haulmer-users/protocol/openid-connect/auth?client_id=workspace-prod&redirect_uri=https%3A%2F%2Fespacio.haulmer.com%2F&state=0d3b319c-6a9c-4f48-9aec-e6a943474956&response_mode=fragment&response_type=code&scope=openid&nonce=944fbcd0-ed17-4348-849f-1c2aee35c50f&code_challenge=CGbVZtYzBNzMg7V4vn1n8pEH3Y2VNUCr90ElTkjpIyw&code_challenge_method=S256'
 
 const ESTILO_ESTADO = {
   pendiente: { bg: '#FFF1D6', color: '#7A4B00' },
@@ -26,6 +26,8 @@ const ESTILO_ESTADO = {
   entregado: { bg: '#D7F5D3', color: '#0F5A0B' },
   cancelado: { bg: '#FFD9D9', color: '#8C1212' },
 };
+
+const ESTILO_LISTO_RETIRO = { bg: '#DCE9FF', color: '#123F8C' };
 
 const ETIQUETA_ENTREGA = {
   envio: 'Envío a domicilio',
@@ -77,6 +79,11 @@ function BadgeDespacho({ estado }) {
   return <span style={{ ...ESTILO_BADGE, background: estilo.bg, color: estilo.color }}>{estilo.texto}</span>
 }
 
+function etiquetaEstado(estado, entrega) {
+  if (estado === 'enviado' && entrega === 'retiro') return 'Listo para retirar';
+  return ETIQUETAS_ESTADO[estado] || estado;
+}
+
 const formatoPesos = (valor) => '$' + Number(valor).toLocaleString('es-CL');
 
 const fechaTexto = (f) => f ? new Date(f).toLocaleDateString('es-CL') : '—';
@@ -120,7 +127,7 @@ function ChipEstado({ pedido, onClick }) {
     <span
       onClick={onClick}
       title="Marcar como entregado"
-      style={{ ...estiloBase, background: 'rgba(250,204,21,.16)', color: '#b45309' }}
+      style={{ ...estiloBase, background: 'rgba(34,197,94,.16)', color: 'var(--green, #22c55e)' }}
     >
       Marcar entregado
     </span>
@@ -166,7 +173,7 @@ const PASOS = ['pendiente', 'en_produccion', 'enviado', 'entregado'];
 const COLOR_TEXTO = '#FFFFFF';
 const COLOR_APAGADO = '#B9C6DA';
 const FONDO_TARJETA = 'rgba(255,255,255,.06)';
-const FONDO_TARJETA_FACTURA = 'rgba(255,255,255,.06)';
+const FONDO_TARJETA_FACTURA = '#fa7e1949'
 const LINEA = 'rgba(255,255,255,.18)';
 const ACENTO = '#FA7F19';
 
@@ -269,7 +276,9 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
   const esFactura = cliente.tipoDocumento === 'factura';
   const esRetiro = pedido.entrega === 'retiro';
   const itemsPedido = pedido.items || [];
-  const estilo = ESTILO_ESTADO[estado] || { bg: '#E5E7EB', color: '#374151' };
+  const estilo = (estado === 'enviado' && pedido.entrega === 'retiro')
+    ? ESTILO_LISTO_RETIRO
+    : (ESTILO_ESTADO[estado] || { bg: '#E5E7EB', color: '#374151' });
   const IconoEstado = estado === 'entregado' ? CircleCheck : estado === 'cancelado' ? X : Clock;
 
   const neto = Math.round(Number(pedido.total) / 1.19);
@@ -392,7 +401,7 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
               fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 999,
             }}>
               <IconoEstado size={14} />
-              {ETIQUETAS_ESTADO[estado] || estado}
+              {etiquetaEstado(estado, pedido.entrega)}
             </span>
           </div>
         </div>
@@ -538,7 +547,8 @@ function DetalleModal({ pedido, onClose, onCancelar }) {
                style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 padding: '9px 14px', borderRadius: 10,
-                border: '1px solid rgba(250,127,25,.75)', background: ACENTO,
+                border: '1px solid #2b59a3',  
+                background: 'var(--surface-2)',
                 color: '#fff', fontSize: 13, fontWeight: 600, 
                 cursor: abriendoTuu ? 'wait' : 'pointer',
                 opacity: abriendoTuu ? 0.7 : 1,
