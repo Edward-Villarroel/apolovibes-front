@@ -234,7 +234,7 @@ export default function Dashboard() {
       )}
 
       {/* Stat cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18, marginBottom: 18 }}>
+      <div className="admin-stats-grid">
         {cargandoReporte ? (
           <p style={{ color: 'var(--text-dim)', gridColumn: '1 / -1', margin: 0 }}>Cargando…</p>
         ) : (
@@ -250,7 +250,7 @@ export default function Dashboard() {
       </div>
 
       {/* Fila principal: ventas + productos */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 18, marginBottom: 18 }}>
+      <div className="admin-main-grid">
         <Panel title="Resumen de ventas">
           {cargandoReporte ? (
             <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Cargando…</p>
@@ -297,14 +297,15 @@ export default function Dashboard() {
       </div>
 
       {/* Fila secundaria: pedidos recientes + actividad reciente */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 18 }}>
+      <div className="admin-main-grid">
         <Panel title="Pedidos recientes" action="Ver todo">
           {cargandoReporte ? (
             <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Cargando…</p>
           ) : pedidosRecientes.length === 0 ? (
             <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Todavía no hay pedidos registrados.</p>
           ) : (
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <div className="admin-table-wrap">
+              <table className="admin-table admin-table--dashboard">
               <tbody>
                 {pedidosRecientes.map(p => (
                   <tr key={p.id} style={{ borderTop: '1px solid var(--line)' }}>
@@ -323,6 +324,7 @@ export default function Dashboard() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </Panel>
 

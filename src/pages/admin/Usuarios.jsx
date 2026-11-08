@@ -295,13 +295,13 @@ export default function Usuarios() {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16, flexWrap: 'wrap', marginBottom: 24 }}>
+      <div className="admin-page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <Users size={22} style={{ color: 'var(--surface)' }} />
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--surface)' }}>Usuarios</h1>
         </div>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-          <div style={{ position: 'relative', width: 280, maxWidth: '100%' }}>
+        <div className="admin-header-actions">
+          <div className="admin-search">
             <Search
               size={15}
               style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)', pointerEvents: 'none' }}
@@ -376,8 +376,8 @@ export default function Usuarios() {
           {filtrados.length === 0 ? (
             <p style={{ color: 'var(--text-dim)' }}>No hay usuarios que coincidan con «{busqueda}»</p>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, minWidth: 860 }}>
+            <div className="admin-table-wrap">
+              <table className="admin-table admin-table--usuarios">
                 <thead>
                   <tr style={{ color: 'var(--surface)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                     <th style={{ padding: '0 10px 12px' }}>Nombre</th>

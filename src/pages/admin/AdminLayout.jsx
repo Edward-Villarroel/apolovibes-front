@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { Menu, LogOut, LayoutDashboard, ClipboardList, Package, FileText, ShoppingCart, User, Tag, Users } from 'lucide-react'
 import ConfirmModal from '../../components/ConfirmModal.jsx'
+import '../../styles/admin.css'
 
 const navItems = [
   { to: '/admin', end: true, label: 'Dashboard', icon: LayoutDashboard },
@@ -132,7 +133,7 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="admin-layout" style={{ display: 'grid', gridTemplateColumns: '238px 1fr', minHeight: '100vh' }}>
+    <div className="admin-layout">
       {/* Desktop sidebar */}
       <aside className="hide-mobile" style={{
         background: 'var(--accent)', borderRight: '1px solid var(--line)',
@@ -168,8 +169,8 @@ export default function AdminLayout() {
       >
         <Menu size={20} />
       </button>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <main style={{ padding: '28px 34px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        <main className="admin-main">
           <Outlet />
         </main>
       </div>
@@ -183,7 +184,7 @@ export default function AdminLayout() {
       )}
 
       <style>{`
-        @media (max-width: 860px) {
+        @media (max-width: 900px) {
           .admin-mobile-toggle { display: flex !important; }
         }
       `}</style>

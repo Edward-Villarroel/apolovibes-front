@@ -306,7 +306,7 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
 
             <div style={{ background: FONDO_TARJETA, borderRadius: 12, padding: 14, marginBottom: 18 }}>
               <p style={{ margin: '0 0 12px', fontSize: 13, fontWeight: 600, color: COLOR_APAGADO }}>Detalles del producto</p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10 }}>
                 {medidas && <FilaDatoModal icono={Ruler} valor={`Medidas: ${medidas}`} />}
                 {c.cantidad && <FilaDatoModal icono={Hash} valor={`Cantidad: ${c.cantidad}`} />}
                 {c.material && <FilaDatoModal icono={Layers} valor={`Material: ${c.material}`} />}
@@ -544,7 +544,7 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
                 <div
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
                     gap: 10,
                     marginTop: 2,
                   }}
@@ -696,7 +696,7 @@ export default function Cotizaciones() {
 
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+      <div className="admin-page-header">
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--surface)' }}>Cotizaciones</h1>
       </div>
 
@@ -710,7 +710,8 @@ export default function Cotizaciones() {
         <p style={{ color: 'var(--text-dim)' }}>No hay cotizaciones todavía.</p>
       ) : (
         <>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, textAlign: 'center' }}>
+          <div className="admin-table-wrap">
+          <table className="admin-table admin-table--cotizaciones" style={{ textAlign: 'center' }}>
             <thead>
               <tr style={{ color: 'var(--surface)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
                 <th style={{ padding: '0 10px 12px' }}>Cotización</th>
@@ -758,6 +759,7 @@ export default function Cotizaciones() {
               })}
             </tbody>
           </table>
+          </div>
 
           <div
             style={{

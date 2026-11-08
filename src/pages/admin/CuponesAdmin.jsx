@@ -130,9 +130,11 @@ export default function CuponesAdmin() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-        <Tag size={22} style={{ color: 'var(--surface)' }} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--surface)' }}>Códigos de descuento</h1>
+      <div className="admin-page-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Tag size={22} style={{ color: 'var(--surface)' }} />
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--surface)' }}>Códigos de descuento</h1>
+        </div>
       </div>
 
       <div className="cup-layout">

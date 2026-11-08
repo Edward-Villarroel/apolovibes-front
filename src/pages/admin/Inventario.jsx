@@ -132,10 +132,10 @@ export default function Inventario() {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+      <div className="admin-page-header">
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--surface-2)' }}>Inventario</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <div style={{ width: 200 }}>
+        <div className="admin-header-actions">
+          <div style={{ width: 200, maxWidth: '100%' }}>
             <SelectOpciones
               options={[{ value: '', label: 'Todas las categorías' }, ...categorias.map(c => ({ value: c.id, label: c.nombre }))]}
               value={filtroCat || ''}
@@ -178,8 +178,8 @@ export default function Inventario() {
               {mensaje.texto}
             </p>
           )}
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+          <div className="admin-table-wrap">
+            <table className="admin-table admin-table--inventario">
               <thead>
                 <tr style={{ color: 'var(--surface)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                   <th style={{ padding: '0 10px 12px' }}>Pedido</th>

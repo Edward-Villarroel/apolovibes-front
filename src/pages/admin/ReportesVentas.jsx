@@ -81,7 +81,7 @@ export default function ReporteVentas() {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+      <div className="admin-page-header">
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--surface-2)' }}>Reporte de Ventas</h1>
       </div>
 
@@ -98,7 +98,8 @@ export default function ReporteVentas() {
           {reportes.length === 0 ? (
             <p style={{ color: 'var(--text-dim)' }}>Aún no hay reportes guardados.</p>
           ) : (
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <div className="admin-table-wrap">
+            <table className="admin-table admin-table--reportes">
               <thead>
                 <tr style={{ color: 'var(--surface)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                   <th style={{ padding: '0 10px 12px' }}>Lugar</th>
@@ -137,6 +138,7 @@ export default function ReporteVentas() {
                 })}
               </tbody>
             </table>
+            </div>
           )}
         </>
       )}
