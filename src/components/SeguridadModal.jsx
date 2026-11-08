@@ -256,11 +256,11 @@ export default function SeguridadModal({ onClose }) {
                 <div className="modal-scroll" style={{ overflowY: 'auto', flex: 1, minHeight: 0 }}>
                     <div style={{ padding: '20px 32px 0px' }}>
                         {!tienePassword && (
-                            <div style={{...seccionStyle, marginBottom: 0 }}>
+                            <div style={seccionStyle}>
                                 <h3 style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 600, color: 'var(--text)', margin: '0 0 8px' }}>
                                     <ShieldCheck size={16} /> Cuenta conectada con Google
                                 </h3>
-                                <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: '0 0 10px', lineHeight: 1.6 }}>
+                                <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>
                                     Tu cuenta inicia sesión con Google{user?.email ? ` (${user.email})` : ''}. La contraseña se
                                     administra desde tu cuenta de Google, por eso no se cambia desde ApoloVibes.
                                 </p>
