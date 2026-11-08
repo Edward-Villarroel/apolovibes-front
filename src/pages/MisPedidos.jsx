@@ -744,7 +744,7 @@ export default function MisPedidos() {
 
   return (
     <div className="wrap cot-pagina" style={{ minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--text)' }}>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--text-on-bg)' }}>
         Mis pedidos
       </h1>
       <p style={{ margin: '0 0 28px', fontSize: 14, color: 'var(--text-dim)' }}>
@@ -784,7 +784,7 @@ export default function MisPedidos() {
               <thead style={{ borderBottom: '1px solid var(--surface-3)' }}>
                 <tr
                   style={{
-                    color: 'var(--text)',
+                    color: 'var(--text-on-bg)',
                     textAlign: 'center',
                     fontSize: 11,
                     textTransform: 'uppercase',
