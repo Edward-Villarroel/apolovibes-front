@@ -75,7 +75,7 @@ export default function ProductCarousel({ productos }) {
                         onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
                         onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--line)'}
                     >
-                        <ChevronLeft size={20} color="var(--text)" />
+                        <ChevronLeft size={20} color='var(--text-on-bg)' />
                     </button>
                 )}
 
@@ -104,7 +104,7 @@ export default function ProductCarousel({ productos }) {
                         onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
                         onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--line)'}
                     >
-                        <ChevronRight size={20} color="var(--text)" />
+                        <ChevronRight size={20} color='var(--text-on-bg)' />
                     </button>
                 )}
             </div>

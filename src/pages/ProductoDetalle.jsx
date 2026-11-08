@@ -138,7 +138,7 @@ export default function ProductoDetalle() {
         marginBottom: 5,
       }}>
         <span></span>
-        <Link to="/categorias" style={{ color: 'var(--text)' }}>Catálogo /</Link>
+        <Link to="/categorias" style={{ color: 'var(--text-on-bg)' }}>Catálogo /</Link>
         {categoria && (
           <>
             <span></span>
@@ -146,7 +146,7 @@ export default function ProductoDetalle() {
           </>
         )}
         <span></span>
-        <span style={{ color: 'var(--text)' }}>{producto.nombre}</span>
+        <span style={{ color: 'var(--text-on-bg)' }}>{producto.nombre}</span>
       </div>
 
       <div style={{
@@ -160,7 +160,7 @@ export default function ProductoDetalle() {
         marginTop: -10
       }}>
         <span></span>
-        <span style={{ color: 'var(--text)' }}>{producto.nombre}</span>
+        <span style={{ color: 'var(--text-on-bg)' }}>{producto.nombre}</span>
       </div>
 
       <div style={{
@@ -316,7 +316,7 @@ export default function ProductoDetalle() {
             </p>
           )}
 
-          <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.6, marginBottom: 12, textAlign: 'left' }}>
+          <p style={{ fontSize: 14, color: 'var(--text-on-bg)', lineHeight: 1.6, marginBottom: 12, textAlign: 'left' }}>
             Detalles:
           </p>
 
@@ -380,7 +380,7 @@ export default function ProductoDetalle() {
             <span style={{
               fontSize: 30,
               fontWeight: 600,
-              color: 'var(--text)'
+              color: 'var(--text-on-bg)'
             }}>
               ${producto.precio.toLocaleString('es-CL')} CLP
             </span>
@@ -398,7 +398,7 @@ export default function ProductoDetalle() {
           <p style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 20, marginTop: -25 }}>Precio con IVA incluido</p>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--line)', borderRadius: 6, overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--text-dim)', borderRadius: 6, overflow: 'hidden' }}>
               <button
                 onClick={() => setCantidad(c => Math.max(1, c - 1))}
                 style={{
@@ -413,9 +413,9 @@ export default function ProductoDetalle() {
                   cursor: 'pointer',
                 }}
               >
-                <Minus size={16} style={{ color: 'var(--surface-2)' }} />
+                <Minus size={16} style={{ color: 'var(--text-on-bg)'}} />
               </button>
-              <span style={{ width: 32, textAlign: 'center', fontSize: 14, color: 'var(--surface-2)' }}>{cantidad}</span>
+              <span style={{ width: 32, textAlign: 'center', fontSize: 14, color: 'var(--text-on-bg)' }}>{cantidad}</span>
               <button onClick={() => setCantidad(c => c + 1)}
                 style={{
                   display: 'flex',
@@ -429,7 +429,7 @@ export default function ProductoDetalle() {
                   cursor: 'pointer',
                 }}
               >
-                <Plus size={16} style={{ color: 'var(--surface-2)' }} />
+                <Plus size={16} style={{ color: 'var(--text-on-bg)' }} />
               </button>
             </div>
 
@@ -494,7 +494,7 @@ export default function ProductoDetalle() {
           <h2 style={{
             fontSize: 22,
             fontWeight: 600,
-            color: 'var(--surface-2)',
+            color: 'var(--text-on-bg)',
             marginBottom: 24,
             textAlign: 'center',
           }}>
