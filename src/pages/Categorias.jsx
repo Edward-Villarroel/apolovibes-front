@@ -29,7 +29,7 @@ export default function Categorias() {
 
   return (
     <section className="wrap section-py-mobile" style={{ paddingTop: '48px', paddingBottom: '80px' }}>
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 30, marginBottom: 24, textAlign: 'center', color: 'var(--text)' }}>Catálogo</h1>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 30, marginBottom: 24, textAlign: 'center', color: 'var(--text-on-bg)' }}>Catálogo</h1>
 
       <div style={{ display: 'flex', gap: 10, marginBottom: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
         <button
@@ -37,8 +37,8 @@ export default function Categorias() {
           onClick={() => seleccionar(null)}
           style={{
             background: activa == null ? 'var(--accent)' : 'var(--accent-2)',
-            color: activa == null ? '#ffffff' : 'var(--text)',
-            borderColor: activa == null ? 'transparent' : 'var(--line)',
+            color: activa == null ? '#ffffff' : 'var(--text-on-bg)',
+            borderColor: activa == null ? 'transparent' : 'var(--text-dim)',
           }}
         >Todas
         </button>
@@ -48,8 +48,8 @@ export default function Categorias() {
             onClick={() => seleccionar(cat)}
             style={{
               background: activa == cat.id ? 'var(--accent)' : 'var(--accent-2)',
-              color: activa == cat.id ? '#ffffff' : 'var(--text)',
-              borderColor: activa == cat.id ? 'transparent' : 'var(--line)',
+              color: activa == cat.id ? '#ffffff' : 'var(--text-on-bg)',
+              borderColor: activa == cat.id ? 'transparent' : 'var(--text-dim)',
             }}
           >
             {cat.nombre}
