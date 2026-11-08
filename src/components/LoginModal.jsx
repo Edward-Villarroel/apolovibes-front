@@ -821,7 +821,7 @@ export default function LoginModal({ onClose }) {
                                     setError('')
                                 }}
                                 disabled={mfaBloqueado || cargando}
-                                style={{ ...inputStyle, color: 'var(--surface)', letterSpacing: modoMfa === 'respaldo' ? 2 : 6, textAlign: 'center', fontSize: 18 }}
+                                style={{ ...inputStyle, color: 'var(--text)', letterSpacing: modoMfa === 'respaldo' ? 2 : 6, textAlign: 'center', fontSize: 18 }}
                             />
                             <p style={{ ...errorSlotStyle, textAlign: 'center' }}>{error}</p>
                             {esperaBlanqueoMfa > 0 && (

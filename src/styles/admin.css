@@ -1,0 +1,252 @@
+/* ═══════════════════════════════════════════════════════════════
+   Panel de administración — responsive
+   Se importa desde AdminLayout, así que solo aplica a /admin.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Estructura ── */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 238px 1fr;
+  min-height: 100vh;
+}
+
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 28px 34px;
+}
+
+/* ── Cabecera de página (título + acciones) ── */
+.admin-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.admin-page-header > * {
+  min-width: 0;
+}
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-search {
+  position: relative;
+  width: 280px;
+  max-width: 100%;
+}
+
+/* ── Tablas: scroll horizontal en pantallas angostas ── */
+.admin-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 0; /* Permite que la tabla se encoge en pantallas pequeñas */
+}
+
+.admin-table thead th {
+  font-size: 10px;
+  padding: 6px 4px;
+  white-space: nowrap;
+}
+
+.admin-table tbody td {
+  font-size: 11px;
+  padding: 8px 4px;
+}
+
+/* Tablas responsivas: el min-width se quita y el contenido se adapta */
+.admin-table--pedidos { min-width: auto; }
+.admin-table--inventario { min-width: auto; }
+.admin-table--cotizaciones { min-width: auto; }
+.admin-table--usuarios { min-width: auto; }
+.admin-table--reportes { min-width: auto; }
+.admin-table--dashboard { min-width: auto; }
+
+/* ── Grillas ── */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.admin-main-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.admin-main-grid:last-child {
+  margin-bottom: 0;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.admin-inline-fields {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-inline-fields > select {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.admin-inline-fields > input[type="number"] {
+  flex: 0 0 90px;
+  width: 90px;
+}
+
+/* ── Tablet ── */
+@media (max-width: 1200px) {
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .admin-layout {
+    grid-template-columns: 220px 1fr;
+  }
+
+  .admin-main {
+    padding: 24px;
+  }
+
+  .admin-main-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-main-grid:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ── Móvil / tablet vertical: sidebar como drawer ── */
+@media (max-width: 900px) {
+  .admin-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* El aside de escritorio se oculta; queda el drawer */
+  .admin-layout .hide-mobile {
+    display: none !important;
+  }
+
+  .admin-layout .admin-sidebar {
+    display: none;
+  }
+
+  .admin-layout .admin-sidebar.open {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    width: 260px;
+    max-width: 85vw;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .admin-layout .admin-sidebar-overlay {
+    display: none;
+  }
+
+  .admin-layout .admin-sidebar-overlay.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    background: rgba(0, 0, 0, .5);
+    backdrop-filter: blur(2px);
+  }
+
+  .admin-mobile-toggle {
+    display: flex !important;
+  }
+
+  /* El botón flotante no debe tapar el contenido */
+  .admin-main {
+    padding: 76px 16px 24px;
+  }
+
+  .admin-page-header {
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .admin-page-header h1 {
+    font-size: 20px !important;
+  }
+
+  .admin-header-actions {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .admin-search {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ── Móvil pequeño ── */
+@media (max-width: 560px) {
+  .admin-main {
+    padding: 72px 14px 20px;
+  }
+
+  .admin-page-header h1 {
+    font-size: 18px !important;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .admin-header-actions > div {
+    flex: 1 1 100%;
+  }
+
+  .admin-header-actions > button,
+  .admin-header-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-table thead th,
+  .admin-table tbody td {
+    font-size: 10px;
+    padding: 6px 3px;
+  }
+}

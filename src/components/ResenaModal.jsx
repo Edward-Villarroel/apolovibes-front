@@ -170,7 +170,7 @@ export default function ResenaModal({ pedido, onClose }) {
                     <div style={{ fontSize: 13, color: 'var(--accent)', minWidth: 0 }}>
                       {item.nombre || 'Producto'}
                       {item.color && (
-                        <span style={{ color: 'var(--surface)' }}> · {item.color}</span>
+                        <span style={{ color: 'var(--text)' }}> · {item.color}</span>
                       )}
                       {bloqueado && (
                         <span style={{ display: 'block', fontSize: 11, color: 'var(--text-dim)', marginTop: 2 }}>
@@ -211,7 +211,7 @@ export default function ResenaModal({ pedido, onClose }) {
                     style={{
                       width: '100%', boxSizing: 'border-box', textAlign: 'left',
                       border: '1px solid var(--line)', background: 'var(--surface-3)',
-                      color: 'var(--surface)', borderRadius: 10, padding: '10px 12px',
+                      color: 'var(--text)', borderRadius: 10, padding: '10px 12px',
                       fontFamily: 'inherit', fontSize: 13, resize: 'vertical', minHeight: 64,
                       outline: 'none', opacity: enviando || yaResenados[item.producto_id] ? 0.6 : 1,
                     }}

@@ -226,9 +226,9 @@ export default function RegistrarVentaLocal() {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
+      <div className="admin-page-header">
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--surface-2)' }}>Registrar Venta</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+        <div className="admin-header-actions">
           <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{sesion.lugar}</div>
           <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{fechaSesion}</div>
           <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--green)', marginLeft: -8 }}>
@@ -239,7 +239,7 @@ export default function RegistrarVentaLocal() {
             onClick={() => setMostrarCierre(true)}
             style={{
               border: '1px solid var(--red)', background: 'transparent', color: 'var(--red)',
-              fontSize: 13, fontWeight: 600, padding: '8px 10px', borderRadius: 10, cursor: 'pointer', marginLeft: 250,
+              fontSize: 13, fontWeight: 600, padding: '8px 10px', borderRadius: 10, cursor: 'pointer', marginLeft: 'auto',
             }}
           >
             Cerrar Ventas
@@ -253,16 +253,16 @@ export default function RegistrarVentaLocal() {
         </p>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 24, alignItems: 'start' }}>
+      <div className="admin-form-grid">
         <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 16, padding: 22 }}>
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--surface-2)', margin: '0 0 16px' }}>Nueva venta</h2>
-          <div style={{ display: 'flex', gap: 10, marginBottom: 14 }}>
+          <div className="admin-inline-fields" style={{ marginBottom: 14 }}>
             <select
               value={categoriaActual}
               onChange={(e) => { setCategoriaActual(e.target.value); setProductoActual(''); }}
               style={{
                 flex: 1, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--line)',
-                background: 'var(--surface-3)', color: 'var(--surface)', fontSize: 13,
+                background: 'var(--surface-3)', color: 'var(--text)', fontSize: 13,
               }}
             >
               <option value="">Todas las categorías</option>
@@ -275,7 +275,7 @@ export default function RegistrarVentaLocal() {
               onChange={(e) => setProductoActual(e.target.value)}
               style={{
                 flex: 1, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--line)',
-                background: 'var(--surface-3)', color: 'var(--surface)', fontSize: 13,
+                background: 'var(--surface-3)', color: 'var(--text)', fontSize: 13,
               }}
             >
               <option value="">Selecciona un producto</option>
@@ -293,7 +293,7 @@ export default function RegistrarVentaLocal() {
               onChange={(e) => setCantidad(e.target.value)}
               style={{
                 width: 90, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--line)',
-                background: 'var(--surface-3)', color: 'var(--surface)', fontSize: 13,
+                background: 'var(--surface-3)', color: 'var(--text)', fontSize: 13,
               }}
             />
           </div>
@@ -381,9 +381,10 @@ export default function RegistrarVentaLocal() {
           <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Aún no hay ventas registradas hoy.</p>
         ) : (
           <>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <div className="admin-table-wrap">
+            <table className="admin-table">
               <thead>
-                <tr style={{ color: 'var(--surface)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
+                <tr style={{ color: 'var(--text)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                   <th style={{ padding: '0 10px 12px' }}>Hora</th>
                   <th style={{ padding: '0 10px 12px' }}>Medio de pago</th>
                   <th style={{ padding: '0 10px 12px' }}>Total</th>
@@ -403,6 +404,7 @@ export default function RegistrarVentaLocal() {
                 ))}
               </tbody>
             </table>
+            </div>
             <div style={{ borderTop: '1px solid var(--surface-3)', marginTop: 8, paddingTop: 14, display: 'flex', gap: 18, justifyContent: 'center', flexWrap: 'wrap', fontSize: 13 }}>
               <span style={{ color: 'var(--text-dim)' }}>
                 N° ventas <strong style={{ color: 'var(--surface-2)', fontFamily: 'var(--font-mono)' }}></strong>

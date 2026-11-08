@@ -35,8 +35,8 @@ const fieldGroup = {
     marginBottom: 16,
 }
 
-const grid2 = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }
-const grid3 = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, alignItems: 'start' }
+const grid2 = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }
+const grid3 = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 12, alignItems: 'start' }
 
 const ALTO_CONTROL = 44
 const ALTURA_MAX_DESC = 280
