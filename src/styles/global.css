@@ -673,7 +673,7 @@ label {
     border: none;
     border-radius: 999px;
     background: var(--bg);
-    color: var(--text);
+    color: var(--text-on-bg);
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
@@ -1003,7 +1003,7 @@ label {
 .checkout-form input:-webkit-autofill:hover,
 .checkout-form input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px var(--bg) inset !important;
-  -webkit-text-fill-color: var(--text) !important;
+  -webkit-text-fill-color: var(--text-on-bg) !important;
 }
 
 .hero-media img {
@@ -1194,7 +1194,7 @@ label {
   border-radius: 10px;
   border: 1px solid var(--line);
   background: #fff;
-  color: var(--text);
+  color: var(--surface);
   font-size: 13px;
   box-sizing: border-box;
 }
@@ -1415,7 +1415,7 @@ label {
 .pedido-card-total {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-on-bg);
   margin-top: 2px;
 }
 

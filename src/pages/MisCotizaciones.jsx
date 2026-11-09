@@ -479,7 +479,7 @@ export default function MisCotizaciones() {
 
     return (
         <div className="wrap cot-pagina" style={{ minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--text)' }}>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--text-on-bg)' }}>
                 Mis cotizaciones
             </h1>
             <p style={{ margin: '0 0 28px', fontSize: 14, color: 'var(--text-dim)' }}>
@@ -512,7 +512,7 @@ export default function MisCotizaciones() {
                     <div className="cot-tabla-wrap cotizaciones-tabla">
                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, textAlign: 'center' }}>
                             <thead style={{ borderBottom: '1px solid var(--surface-3)' }}>
-                                <tr style={{ color: 'var(--text)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
+                                <tr style={{ color: 'var(--text-on-bg)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
                                     <th style={{ padding: '0 10px 12px' }}>Cotización</th>
                                     <th style={{ padding: '0 10px 12px' }}>Fecha/Hora</th>
                                     <th style={{ padding: '0 10px 12px' }}>Material</th>
@@ -655,7 +655,7 @@ export default function MisCotizaciones() {
                                                     type="button"
                                                     onClick={() => abrirAviso(c)}
                                                     className="pedido-card-btn"
-                                                    style={{ position: 'relative', background: 'transparent', color: 'var(--text)', border: '1px solid var(--surface-3)' }}
+                                                    style={{ position: 'relative', background: 'transparent', color: 'var(--text-on-bg)', border: '1px solid var(--surface-3)' }}
                                                 >
                                                     <Info size={16} />
                                                     Ver novedad
