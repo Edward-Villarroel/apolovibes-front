@@ -651,7 +651,7 @@ export default function Navbar() {
                       ))
                     )}
                   </div>
-                  <div className="separador-suave" style={{ display: 'flex', flexDirection: 'column', fontSize: 16, color: 'var(--text)' }}></div>
+                  <div className="separador-suave" style={{ display: 'flex', flexDirection: 'column', fontSize: 16, color: 'var(--text-on-bg)' }}></div>
                  {!requiereLogin && items.length > 0 && (
                     <div style={{ padding: '14px 16px', borderTop: '1px solid var(--bg)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, fontWeight: 600, color: 'var(--text-on-bg)', marginBottom: 12 }}>
