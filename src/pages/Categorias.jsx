@@ -38,11 +38,7 @@ export default function Categorias() {
           style={{
             background: activa == null ? 'var(--accent)' : 'var(--accent-2)',
             color: activa == null ? '#ffffff' : 'var(--text-on-bg)',
-<<<<<<< HEAD
-            borderColor: activa == null ? 'transparent' : 'var(--line)',
-=======
             borderColor: activa == null ? 'transparent' : 'var(--text-dim)',
->>>>>>> a1fe9ea6699d2488c18927c6e4ce89e796be0d30
           }}
         >Todas
         </button>
@@ -53,11 +49,7 @@ export default function Categorias() {
             style={{
               background: activa == cat.id ? 'var(--accent)' : 'var(--accent-2)',
               color: activa == cat.id ? '#ffffff' : 'var(--text-on-bg)',
-<<<<<<< HEAD
-              borderColor: activa == cat.id ? 'transparent' : 'var(--line)',
-=======
               borderColor: activa == cat.id ? 'transparent' : 'var(--text-dim)',
->>>>>>> a1fe9ea6699d2488c18927c6e4ce89e796be0d30
             }}
           >
             {cat.nombre}
