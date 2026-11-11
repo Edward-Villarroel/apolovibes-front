@@ -186,7 +186,7 @@ export default function RegistrarVentaLocal() {
     return (
       <>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--surface-2)' }}>Registrar Venta</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--text-on-bg)' }}>Registrar Venta</h1>
         </div>
 
         {mensaje && (
@@ -196,7 +196,7 @@ export default function RegistrarVentaLocal() {
         )}
 
         <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 16, padding: 28, maxWidth: 420, boxShadow: '0 20px 60px rgba(0,0,0,.08)' }}>
-          <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--surface-2)', marginBottom: 6 }}>
+          <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--text-on-bg)', marginBottom: 6 }}>
             Lugar de la venta
           </label>
           <input
@@ -205,10 +205,10 @@ export default function RegistrarVentaLocal() {
             placeholder="Ej: Feria de Alameda"
             style={{
               width: '100%', padding: '11px 14px', borderRadius: 10, border: '1px solid var(--line)',
-              background: 'var(--surface-3)', color: 'var(--text)', fontSize: 14, boxSizing: 'border-box',
+              background: 'var(--surface-3)', color: 'var(--text-on-bg)', fontSize: 14, boxSizing: 'border-box',
             }}
           />
-          <p style={{ fontSize: 13, color: 'var(--text-dim)', margin: '12px 0 18px' }}>Hoy · {fechaHoy}</p>
+          <p style={{ fontSize: 13, color: 'var(--text-on-bg)', margin: '12px 0 18px' }}>Hoy · {fechaHoy}</p>
           <button className="btn btn-primary" onClick={abrirSesion} disabled={abriendo || cargando} style={{ width: '100%', justifyContent: 'center' }}>
             {abriendo ? 'Iniciando…' : 'Iniciar venta'}
           </button>
@@ -227,10 +227,10 @@ export default function RegistrarVentaLocal() {
   return (
     <>
       <div className="admin-page-header">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--surface-2)' }}>Registrar Venta</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--text-on-bg)' }}>Registrar Venta</h1>
         <div className="admin-header-actions">
-          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{sesion.lugar}</div>
-          <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{fechaSesion}</div>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-on-bg)' }}>{sesion.lugar}</div>
+          <div style={{ fontSize: 12, color: 'var(--text-on-bg)' }}>{fechaSesion}</div>
           <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--green)', marginLeft: -8 }}>
             (Sesión abierta)
           </span>
@@ -255,14 +255,14 @@ export default function RegistrarVentaLocal() {
 
       <div className="admin-form-grid">
         <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 16, padding: 22 }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--surface-2)', margin: '0 0 16px' }}>Nueva venta</h2>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--text-on-bg)', margin: '0 0 16px' }}>Nueva venta</h2>
           <div className="admin-inline-fields" style={{ marginBottom: 14 }}>
             <select
               value={categoriaActual}
               onChange={(e) => { setCategoriaActual(e.target.value); setProductoActual(''); }}
               style={{
                 flex: 1, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--line)',
-                background: 'var(--surface-3)', color: 'var(--text)', fontSize: 13,
+                background: 'var(--surface-3)', color: 'var(--text-on-bg)', fontSize: 13,
               }}
             >
               <option value="">Todas las categorías</option>
@@ -275,7 +275,7 @@ export default function RegistrarVentaLocal() {
               onChange={(e) => setProductoActual(e.target.value)}
               style={{
                 flex: 1, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--line)',
-                background: 'var(--surface-3)', color: 'var(--text)', fontSize: 13,
+                background: 'var(--surface-3)', color: 'var(--text-on-bg)', fontSize: 13,
               }}
             >
               <option value="">Selecciona un producto</option>
@@ -293,7 +293,7 @@ export default function RegistrarVentaLocal() {
               onChange={(e) => setCantidad(e.target.value)}
               style={{
                 width: 90, padding: '10px 12px', borderRadius: 10, border: '1px solid var(--line)',
-                background: 'var(--surface-3)', color: 'var(--text)', fontSize: 13,
+                background: 'var(--surface-3)', color: 'var(--text-on-bg)', fontSize: 13,
               }}
             />
           </div>
@@ -303,9 +303,9 @@ export default function RegistrarVentaLocal() {
         </div>
 
         <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 16, padding: 22 }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--surface-2)', margin: '0 0 16px' }}>Carrito</h2>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--text-on-bg)', margin: '0 0 16px' }}>Carrito</h2>
           {ticket.length === 0 ? (
-            <p style={{ color: 'var(--text-dim)', fontSize: 13, textAlign: 'center', marginBottom: 15 }}>No hay productos aún.</p>
+            <p style={{ color: 'var(--text-on-bg)', fontSize: 13, textAlign: 'center', marginBottom: 15 }}>No hay productos aún.</p>
           ) : (
             <>
               {ticket.map((t) => (
@@ -314,11 +314,11 @@ export default function RegistrarVentaLocal() {
                   style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: '1px solid var(--surface-3)', fontSize: 13 }}
                 >
                   <div style={{ flex: 1 }}>
-                    <div style={{ color: 'var(--surface-2)', fontWeight: 500 }}>{t.nombre} ( {t.cantidad} )</div>
-                    <div style={{ color: 'var(--text-dim)', fontSize: 12 }}>${t.precio.toLocaleString('es-CL')}
+                    <div style={{ color: 'var(--text-on-bg)', fontWeight: 500 }}>{t.nombre} ( {t.cantidad} )</div>
+                    <div style={{ color: 'var(--text-on-bg)', fontSize: 12 }}>${t.precio.toLocaleString('es-CL')}
                     </div>
                   </div>
-                  <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--surface-2)', fontWeight: 600 }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)', fontWeight: 600 }}>
                     ${(t.cantidad * t.precio).toLocaleString('es-CL')}
                   </div>
                   <button
@@ -331,18 +331,18 @@ export default function RegistrarVentaLocal() {
                 </div>
               ))}
               <div style={{ marginTop: 8, paddingTop: 12 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0', fontSize: 12, color: 'var(--text-dim)', marginBottom: -10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0', fontSize: 12, color: 'var(--text-on-bg)', marginBottom: -10 }}>
                   <span>IVA (19%)</span>
                   <span style={{ fontFamily: 'var(--font-mono)' }}>${Math.round(totalTicket * 0.19).toLocaleString('es-CL')}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0 4px', fontSize: 14, fontWeight: 700, color: 'var(--surface-2)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0 4px', fontSize: 14, fontWeight: 700, color: 'var(--text-on-bg)' }}>
                   <span>Total</span>
                   <span style={{ fontFamily: 'var(--font-mono)' }}>${Math.round(totalTicket * 1.19).toLocaleString('es-CL')}</span>
                 </div>
               </div>
               <div style={{ borderTop: '1px solid var(--surface-3)', margin: '8px 0' }} />
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--surface-2)', marginBottom: 8 }}>Medio de pago</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-on-bg)', marginBottom: 8 }}>Medio de pago</div>
                 <div style={{ display: 'flex', gap: 8 }}>
                   {MEDIOS.map((medio) => {
                     const activo = medioPago === medio;
@@ -354,7 +354,7 @@ export default function RegistrarVentaLocal() {
                           padding: '8px 18px', borderRadius: 999, fontSize: 13, fontWeight: 600,
                           border: activo ? '1px solid var(--green)' : '1px solid var(--line)',
                           background: activo ? 'var(--green)' : 'transparent',
-                          color: activo ? 'var(--text)' : 'var(--surface-2)', cursor: 'pointer',
+                          color: 'var(--text-on-bg)', cursor: 'pointer',
                         }}
                       >
                         {medio}
@@ -376,15 +376,15 @@ export default function RegistrarVentaLocal() {
       </div>
 
       <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 16, padding: 22, marginTop: 24 }}>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--surface-2)', margin: '0 0 16px' }}>Ventas del día</h2>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--text-on-bg)', margin: '0 0 16px' }}>Ventas del día</h2>
         {ventasDia.length === 0 ? (
-          <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Aún no hay ventas registradas hoy.</p>
+          <p style={{ color: 'var(--text-on-bg)', fontSize: 13 }}>Aún no hay ventas registradas hoy.</p>
         ) : (
           <>
             <div className="admin-table-wrap">
             <table className="admin-table">
               <thead>
-                <tr style={{ color: 'var(--text)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
+                <tr style={{ color: 'var(--text-on-bg)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                   <th style={{ padding: '0 10px 12px' }}>Hora</th>
                   <th style={{ padding: '0 10px 12px' }}>Medio de pago</th>
                   <th style={{ padding: '0 10px 12px' }}>Total</th>
@@ -393,11 +393,11 @@ export default function RegistrarVentaLocal() {
               <tbody>
                 {ventasDia.map((venta, i) => (
                   <tr key={venta.id || i} style={{ borderTop: '1px solid var(--surface-3)' }}>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>
                       {new Date(venta.creado_en).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}
                     </td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{capitalizar(venta.medio_pago)}</td>
-                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)' }}>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{capitalizar(venta.medio_pago)}</td>
+                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>
                       ${totalVenta(venta).toLocaleString('es-CL')}
                     </td>
                   </tr>
@@ -406,16 +406,16 @@ export default function RegistrarVentaLocal() {
             </table>
             </div>
             <div style={{ borderTop: '1px solid var(--surface-3)', marginTop: 8, paddingTop: 14, display: 'flex', gap: 18, justifyContent: 'center', flexWrap: 'wrap', fontSize: 13 }}>
-              <span style={{ color: 'var(--text-dim)' }}>
-                N° ventas <strong style={{ color: 'var(--surface-2)', fontFamily: 'var(--font-mono)' }}></strong>
+              <span style={{ color: 'var(--text-on-bg)' }}>
+                N° ventas <strong style={{ color: 'var(--text-on-bg)', fontFamily: 'var(--font-mono)' }}></strong>
               </span>
-              <span style={{ color: 'var(--text-dim)' }}>
-                Efectivo <strong style={{ color: 'var(--surface-2)', fontFamily: 'var(--font-mono)' }}>${totalEfectivo.toLocaleString('es-CL')}</strong>
+              <span style={{ color: 'var(--text-on-bg)' }}>
+                Efectivo <strong style={{ color: 'var(--text-on-bg)', fontFamily: 'var(--font-mono)' }}>${totalEfectivo.toLocaleString('es-CL')}</strong>
               </span>
-              <span style={{ color: 'var(--text-dim)' }}>
-                TUU <strong style={{ color: 'var(--surface-2)', fontFamily: 'var(--font-mono)' }}>${totalTuu.toLocaleString('es-CL')}</strong>
+              <span style={{ color: 'var(--text-on-bg)' }}>
+                TUU <strong style={{ color: 'var(--text-on-bg)', fontFamily: 'var(--font-mono)' }}>${totalTuu.toLocaleString('es-CL')}</strong>
               </span>
-              <span style={{ color: 'var(--text-dim)' }}>
+              <span style={{ color: 'var(--text-on-bg)' }}>
                 Total <strong style={{ color: 'var(--green)', fontFamily: 'var(--font-mono)' }}>${totalGeneral.toLocaleString('es-CL')}</strong>
               </span>
             </div>
@@ -443,7 +443,7 @@ export default function RegistrarVentaLocal() {
             <h3 style={{ margin: '0 0 6px', fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>
               Cerrar sesión
             </h3>
-            <p style={{ margin: '0 0 22px', fontSize: 13, color: 'var(--text-dim)' }}>
+            <p style={{ margin: '0 0 22px', fontSize: 13, color: 'var(--text)' }}>
               Se guardará el reporte de ventas y no podrás registrar más ventas en esta sesión. ¿Seguro?
             </p>
             <div style={{ display: 'flex', gap: 10 }}>

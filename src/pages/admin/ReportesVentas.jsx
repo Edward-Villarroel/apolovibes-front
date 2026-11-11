@@ -82,11 +82,11 @@ export default function ReporteVentas() {
   return (
     <>
       <div className="admin-page-header">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--surface-2)' }}>Reporte de Ventas</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--text-on-bg)' }}>Reporte de Ventas</h1>
       </div>
 
       {cargando ? (
-        <p style={{ color: 'var(--text-dim)' }}>Cargando…</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>Cargando…</p>
       ) : (
         <>
           {mensaje && (
@@ -96,7 +96,7 @@ export default function ReporteVentas() {
           )}
 
           {reportes.length === 0 ? (
-            <p style={{ color: 'var(--text-dim)' }}>Aún no hay reportes guardados.</p>
+            <p style={{ color: 'var(--text-on-bg)' }}>Aún no hay reportes guardados.</p>
           ) : (
             <div className="admin-table-wrap">
             <table className="admin-table admin-table--reportes">
@@ -120,19 +120,19 @@ export default function ReporteVentas() {
                       style={{ borderTop: '1px solid var(--surface-3)', cursor: 'pointer' }}
                       onClick={() => abrirDetalle(r)}
                     >
-                      <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{r.lugar}</td>
-                      <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{formatearFecha(r.fecha)}</td>
-                      <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)' }}>{n.n_ventas}</td>
-                      <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)' }}>
+                      <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{r.lugar}</td>
+                      <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{formatearFecha(r.fecha)}</td>
+                      <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{n.n_ventas}</td>
+                      <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>
                         ${Number(n.total_efectivo || 0).toLocaleString('es-CL')}
                       </td>
-                      <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)' }}>
+                      <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>
                         ${Number(n.total_tuu || 0).toLocaleString('es-CL')}
                       </td>
                       <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--green)' }}>
                         ${Number(n.total || 0).toLocaleString('es-CL')}
                       </td>
-                      <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>Detalles</td>
+                      <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>Detalles</td>
                     </tr>
                   );
                 })}
@@ -163,23 +163,23 @@ export default function ReporteVentas() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 18 }}>
               <div>
                 <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>{detalle.lugar}</h3>
-                <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--text-dim)' }}>{formatearFecha(detalle.fecha)}</p>
+                <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--text)' }}>{formatearFecha(detalle.fecha)}</p>
               </div>
               <button
                 onClick={() => setDetalle(null)}
                 aria-label="Cerrar detalle"
                 style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 4 }}
               >
-                <X size={18} color="var(--text-dim)" />
+                <X size={18} color="var(--text)" />
               </button>
             </div>
 
             {cargandoDetalle ? (
-              <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Cargando detalle…</p>
+              <p style={{ color: 'var(--text)', fontSize: 13 }}>Cargando detalle…</p>
             ) : (
               <>
                 {(detalle.ventas || []).length === 0 ? (
-                  <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Este reporte no tiene ventas.</p>
+                  <p style={{ color: 'var(--text)', fontSize: 13 }}>Este reporte no tiene ventas.</p>
                 ) : (
                   detalle.ventas.map((venta, i) => (
                     <div
@@ -187,7 +187,7 @@ export default function ReporteVentas() {
                       style={{ borderTop: '1px solid var(--surface-3)', padding: '14px 0' }}
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13, marginBottom: 8 }}>
-                        <span style={{ color: 'var(--text-dim)' }}>
+                        <span style={{ color: 'var(--text)' }}>
                           {formatearHora(venta.creado_en)} · {capitalizar(venta.medio_pago)}
                         </span>
                         <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text)', fontWeight: 600 }}>
@@ -198,11 +198,11 @@ export default function ReporteVentas() {
                         <tbody>
                           {(venta.items || []).map((item) => (
                             <tr key={item.producto_id}>
-                              <td style={{ padding: '2px 8px 2px 0', color: 'var(--text-dim)' }}>{item.nombre}</td>
-                              <td style={{ padding: '2px 8px', color: 'var(--text-dim)', textAlign: 'right' }}>
+                              <td style={{ padding: '2px 8px 2px 0', color: 'var(--text)' }}>{item.nombre}</td>
+                              <td style={{ padding: '2px 8px', color: 'var(--text)', textAlign: 'right' }}>
                                 {item.cantidad} × ${Number(item.precio_unitario).toLocaleString('es-CL')}
                               </td>
-                              <td style={{ padding: '2px 0 2px 8px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', textAlign: 'right' }}>
+                              <td style={{ padding: '2px 0 2px 8px', fontFamily: 'var(--font-mono)', color: 'var(--text)', textAlign: 'right' }}>
                                 ${Number(item.subtotal ?? item.cantidad * item.precio_unitario).toLocaleString('es-CL')}
                               </td>
                             </tr>
@@ -219,13 +219,13 @@ export default function ReporteVentas() {
                     display: 'flex', justifyContent: 'flex-end', gap: 18, flexWrap: 'wrap', fontSize: 13,
                   }}
                 >
-                  <span style={{ color: 'var(--text-dim)' }}>
+                  <span style={{ color: 'var(--text)' }}>
                     Efectivo <strong style={{ color: 'var(--text)', fontFamily: 'var(--font-mono)' }}>${Number(detalle.total_efectivo || 0).toLocaleString('es-CL')}</strong>
                   </span>
-                  <span style={{ color: 'var(--text-dim)' }}>
+                  <span style={{ color: 'var(--text)' }}>
                     TUU <strong style={{ color: 'var(--text)', fontFamily: 'var(--font-mono)' }}>${Number(detalle.total_tuu || 0).toLocaleString('es-CL')}</strong>
                   </span>
-                  <span style={{ color: 'var(--text-dim)' }}>
+                  <span style={{ color: 'var(--text)' }}>
                     Total <strong style={{ color: 'var(--green)', fontFamily: 'var(--font-mono)' }}>${Number(detalle.total || 0).toLocaleString('es-CL')}</strong>
                   </span>
                 </div>

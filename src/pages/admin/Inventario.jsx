@@ -30,7 +30,7 @@ function ConfirmEliminarModal({ producto, onConfirm, onCancel }) {
         <h3 style={{ margin: '0 0 6px', fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>
           Eliminar producto
         </h3>
-        <p style={{ margin: '0 0 22px', fontSize: 13, color: 'var(--text-dim)' }}>
+        <p style={{ margin: '0 0 22px', fontSize: 13, color: 'var(--text-on-bg)' }}>
           ¿Estás seguro de que deseas eliminar <strong>«{producto.nombre}»</strong>? Esta acción no se puede deshacer.
         </p>
         <div style={{ display: 'flex', gap: 10 }}>
@@ -133,7 +133,7 @@ export default function Inventario() {
   return (
     <>
       <div className="admin-page-header">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--surface-2)' }}>Inventario</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--text-on-bg)' }}>Inventario</h1>
         <div className="admin-header-actions">
           <div style={{ width: 200, maxWidth: '100%' }}>
             <SelectOpciones
@@ -148,9 +148,9 @@ export default function Inventario() {
       </div>
 
       {cargando ? (
-        <p style={{ color: 'var(--text-dim)' }}>Cargando inventario…</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>Cargando inventario…</p>
       ) : productos.length === 0 ? (
-        <p style={{ color: 'var(--text-dim)' }}>No hay productos en la base de datos.</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>No hay productos en la base de datos.</p>
       ) : (
         <>
           {productosStockBajo.length > 0 && (
@@ -166,7 +166,7 @@ export default function Inventario() {
               <AlertTriangle size={16} color="#b45309" style={{ flexShrink: 0, marginTop: 1 }} />
               <div>
                 <strong style={{ color: "#b45309" }}>{productosStockBajo.length} {productosStockBajo.length === 1 ? 'producto tiene' : 'productos tienen'} stock bajo. </strong>
-                <div style={{ color: 'var(--text-dim)', marginTop: 2 }}>
+                <div style={{ color: 'var(--text-on-bg)', marginTop: 2 }}>
                   {productosStockBajo.map(p => `${p.nombre} (${p.stock})`).join(' · ')}
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function Inventario() {
           <div className="admin-table-wrap">
             <table className="admin-table admin-table--inventario">
               <thead>
-                <tr style={{ color: 'var(--text)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
+                <tr style={{ color: 'var(--text-on-bg)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                   <th style={{ padding: '0 10px 12px' }}>Pedido</th>
                   <th style={{ padding: '0 10px 12px' }}>Categoría</th>
                   <th style={{ padding: '0 10px 12px' }}>Nombre</th>
@@ -199,19 +199,19 @@ export default function Inventario() {
               <tbody>
                 {productosPagina.map((p) => (
                   <tr key={p.id} style={{ borderTop: '1px solid var(--surface-3)' }}>
-                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', fontSize: 11 }}>{p.id?.slice(0, 8)}</td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{nombreCategoria(p.categoria_id)}</td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{p.nombre}</td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)', maxWidth: 200 }}>
+                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)', fontSize: 11 }}>{p.id?.slice(0, 8)}</td>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{nombreCategoria(p.categoria_id)}</td>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{p.nombre}</td>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)', maxWidth: 200 }}>
                       <div style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                         {p.descripcion || '—'}
                       </div>
                     </td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{p.material || '—'}</td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{p.tamano || '—'}</td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{p.color || '—'}</td>
-                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)' }}>${p.precio.toLocaleString('es-CL')}</td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{p.descuento || 0}%</td>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{p.material || '—'}</td>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{p.tamano || '—'}</td>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{p.color || '—'}</td>
+                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>${p.precio.toLocaleString('es-CL')}</td>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{p.descuento || 0}%</td>
                     <td style={{ padding: '13px 10px' }}>
                       {(() => {
                         const agotado = p.stock <= 0;
@@ -222,7 +222,7 @@ export default function Inventario() {
                             style={{
                               display: 'inline-block', minWidth: 20, padding: '3px 10px', borderRadius: 999,
                               fontSize: 12, fontWeight: 600, background: agotado ? 'rgba(239, 68, 68 .16)' : bajo ? 'rgba(250,204,21,.18)' : 'transparent',
-                              color: agotado ? 'var(--red, #ef4444)' : bajo ? '#b45309' : 'var(--text-dim)',
+                              color: agotado ? 'var(--red, #ef4444)' : bajo ? '#b45309' : 'var(--text-on-bg)',
                             }}
                           >
                             {p.stock}
@@ -230,11 +230,11 @@ export default function Inventario() {
                         );
                       })()}
                     </td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)', cursor: 'pointer' }} onClick={() => setModal(p)}>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)', cursor: 'pointer' }} onClick={() => setModal(p)}>
                       <Pencil size={16} color='var(--green)' />
                     </td>
                     <td
-                      style={{ padding: '13px 10px', color: 'var(--text-dim)', cursor: eliminandoId === p.id ? 'wait' : 'pointer' }}
+                      style={{ padding: '13px 10px', color: 'var(--text-on-bg)', cursor: eliminandoId === p.id ? 'wait' : 'pointer' }}
                       onClick={() => !eliminandoId && setProductoEliminar(p)}
                       title="Eliminar producto"
                     >
@@ -257,14 +257,14 @@ export default function Inventario() {
             background: 'var(--bg)', borderTop: '1px solid var(--surface-3)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-dim)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-on-bg)' }}>
             <button
               onClick={() => setPagina(p => Math.max(1, p - 1))}
               disabled={pagina === 1}
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
-                background: 'transparent', color: 'var(--text-dim)',
+                background: 'transparent', color: 'var(--text-on-bg)',
                 cursor: pagina === 1 ? 'not-allowed' : 'pointer',
                 opacity: pagina === 1 ? 0.4 : 1,
               }}
@@ -283,7 +283,7 @@ export default function Inventario() {
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
-                background: 'transparent', color: 'var(--text-dim)',
+                background: 'transparent', color: 'var(--text-on-bg)',
                 cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
                 opacity: pagina === totalPaginas ? 0.4 : 1,
               }}
@@ -293,7 +293,7 @@ export default function Inventario() {
             </button>
           </div>
 
-          <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+          <span style={{ fontSize: 11, color: 'var(--text-on-bg)' }}>
             Mostrando {(pagina - 1) * filasPorPagina + 1}
             –{Math.min(pagina * filasPorPagina, productosFiltrados.length)} de {productosFiltrados.length}
           </span>

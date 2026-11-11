@@ -19,7 +19,7 @@ function TarjetaResumen({ icon: Icon, label, valor, detalle, color }) {
       </div>
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--text)' }}>{valor}</div>
       {detalle && (
-        <div style={{ fontSize: 11.5, color: 'var(--text-dim)', marginTop: 6 }}>{detalle}</div>
+        <div style={{ fontSize: 11.5, color: 'var(--text-on-bg)', marginTop: 6 }}>{detalle}</div>
       )}
     </div>
   )
@@ -31,10 +31,10 @@ function CeldaNumero({ valor, color, icon: Icon, titulo }) {
   return (
     <td
       title={titulo}
-      style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: color || 'var(--text-dim)', whiteSpace: 'nowrap', textAlign: 'right' }}
+      style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: color || 'var(--text-on-bg)', whiteSpace: 'nowrap', textAlign: 'right' }}
     >
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-        {Icon && <Icon size={14} style={{ color: color || 'var(--text-dim)' }} />}
+        {Icon && <Icon size={14} style={{ color: color || 'var(--text-on-bg)' }} />}
         {numero(valor)}
       </span>
     </td>
@@ -106,7 +106,7 @@ function ModalAltaUsuario({ abierto, onCerrar, onGuardar, guardando, error }) {
         <h3 style={{ margin: '0 0 6px', fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>
           Crear usuario
         </h3>
-        <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--text-dim)' }}>
+        <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--text)' }}>
           El usuario podrá iniciar sesión con los datos que definas.
         </p>
 
@@ -118,7 +118,7 @@ function ModalAltaUsuario({ abierto, onCerrar, onGuardar, guardando, error }) {
             aria-label="Nombre"
             style={{
               width: '100%', padding: '9px 10px', borderRadius: 8, border: '1px solid var(--line)',
-              background: 'var(--bg)', color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
+              background: 'var(--bg)', color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
             }}
           />
           <input
@@ -128,7 +128,7 @@ function ModalAltaUsuario({ abierto, onCerrar, onGuardar, guardando, error }) {
             aria-label="Apellido"
             style={{
               width: '100%', padding: '9px 10px', borderRadius: 8, border: '1px solid var(--line)',
-              background: 'var(--bg)', color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
+              background: 'var(--bg)', color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
             }}
           />
           <input
@@ -139,7 +139,7 @@ function ModalAltaUsuario({ abierto, onCerrar, onGuardar, guardando, error }) {
             aria-label="Correo electrónico"
             style={{
               width: '100%', padding: '9px 10px', borderRadius: 8, border: '1px solid var(--line)',
-              background: 'var(--bg)', color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
+              background: 'var(--bg)', color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
             }}
           />
           <input
@@ -150,7 +150,7 @@ function ModalAltaUsuario({ abierto, onCerrar, onGuardar, guardando, error }) {
             aria-label="Contraseña"
             style={{
               width: '100%', padding: '9px 10px', borderRadius: 8, border: '1px solid var(--line)',
-              background: 'var(--bg)', color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
+              background: 'var(--bg)', color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
             }}
           />
           <div>
@@ -161,7 +161,7 @@ function ModalAltaUsuario({ abierto, onCerrar, onGuardar, guardando, error }) {
               aria-label="Rol inicial"
               style={{
                 width: '100%', padding: '9px 10px', borderRadius: 8, border: '1px solid var(--line)',
-                background: 'var(--bg)', color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
+                background: 'var(--bg)', color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
               }}
             >
               <option value="cliente">Cliente</option>
@@ -297,14 +297,14 @@ export default function Usuarios() {
     <>
       <div className="admin-page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Users size={22} style={{ color: 'var(--text)' }} />
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text)' }}>Usuarios</h1>
+          <Users size={22} style={{ color: 'var(--text-on-bg)' }} />
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text-on-bg)' }}>Usuarios</h1>
         </div>
         <div className="admin-header-actions">
           <div className="admin-search">
             <Search
               size={15}
-              style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)', pointerEvents: 'none' }}
+              style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-on-bg)', pointerEvents: 'none' }}
             />
             <input
               type="search"
@@ -315,7 +315,7 @@ export default function Usuarios() {
               style={{
                 width: '100%', padding: '9px 12px 9px 34px', borderRadius: 10,
                 border: '1px solid var(--line)', background: 'var(--input-bg)',
-                color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
+                color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
               }}
             />
           </div>
@@ -335,7 +335,7 @@ export default function Usuarios() {
       </div>
 
       {cargando && usuarios.length === 0 ? (
-        <p style={{ color: 'var(--text-dim)' }}>Cargando usuarios…</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>Cargando usuarios…</p>
       ) : error ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--red, #ef4444)', fontSize: 13, flexWrap: 'wrap' }}>
           <AlertTriangle size={16} />
@@ -346,7 +346,7 @@ export default function Usuarios() {
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 12px',
               borderRadius: 8, border: '1px solid var(--line)', background: 'var(--surface-3)',
-              color: 'var(--text)', fontSize: 12.5, cursor: 'pointer',
+              color: 'var(--text-on-bg)', fontSize: 12.5, cursor: 'pointer',
             }}
           >
             <RefreshCw size={13} />
@@ -354,7 +354,7 @@ export default function Usuarios() {
           </button>
         </div>
       ) : usuarios.length === 0 ? (
-        <p style={{ color: 'var(--text-dim)' }}>Todavía no hay usuarios registrados.</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>Todavía no hay usuarios registrados.</p>
       ) : (
         <>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 18, marginBottom: 24 }}>
@@ -374,12 +374,12 @@ export default function Usuarios() {
           </div>
 
           {filtrados.length === 0 ? (
-            <p style={{ color: 'var(--text-dim)' }}>No hay usuarios que coincidan con «{busqueda}»</p>
+            <p style={{ color: 'var(--text-on-bg)' }}>No hay usuarios que coincidan con «{busqueda}»</p>
           ) : (
             <div className="admin-table-wrap">
               <table className="admin-table admin-table--usuarios">
                 <thead>
-                  <tr style={{ color: 'var(--text)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
+                  <tr style={{ color: 'var(--text-on-bg)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                     <th style={{ padding: '0 10px 12px' }}>Nombre</th>
                     <th style={{ padding: '0 10px 12px' }}>Correo</th>
                     <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Productos comprados</th>
@@ -396,7 +396,7 @@ export default function Usuarios() {
                     return (
                       <>
                       <tr key={u.id} style={{ borderTop: '1px solid var(--surface-3)' }}>
-                        <td style={{ padding: '13px 10px', color: 'var(--text)' }}>
+                        <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             <span>{u.nombre_completo || '—'}</span>
                             {u.rol === 'admin' && (
@@ -410,7 +410,7 @@ export default function Usuarios() {
                             )}
                           </div>
                         </td>
-                        <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{u.email}</td>
+                        <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{u.email}</td>
                         <CeldaNumero
                           valor={u.productos_comprados}
                           icon={ShoppingBag}
@@ -424,7 +424,7 @@ export default function Usuarios() {
                         </td>
                         <td style={{ padding: '13px 10px', textAlign: 'right' }}>
                           {esPropia ? (
-                            <span style={{ fontSize: 11.5, color: 'var(--text-dim)' }}>Tu cuenta</span>
+                            <span style={{ fontSize: 11.5, color: 'var(--text-on-bg)' }}>Tu cuenta</span>
                           ) : (
                             <div style={{ display: 'inline-flex', gap: 6, justifyContent: 'flex-end' }}>
                               <button
@@ -433,7 +433,7 @@ export default function Usuarios() {
                                 title={u.activo ? 'Bloquear cuenta' : 'Desbloquear cuenta'}
                                 style={{
                                   padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
-                                  background: 'var(--input-bg)', color: 'var(--text)', fontSize: 11.5, cursor: 'pointer',
+                                  background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
                                 }}
                               >
                                 {u.activo ? 'Bloquear' : 'Desbloquear'}
@@ -445,7 +445,7 @@ export default function Usuarios() {
                                   title="Quitar permisos de administrador"
                                   style={{
                                     padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
-                                    background: 'var(--input-bg)', color: 'var(--text)', fontSize: 11.5, cursor: 'pointer',
+                                    background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
                                   }}
                                 >
                                   Quitar admin
@@ -457,7 +457,7 @@ export default function Usuarios() {
                                   title="Otorgar permisos de administrador"
                                   style={{
                                     padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
-                                    background: 'var(--input-bg)', color: 'var(--text)', fontSize: 11.5, cursor: 'pointer',
+                                    background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
                                   }}
                                 >
                                   Dar admin
@@ -504,7 +504,7 @@ export default function Usuarios() {
             <h3 style={{ margin: '0 0 6px', fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>
               Error
             </h3>
-            <p style={{ margin: '0 0 22px', fontSize: 13, color: 'var(--text-dim)' }}>
+            <p style={{ margin: '0 0 22px', fontSize: 13, color: 'var(--text)' }}>
               {errorAlta}
             </p>
             <button

@@ -21,7 +21,7 @@ const estiloCampo = {
   borderRadius: 8,
   border: '1px solid var(--line)',
   background: 'var(--input-bg)',
-  color: 'var(--text-dim)',
+  color: 'var(--text-on-bg)',
 }
 
 const FORM_INICIAL = {
@@ -38,7 +38,7 @@ function estadoDe(c) {
 
 const ESTADOS = {
   activo: { texto: 'Activo', color: 'var(--green)' },
-  canjeado: { texto: 'Canjeado', color: 'var(--text-dim)' },
+  canjeado: { texto: 'Canjeado', color: 'var(--text-on-bg)' },
 }
 
 export default function CuponesAdmin() {
@@ -132,14 +132,14 @@ export default function CuponesAdmin() {
     <div>
       <div className="admin-page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Tag size={22} style={{ color: 'var(--text)' }} />
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text)' }}>Códigos de descuento</h1>
+          <Tag size={22} style={{ color: 'var(--text-on-bg)' }} />
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text-on-bg)' }}>Códigos de descuento</h1>
         </div>
       </div>
 
       <div className="cup-layout">
         <form onSubmit={crear} className="cup-form">
-          <h2 style={{ fontSize: 15, margin: '0 0 14px', color: 'var(--text)' }}>Crear cupón</h2>
+          <h2 style={{ fontSize: 15, margin: '0 0 14px', color: 'var(--text-on-bg)' }}>Crear cupón</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
 
             <input
@@ -172,7 +172,7 @@ export default function CuponesAdmin() {
                         flex: 1, padding: '6px 0', borderRadius: 6, border: 'none', cursor: 'pointer',
                         fontSize: 13, fontWeight: activo ? 600 : 400,
                         background: activo ? 'var(--accent)' : 'transparent',
-                        color: activo ? '#fff' : 'var(--text-dim)',
+                        color: activo ? '#fff' : 'var(--text-on-bg)',
                         transition: 'background .15s, color .15s',
                       }}
                     >
@@ -195,7 +195,7 @@ export default function CuponesAdmin() {
                 />
                 <span style={{
                   position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                  fontSize: 14, color: 'var(--text-dim)', pointerEvents: 'none',
+                  fontSize: 14, color: 'var(--text-on-bg)', pointerEvents: 'none',
                 }}>
                   {esPorcentaje ? '%' : '$'}
                 </span>
@@ -216,8 +216,8 @@ export default function CuponesAdmin() {
               border: '1px solid var(--line)', background: 'var(--input-bg)',
             }}>
               <div>
-                <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>Uso único</p>
-                <p style={{ margin: 0, fontSize: 12, color: 'var(--text-dim)' }}>Se desactiva tras el primer canje</p>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-on-bg)' }}>Uso único</p>
+                <p style={{ margin: 0, fontSize: 12, color: 'var(--text-on-bg)' }}>Se desactiva tras el primer canje</p>
               </div>
               <button
                 type="button"
@@ -296,7 +296,7 @@ export default function CuponesAdmin() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={6} style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 20px' }}>
+                    <td colSpan={6} style={{ textAlign: 'center', color: 'var(--text-on-bg)', padding: '40px 20px' }}>
                       <img
                         src={mediaPath('cargando.webp')}
                         alt=""
@@ -310,7 +310,7 @@ export default function CuponesAdmin() {
                   </tr>
                 ) : visibles.length === 0 ? (
                   <tr>
-                    <td colSpan={7} style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 20px' }}>
+                    <td colSpan={7} style={{ textAlign: 'center', color: 'var(--text-on-bg)', padding: '40px 20px' }}>
                       <img
                         src={mediaPath('sinproductos.webp')}
                         alt=""
@@ -331,7 +331,7 @@ export default function CuponesAdmin() {
                       <td className="cup-col-codigo">
                         <span className="cup-codigo">{c.codigo}</span>
                       </td>
-                      <td style={{ color: 'var(--text-dim)' }}>
+                      <td style={{ color: 'var(--text-on-bg)' }}>
                         <button
                           type="button"
                           className="cup-icono"
@@ -342,10 +342,10 @@ export default function CuponesAdmin() {
                           {copiado === c.id ? <Check size={14} style={{ color: 'var(--green)' }} /> : <Copy size={14} />}
                         </button>
                       </td>
-                      <td style={{ color: 'var(--text-dim)' }}>
+                      <td style={{ color: 'var(--text-on-bg)' }}>
                         {pct ? 'Porcentaje' : 'Monto fijo'}
                       </td>
-                      <td style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-dim)' }}>
+                      <td style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-on-bg)' }}>
                         {pct ? `${c.valor}%` : `$${Number(c.valor).toLocaleString('es-CL')}`}
                       </td>
                       <td>
@@ -373,7 +373,7 @@ export default function CuponesAdmin() {
           </div>
 
           {!loading && cupones.length > 0 && (
-            <div style={{ padding: '12px 20px', borderTop: '1px solid var(--line)', fontSize: 12, color: 'var(--text-dim)' }}>
+            <div style={{ padding: '12px 20px', borderTop: '1px solid var(--line)', fontSize: 12, color: 'var(--text-on-bg)' }}>
               Mostrando {visibles.length} de {cupones.length} cupones
             </div>
           )}

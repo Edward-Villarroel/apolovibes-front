@@ -22,8 +22,8 @@ const ETIQUETAS_ESTADO = {
   rechazada: 'Rechazada',
 }
 
-const COLOR_TEXTO = '#FFFFFF'
-const COLOR_APAGADO = '#B9C6DA'
+const COLOR_TEXTO = 'var(--text)'
+const COLOR_APAGADO = 'var(--text-dim)'
 const FONDO_TARJETA = 'rgba(255,255,255,.06)'
 const LINEA = 'rgba(255,255,255,.18)'
 const ACENTO = '#FA7F19'
@@ -532,7 +532,7 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
                         background: 'transparent',
                         fontSize: 16,
                         fontWeight: 600,
-                        color: 'var(--surface-2)',
+                        color: 'var(--text-on-bg)',
                       }}
                     />
 
@@ -697,23 +697,23 @@ export default function Cotizaciones() {
   return (
     <>
       <div className="admin-page-header">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text)' }}>Cotizaciones</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text-on-bg)' }}>Cotizaciones</h1>
       </div>
 
 
 
       {cargando && items.length === 0 ? (
-        <p style={{ color: 'var(--text-dim)' }}>Cargando cotizaciones...</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>Cargando cotizaciones...</p>
       ) : error ? (
         <p style={{ color: 'var(--red, #ef4444)', fontSize: 13 }}>{error}</p>
       ) : items.length === 0 ? (
-        <p style={{ color: 'var(--text-dim)' }}>No hay cotizaciones todavía.</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>No hay cotizaciones todavía.</p>
       ) : (
         <>
           <div className="admin-table-wrap">
           <table className="admin-table admin-table--cotizaciones" style={{ textAlign: 'center' }}>
             <thead>
-              <tr style={{ color: 'var(--text)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
+              <tr style={{ color: 'var(--text-on-bg)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
                 <th style={{ padding: '0 10px 12px' }}>Cotización</th>
                 <th style={{ padding: '0 10px 12px' }}>Fecha/Hora</th>
                 <th style={{ padding: '0 10px 12px' }}>Cliente</th>
@@ -730,22 +730,22 @@ export default function Cotizaciones() {
                 const estilo = estilosEstado[c.estado] || estilosEstado.pendiente
                 return (
                   <tr key={c.id} style={{ borderTop: '1px solid var(--surface-3)' }}>
-                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', fontSize: 11 }}>
+                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)', fontSize: 11 }}>
                       {c.id.slice(0, 8)}
                     </td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{fecha}</td>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{fecha}</td>
                     <td style={{ padding: '13px 10px', textAlign: 'center' }}>
-                      <div style={{ color: 'var(--text-dim)' }}>{c.nombre}</div>
+                      <div style={{ color: 'var(--text-on-bg)' }}>{c.nombre}</div>
                     </td>
                     <td style={{ padding: '13px 10px', textAlign: 'center' }}>
-                      <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{c.email}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-on-bg)' }}>{c.email}</div>
                     </td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{c.material}</td>
-                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)' }}>
-                      {c.precio_estimado_ia ? `$${formatearPrecio(c.precio_estimado_ia)}` : <span style={{ color: 'var(--text-dim)' }}>—</span>}
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{c.material}</td>
+                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>
+                      {c.precio_estimado_ia ? `$${formatearPrecio(c.precio_estimado_ia)}` : <span style={{ color: 'var(--text-on-bg)' }}>—</span>}
                     </td>
                     <td style={{ padding: '13px 10px', textAlign: 'center' }}>
-                      <span style={{ cursor: 'pointer', display: 'inline-flex', color: 'var(--text-dim)' }} onClick={() => setDetalle(c)} title="Ver detalle">
+                      <span style={{ cursor: 'pointer', display: 'inline-flex', color: 'var(--text-on-bg)' }} onClick={() => setDetalle(c)} title="Ver detalle">
                         <Eye size={14} />
                       </span>
                     </td>
@@ -776,7 +776,7 @@ export default function Cotizaciones() {
               borderTop: '1px solid var(--surface-3)',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-dim)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-on-bg)' }}>
               <button
                 onClick={() => setPagina(p => Math.max(1, p - 1))}
                 disabled={pagina === 1}
@@ -789,7 +789,7 @@ export default function Cotizaciones() {
                   borderRadius: 8,
                   border: '1px solid var(--surface-3)',
                   background: 'transparent',
-                  color: 'var(--text-dim)',
+                  color: 'var(--text-on-bg)',
                   cursor: pagina === 1 ? 'not-allowed' : 'pointer',
                   opacity: pagina === 1 ? 0.4 : 1,
                 }}
@@ -812,7 +812,7 @@ export default function Cotizaciones() {
                   borderRadius: 8,
                   border: '1px solid var(--surface-3)',
                   background: 'transparent',
-                  color: 'var(--text-dim)',
+                  color: 'var(--text-on-bg)',
                   cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
                   opacity: pagina === totalPaginas ? 0.4 : 1,
                 }}
@@ -822,7 +822,7 @@ export default function Cotizaciones() {
               </button>
             </div>
 
-            <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+            <span style={{ fontSize: 11, color: 'var(--text-on-bg)' }}>
               Mostrando {(pagina - 1) * filasPorPagina + 1} - {Math.min(pagina * filasPorPagina, items.length)} de {items.length}
             </span>
           </div>

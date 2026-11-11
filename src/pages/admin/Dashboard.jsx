@@ -72,7 +72,7 @@ function Sparkline({ data, up }) {
 function VentasChart({ data }) {
   const w = 560, h = 200, padX = 10, padY = 16;
   if (!data || data.length === 0) {
-    return <p style={{ fontSize: 12.5, color: 'var(--text-dim)' }}>Sin datos de ventas todavía.</p>;
+    return <p style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>Sin datos de ventas todavía.</p>;
   }
   const max = Math.max(...data.map(d => Number(d.valor) || 0));
   const stepX = (w - padX * 2) / (data.length - 1);
@@ -117,7 +117,7 @@ function Panel({ title, action, children }) {
   return (
     <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12, padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>{title}</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-on-bg)' }}>{title}</div>
         {action && (
           <span style={{ fontSize: 12, color: 'var(--accent)', cursor: 'pointer', fontWeight: 500 }}>{action}</span>
         )}
@@ -223,7 +223,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, marginBottom: 24, color: 'var(--surface-2)' }}>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, marginBottom: 24, color: 'var(--text-on-bg)' }}>
         Dashboard
       </h1>
 
@@ -236,13 +236,13 @@ export default function Dashboard() {
       {/* Stat cards */}
       <div className="admin-stats-grid">
         {cargandoReporte ? (
-          <p style={{ color: 'var(--text-dim)', gridColumn: '1 / -1', margin: 0 }}>Cargando…</p>
+          <p style={{ color: 'var(--text-on-bg)', gridColumn: '1 / -1', margin: 0 }}>Cargando…</p>
         ) : (
           stats.map(s => (
             <div key={s.label} style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12, padding: 20 }}>
-              <div style={{ fontSize: 13, color: 'var(--text)', marginBottom: 6 }}>{s.label}</div>
+              <div style={{ fontSize: 13, color: 'var(--text-on-bg)', marginBottom: 6 }}>{s.label}</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 10 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--text)' }}>{s.valor}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--text-on-bg)' }}>{s.valor}</span>
               </div>
             </div>
           ))
@@ -253,7 +253,7 @@ export default function Dashboard() {
       <div className="admin-main-grid">
         <Panel title="Resumen de ventas">
           {cargandoReporte ? (
-            <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Cargando…</p>
+            <p style={{ color: 'var(--text-on-bg)', fontSize: 13 }}>Cargando…</p>
           ) : errorReporte ? (
             <p style={{ fontSize: 12.5, color: 'var(--red, #ef4444)' }}>
               No se pudo cargar el resumen de ventas.
@@ -269,7 +269,7 @@ export default function Dashboard() {
               No se pudo cargar el ranking: {errorTopProductos}
             </p>
           ) : topProductos.length === 0 ? (
-            <p style={{ fontSize: 12.5, color: 'var(--text-dim)' }}>
+            <p style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>
               Todavía no hay ventas registradas.
             </p>
           ) : (
@@ -279,7 +279,7 @@ export default function Dashboard() {
                 const pct = (p.ingresos / maxMonto) * 100
                 return (
                   <div key={p.id}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, color: 'var(--text)', marginBottom: 5 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, color: 'var(--text-on-bg)', marginBottom: 5 }}>
                       <span>{p.nombre}</span>
                       <span style={{ fontFamily: 'var(--font-mono)' }}>
                         ${Number(p.ingresos).toLocaleString('es-CL')} CLP
@@ -300,22 +300,22 @@ export default function Dashboard() {
       <div className="admin-main-grid">
         <Panel title="Pedidos recientes" action="Ver todo">
           {cargandoReporte ? (
-            <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Cargando…</p>
+            <p style={{ color: 'var(--text-on-bg)', fontSize: 13 }}>Cargando…</p>
           ) : pedidosRecientes.length === 0 ? (
-            <p style={{ color: 'var(--text-dim)', fontSize: 13 }}>Todavía no hay pedidos registrados.</p>
+            <p style={{ color: 'var(--text-on-bg)', fontSize: 13 }}>Todavía no hay pedidos registrados.</p>
           ) : (
             <div className="admin-table-wrap">
               <table className="admin-table admin-table--dashboard">
               <tbody>
                 {pedidosRecientes.map(p => (
                   <tr key={p.id} style={{ borderTop: '1px solid var(--line)' }}>
-                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>{p.id}</td>
-                    <td style={{ padding: '10px 6px', color: 'var(--text)' }}>{p.cliente}</td>
-                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>{p.monto}</td>
+                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{p.id}</td>
+                    <td style={{ padding: '10px 6px', color: 'var(--text-on-bg)' }}>{p.cliente}</td>
+                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{p.monto}</td>
                     <td style={{ padding: '10px 6px' }}>
                       <span style={{
                         fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 20,
-                        color: COLOR_ESTADO[p.estado] || 'var(--text-dim)', background: `${COLOR_ESTADO[p.estado] || 'var(--text-dim)'}22`,
+                        color: COLOR_ESTADO[p.estado] || 'var(--text-on-bg)', background: `${COLOR_ESTADO[p.estado] || 'var(--text-on-bg)'}22`,
                       }}>
                         {p.estado}
                       </span>
@@ -331,7 +331,7 @@ export default function Dashboard() {
         <Panel title="Actividad reciente" action="Ver todo">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {actividadReciente.length === 0 ? (
-              <p style={{ fontSize: 12.5, color: 'var(--text-dim)' }}>Sin actividad reciente.</p>
+              <p style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>Sin actividad reciente.</p>
             ) : (
               actividadReciente.map((a, i) => {
                 const Icon = a.icon
@@ -344,8 +344,8 @@ export default function Dashboard() {
                     }}>
                       <Icon size={15} />
                     </div>
-                    <div style={{ flex: 1, fontSize: 12.5, color: 'var(--text)' }}>{a.texto}</div>
-                    <div style={{ fontSize: 11.5, color: 'var(--text-dim)', whiteSpace: 'nowrap' }}>{a.tiempo ? formatearFecha(a.tiempo) : ''}</div>
+                    <div style={{ flex: 1, fontSize: 12.5, color: 'var(--text-on-bg)' }}>{a.texto}</div>
+                    <div style={{ fontSize: 11.5, color: 'var(--text-on-bg)', whiteSpace: 'nowrap' }}>{a.tiempo ? formatearFecha(a.tiempo) : ''}</div>
                   </div>
                 )
               })

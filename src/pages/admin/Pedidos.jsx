@@ -56,7 +56,7 @@ const ESTILO_BADGE = {
 
 
 const ESTADOS_DESPACHO = {
-  sin_despacho: { texto: 'Sin despacho', bg: 'var(--surface-3)', color: 'var(--text-dim)' },
+  sin_despacho: { texto: 'Sin despacho', bg: 'var(--surface-3)', color: 'var(--text-on-bg)' },
   en_despacho: { texto: 'En despacho', bg: 'rgba(250,204,21,.16)', color: '#b45309' },
   ingresado: { texto: 'Ingresado', bg: 'rgba(250,204,21,.16)', color: '#b45309' },
   en_transito: { texto: 'En tránsito', bg: 'rgba(59,130,246,.16)', color: '#1d4ed8' },
@@ -103,7 +103,7 @@ function ChipEstado({ pedido, onClick }) {
   }
   if (pedido.estado === 'cancelado') {
     return (
-      <span style={{ ...estiloBase, background: 'var(--surface-3)', color: 'var(--text-dim)' }}>
+      <span style={{ ...estiloBase, background: 'var(--surface-3)', color: 'var(--text-on-bg)' }}>
         Cancelado
       </span>
     )
@@ -709,13 +709,13 @@ function CodigoModal({ pedido, onConfirm, onCancel }) {
         <h3 style={{ margin: '0 0 6px', fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>
           Código de seguimiento
         </h3>
-        <p style={{ margin: '0 0 18px', fontSize: 13, color: 'var(--text-dim)' }}>
+        <p style={{ margin: '0 0 18px', fontSize: 13, color: 'var(--text)' }}>
           Pedido <strong>#{pedido.id.slice(0, 8)}</strong>
         </p>
 
         <div className="separador-suave" style={{ marginBottom: 18 }} />
 
-        <p style={{ margin: '0 0 8px', fontSize: 12, color: 'var(--text-dim)' }}>
+        <p style={{ margin: '0 0 8px', fontSize: 12, color: 'var(--text)' }}>
           Empresa de transporte
         </p>
         <div role="radiogroup" aria-label="Empresa de transporte" style={{ display: 'flex', gap: 10, marginBottom: 18 }}>
@@ -748,7 +748,7 @@ function CodigoModal({ pedido, onConfirm, onCancel }) {
           })}
         </div>
 
-        <p style={{ margin: '0 0 18px', fontSize: 13, color: 'var(--text-dim)' }}>
+        <p style={{ margin: '0 0 18px', fontSize: 13, color: 'var(--text)' }}>
           {actual.ayuda}
         </p>
         <input
@@ -951,12 +951,12 @@ export default function Pedidos() {
       <div className="admin-page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <ClipboardList size={22} style={{ color: 'var(--text)' }} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text)' }}>Pedidos</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text-on-bg)' }}>Pedidos</h1>
       </div>
         <div className="admin-search">
           <Search
             size={15}
-            style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-dim)', pointerEvents: 'none' }}
+            style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-on-bg)', pointerEvents: 'none' }}
           />
           <input
             type="search"
@@ -974,16 +974,16 @@ export default function Pedidos() {
       </div>
 
       {cargando && pedidos.length === 0 ? (
-        <p style={{ color: 'var(--text-dim)' }}>Cargando pedidos…</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>Cargando pedidos…</p>
       ) : error ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--red, #ef4444)', fontSize: 13 }}>
           <AlertTriangle size={16} />
           {error}
         </div>
       ) : pedidos.length === 0 ? (
-        <p style={{ color: 'var(--text-dim)' }}>No hay pedidos registrados.</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>No hay pedidos registrados.</p>
       ) : pedidosFiltrados.length === 0 ? (
-        <p style={{ color: 'var(--text-dim)' }}>No hay pedidos que coincidan con «{busqueda}»</p>
+        <p style={{ color: 'var(--text-on-bg)' }}>No hay pedidos que coincidan con «{busqueda}»</p>
       ) : (
         <>
           {mensaje && (
@@ -994,7 +994,7 @@ export default function Pedidos() {
           <div className="admin-table-wrap">
           <table className="admin-table admin-table--pedidos" style={{ textAlign: 'center' }}>
             <thead>
-              <tr style={{ color: 'var(--text)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
+              <tr style={{ color: 'var(--text-on-bg)', textAlign: 'center', fontSize: 11, textTransform: 'uppercase' }}>
                 <th style={{ padding: '0 10px 12px' }}>Pedido</th>
                 <th style={{ padding: '0 10px 12px' }}>Fecha</th>
                 <th style={{ padding: '0 10px 12px' }}>Total</th>
@@ -1013,14 +1013,14 @@ export default function Pedidos() {
                 const sinCodigo = esRetiro || bloqueado
                 return (
                   <tr key={p.id} style={{ borderTop: '1px solid var(--surface-3)' }}>
-                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', fontSize: 11 }}>
+                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)', fontSize: 11 }}>
                       {p.id.slice(0, 8)}
                     </td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>{fechaTexto(p.fecha)}</td>
-                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{fechaTexto(p.fecha)}</td>
+                    <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>
                       ${p.total.toLocaleString('es-CL')}
                     </td>
-                    <td style={{ padding: '13px 10px', color: 'var(--text-dim)' }}>
+                    <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>
                       <span
                         style={{ cursor: 'pointer', display: 'inline-flex' }}
                         onClick={() => setDetalle(p)}
@@ -1040,13 +1040,13 @@ export default function Pedidos() {
                               : 'Editar código de seguimiento'}
                           style={{
                             fontFamily: 'var(--font-mono)',
-                            color: 'var(--text)',
+                            color: 'var(--text-on-bg)',
                             cursor: sinCodigo ? 'not-allowed' : 'pointer',
                             opacity: sinCodigo ? 0.45 : 1,
                           }}
                         >
-                          <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text)' }}>{p.codigo_seguimiento}</span>
-                          <span style={{ display: 'block', fontSize: 10, color: 'var(--text-dim)' }}>
+                          <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{p.codigo_seguimiento}</span>
+                          <span style={{ display: 'block', fontSize: 10, color: 'var(--text-on-bg)' }}>
                             {p.transportista === 'bluexpress' ? 'Bluexpress' : 'Starken'}
                           </span>
                         </span>
@@ -1065,7 +1065,7 @@ export default function Pedidos() {
                             opacity: sinCodigo ? 0.35 : 1
                           }}
                         >
-                          <Pencil size={16} color={sinCodigo ? 'var(--text-dim)' : "var(--green)"} />
+                          <Pencil size={16} color={sinCodigo ? 'var(--text-on-bg)' : "var(--green)"} />
                         </span>
                       )}
                     </td>
@@ -1126,7 +1126,7 @@ export default function Pedidos() {
                                 : 'Actualizar seguimiento'
                         }
                       >
-                        <RefreshCw size={16} color={p.codigo_seguimiento && !sinSync ? 'var(--text)' : 'var(--text-dim)'} />
+                        <RefreshCw size={16} color={p.codigo_seguimiento && !sinSync ? 'var(--green)' : 'var(--text-on-bg)'} />
                       </span>
                     </td>
                   </tr>
@@ -1147,14 +1147,14 @@ export default function Pedidos() {
             background: 'var(--bg)', borderTop: '1px solid var(--surface-3)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-dim)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-on-bg)' }}>
             <button
               onClick={() => setPagina(p => Math.max(1, p - 1))}
               disabled={pagina === 1}
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
-                background: 'transparent', color: 'var(--text-dim)',
+                background: 'transparent', color: 'var(--text-on-bg)',
                 cursor: pagina === 1 ? 'not-allowed' : 'pointer',
                 opacity: pagina === 1 ? 0.4 : 1,
               }}
@@ -1173,7 +1173,7 @@ export default function Pedidos() {
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
-                background: 'transparent', color: 'var(--text-dim)',
+                background: 'transparent', color: 'var(--text-on-bg)',
                 cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
                 opacity: pagina === totalPaginas ? 0.4 : 1,
               }}
@@ -1183,7 +1183,7 @@ export default function Pedidos() {
             </button>
           </div>
 
-          <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+          <span style={{ fontSize: 11, color: 'var(--text-on-bg)' }}>
             Mostrando {(pagina - 1) * filasPorPagina + 1}
             –{Math.min(pagina * filasPorPagina, pedidosFiltrados.length)} de {pedidosFiltrados.length}
           </span>
