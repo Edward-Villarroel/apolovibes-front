@@ -1311,6 +1311,16 @@ label {
 .cot-pagina {
   padding: 48px 32px;
 }
+/* Loader de Mis Pedidos y Mis Cotizaciones */
+.pagina-loader {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
 
 .pedidos-tarjetas,
 .cotizaciones-tarjetas {

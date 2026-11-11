@@ -471,20 +471,9 @@ export default function MisCotizaciones() {
         return <Navigate to="/" replace />;
     }
 
-    if (cargando) {
+   if (cargando) {
     return (
-        <div
-            style={{
-             position: 'fixed',
-             inset: 0,
-             width: '100%',
-             height: '100dvh',
-             display: 'flex',
-             alignItems: 'center',
-             justifyContent: 'center',
-             background: 'transparent',
-            }}
-        >
+        <div className="wrap cot-pagina pagina-loader">
             <style>{`
                 @keyframes pedidos-spin {
                     to { transform: rotate(360deg); }
