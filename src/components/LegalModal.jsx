@@ -279,7 +279,7 @@ const modalStyle = {
 
 const cerrarStyle = {
   position: 'absolute', top: 16, right: 18, zIndex: 2,
-  background: 'none', border: 'none', color: 'var(--text-dim)',
+  background: 'none', border: 'none', color: 'var(--text)',
   cursor: 'pointer', padding: 4, borderRadius: 6, lineHeight: 1,
   display: 'flex', alignItems: 'center', justifyContent: 'center',
 }
@@ -332,7 +332,7 @@ function ContenidoLegal({ titulo, actualizacion, texto, onClose }) {
           <h2 id="legal-modal-titulo" style={{ fontFamily: 'var(--font-display)', fontSize: 20, margin: 0, color: 'var(--text)' }}>
             {titulo}
           </h2>
-          <p style={{ fontSize: 12, margin: '-4px 0 0', color: 'var(--text-dim)', textAlign: 'center' }}>
+          <p style={{ fontSize: 12, margin: '-4px 0 0', color: 'var(--text)', textAlign: 'center' }}>
             Última actualización: {actualizacion}
           </p>
           <button type="button" onClick={onClose} aria-label="Cerrar" style={cerrarStyle}>
@@ -345,7 +345,7 @@ function ContenidoLegal({ titulo, actualizacion, texto, onClose }) {
           className="modal-scroll"
           style={{
             padding: '20px 24px', overflowY: 'auto', flex: 1, minHeight: 0,
-            fontSize: 14, lineHeight: 1.7, color: 'var(--text-dim)', textAlign: 'justify',
+            fontSize: 14, lineHeight: 1.7, color: 'var(--text)', textAlign: 'justify',
             whiteSpace: 'pre-wrap',
           }}
         >

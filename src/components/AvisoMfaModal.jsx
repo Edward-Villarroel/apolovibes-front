@@ -32,7 +32,7 @@ export default function AvisoMfaModal({ onActivar, onCerrar }) {
                 </h2>
 
                 <p style={{
-                    color: 'var(--text-dim)', fontSize: '.9rem',
+                    color: 'var(--text)', fontSize: '.9rem',
                     lineHeight: 1.55, margin: '0 0 22px',
                 }}>
                     Tu cuenta todavía no tiene la verificación en dos pasos. Si alguien consigue tu
@@ -56,7 +56,7 @@ export default function AvisoMfaModal({ onActivar, onCerrar }) {
                     type="button"
                     onClick={onCerrar}
                     style={{
-                        width: '100%', background: 'transparent', color: 'var(--text-dim)',
+                        width: '100%', background: 'transparent', color: 'var(--text)',
                         border: 'none', padding: 10, cursor: 'pointer', fontSize: 13,
                     }}
                 >

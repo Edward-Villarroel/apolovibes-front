@@ -26,7 +26,7 @@ const ENLACES_EMPRESA = [
 ]
 
 const LINK_BUTTON_STYLE = {
-  fontSize: 13, color: 'var(--text-dim)', background: 'none',
+  fontSize: 13, color: 'var(--text)', background: 'none',
   border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left',
   fontFamily: 'inherit',
 }
@@ -65,7 +65,7 @@ function SeccionFooter({ titulo, abierta, alAlternar, children }) {
           size={16}
           className="footer-chevron"
           style={{
-            color: 'var(--text-dim)',
+            color: 'var(--text)',
             flexShrink: 0,
             transition: 'transform .15s',
             transform: abierta ? 'rotate(180deg)' : undefined,
@@ -161,7 +161,7 @@ export default function Footer() {
               >
                 Apolo Vibes 3D
               </p>
-              <p style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.6, marginBottom: 16, maxWidth: 220 }}>
+              <p style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.6, marginBottom: 16, maxWidth: 220 }}>
                 De nuestro stock o hecho a tu medida: tu idea, con la energía de Apolo Vibes.
               </p>
 
@@ -169,7 +169,7 @@ export default function Footer() {
                 style={{
                   fontSize: 11,
                   fontWeight: 500,
-                  color: 'var(--text-dim)',
+                  color: 'var(--text)',
                   letterSpacing: '.04em',
                   textTransform: 'uppercase',
                   marginBottom: 8,
@@ -227,7 +227,7 @@ export default function Footer() {
                       window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: e.href } }))
                     }
                   }}
-                  style={{ fontSize: 13, color: 'var(--text-dim)' }}
+                  style={{ fontSize: 13, color: 'var(--text)' }}
                 >
                   {e.nombre}
                 </Link>
@@ -254,7 +254,7 @@ export default function Footer() {
                       window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: e.href } }))
                     }
                   }}
-                  style={{ fontSize: 13, color: 'var(--text-dim)' }}
+                  style={{ fontSize: 13, color: 'var(--text)' }}
                 >
                   {e.nombre}
                 </Link>
@@ -279,8 +279,8 @@ export default function Footer() {
               abierta={seccionesAbiertas.contacto}
               alAlternar={() => alternar('contacto')}
             >
-              <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>contacto@apolovibes3d.cl</span>
-              <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>Viña del Mar, Chile</span>
+              <span style={{ fontSize: 13, color: 'var(--text)' }}>contacto@apolovibes3d.cl</span>
+              <span style={{ fontSize: 13, color: 'var(--text)' }}>Viña del Mar, Chile</span>
             </SeccionFooter>
           </div>
 
@@ -292,7 +292,7 @@ export default function Footer() {
               alignItems: 'center',
               paddingTop: 20,
               fontSize: 12,
-              color: 'var(--text-dim)',
+              color: 'var(--text)',
               fontFamily: 'var(--font-mono)',
             }}
           >

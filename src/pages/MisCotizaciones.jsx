@@ -677,7 +677,7 @@ export default function MisCotizaciones() {
                                                     type="button"
                                                     onClick={() => abrirAviso(c)}
                                                     className="pedido-card-btn"
-                                                    style={{ position: 'relative', background: 'transparent', color: 'var(--text-on-bg)', border: '1px solid var(--surface-3)' }}
+                                                    style={{ position: 'relative', background: 'transparent', color: 'var(--text)', border: '1px solid var(--surface-3)' }}
                                                 >
                                                     <Info size={16} />
                                                     Ver novedad

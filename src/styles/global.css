@@ -1416,7 +1416,7 @@ label {
 .pedido-card-total {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-on-bg);
+  color: var(--text);
   margin-top: 2px;
 }
 

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useTheme } from '../../context/ThemeContext.jsx'
@@ -139,12 +139,6 @@ export default function AdminLayout() {
   const { logout, user } = useAuth()
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
-
-  // Set dark mode by default for admin panel
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', 'dark')
-    localStorage.setItem('apolovibes_theme', 'dark')
-  }, [])
 
   const handleLogout = async () => {
     try {

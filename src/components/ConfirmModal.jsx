@@ -57,7 +57,7 @@ export default function ConfirmModal({
         <h3 style={{ margin: '0 0 6px', fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>
           {titulo}
         </h3>
-        <p style={{ margin: '0 0 22px', fontSize: 13, color: 'var(--text-dim)' }}>
+        <p style={{ margin: '0 0 22px', fontSize: 13, color: 'var(--text)' }}>
           {mensaje}
         </p>
         <div style={{ display: 'flex', gap: 10 }}>
