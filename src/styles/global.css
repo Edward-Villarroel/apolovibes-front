@@ -465,9 +465,7 @@ label {
   .wrap {
     padding: 0 20px;
   }
-}
 
-@media (max-width: 1024px) {
   .hero-eyebrow {
     font-size: 11px !important;
     margin-bottom: 14px !important;
@@ -999,13 +997,6 @@ label {
   opacity: 1;
 }
 
-.checkout-form input:-webkit-autofill,
-.checkout-form input:-webkit-autofill:hover,
-.checkout-form input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset !important;
-  -webkit-text-fill-color: var(--text-on-bg) !important;
-}
-
 .hero-media img {
   display: block;
   width: 100%;
@@ -1491,20 +1482,16 @@ label {
   animation: pago-imagen-entrada 0.55s ease-out both;
 }
 
-.pago-retorno-spinner {
-  width: 38px;
-  height: 38px;
-  border: 3px solid var(--line);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: pago-girar 0.8s linear infinite;
-  margin: 0 auto 20px;
-}
-
 @keyframes pago-girar {
   to {
     transform: rotate(360deg);
   }
+}
+
+.pago-retorno-spinner-icono {
+  display: block;
+  margin: 0 auto 20px;
+  animation: pago-girar 1s linear infinite;
 }
 
 @keyframes pago-entrada {
@@ -1534,7 +1521,7 @@ label {
 @media (prefers-reduced-motion: reduce) {
   .pago-retorno-panel,
   .pago-retorno-imagen,
-  .pago-retorno-spinner {
+  .pago-retorno-spinner-icono {
     animation: none !important;
   }
 }
