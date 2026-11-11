@@ -746,12 +746,14 @@ export default function MisPedidos() {
   return (
     <div
       style={{
-        minHeight: '100vh',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'transparent',
+        position: 'fixed',
+             inset: 0,
+             width: '100%',
+             height: '100dvh',
+             display: 'flex',
+             alignItems: 'center',
+             justifyContent: 'center',
+             background: 'transparent',
       }}
     >
       <style>{`

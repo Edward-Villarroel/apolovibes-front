@@ -2,7 +2,9 @@ import { useState, useEffect, useMemo } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import {
     AlertTriangle, Eye, Info, X, User, Mail, Phone, Clock,
-    Lock, CheckCircle2, ChevronLeft, CreditCard, ChevronRight, Ruler, Hash, Layers, Tag, Palette, ImageOff
+Lock, CheckCircle2, ChevronLeft, CreditCard, ChevronRight,
+Ruler, Hash, Layers, Tag, Palette, ImageOff, RefreshCw
+
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { mediaPath, urlMedia } from '../utils/media.js';
@@ -469,6 +471,39 @@ export default function MisCotizaciones() {
         return <Navigate to="/" replace />;
     }
 
+    if (cargando) {
+    return (
+        <div
+            style={{
+             position: 'fixed',
+             inset: 0,
+             width: '100%',
+             height: '100dvh',
+             display: 'flex',
+             alignItems: 'center',
+             justifyContent: 'center',
+             background: 'transparent',
+            }}
+        >
+            <style>{`
+                @keyframes pedidos-spin {
+                    to { transform: rotate(360deg); }
+                }
+            `}</style>
+
+            <RefreshCw
+                size={38}
+                color="var(--accent, #FA7F19)"
+                strokeWidth={2.5}
+                style={{
+                    animation: 'pedidos-spin 1s linear infinite',
+                }}
+            />
+        </div>
+    );
+}
+
+
     async function abrirAviso(c) {
         setAvisoCotizacion(c);
         try {
@@ -486,9 +521,7 @@ export default function MisCotizaciones() {
                 Aquí puedes revisar el estado y el detalle de tus cotizaciones.
             </p>
 
-            {cargando ? (
-                <p style={{ color: 'var(--text-dim)' }}>Cargando tus cotizaciones…</p>
-            ) : error ? (
+            {error ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#b60303', fontSize: 13 }}>
                     <AlertTriangle size={16} />
                     {error}
