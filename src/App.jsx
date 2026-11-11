@@ -5,7 +5,7 @@ import TopBar from './components/TopBar.jsx'
 import Footer from './components/Footer.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
-import RutaCliente from './components/RutaCliente..jsx'
+import RutaCliente from './components/RutaCliente.jsx'
 import RutaNoAdmin from './components/RutaNoAdmin.jsx'
 
 import Home from './pages/Home.jsx'

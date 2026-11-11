@@ -22,7 +22,6 @@ const ENLACES_TIENDA = ['Videojuegos y Cine', 'Articulados', 'Llaveros', 'Animal
   nombre => ({ nombre, href: `/categorias?cat=${slugDeCategoria(nombre)}`}))
 
 const ENLACES_EMPRESA = [
-  { nombre: 'Nosotros', href: '/' },
   { nombre: 'Cotiza tu producto', href: '/cotizar' },
 ]
 

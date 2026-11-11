@@ -218,34 +218,20 @@ export default function Navbar() {
           >Catálogo</Link>
           {!isAdmin && (
             <>
-             <Link
-            to="/cotizar"
-            onClick={(e) => {
-              const estaEnCheckout = window.__checkoutBlocking && (
-                (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) ||
-                window.location.pathname.endsWith('/checkout') ||
-                window.location.pathname.includes('/checkout')
-              )
-              if (estaEnCheckout) {
-                e.preventDefault()
-                window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/cotizar' } }))
-              }
-            }}
-          >Cotiza tu producto</Link>
-          <Link
-            to="/"
-            onClick={(e) => {
-              const estaEnCheckout = window.__checkoutBlocking && (
-                (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) ||
-                window.location.pathname.endsWith('/checkout') ||
-                window.location.pathname.includes('/checkout')
-              )
-              if (estaEnCheckout) {
-                e.preventDefault()
-                window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/' } }))
-              }
-            }}
-          >Nosotros</Link>
+              <Link
+                to="/cotizar"
+                onClick={(e) => {
+                  const estaEnCheckout = window.__checkoutBlocking && (
+                    (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) ||
+                    window.location.pathname.endsWith('/checkout') ||
+                    window.location.pathname.includes('/checkout')
+                  )
+                  if (estaEnCheckout) {
+                    e.preventDefault()
+                    window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/cotizar' } }))
+                  }
+                }}
+              >Cotiza tu producto</Link>
             </>
           )}
         </nav>
@@ -418,7 +404,7 @@ export default function Navbar() {
                 <button
                   onClick={() => handlePedirLogout(() => setUserMenuOpen(false))}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: 10, 
+                    display: 'flex', alignItems: 'center', gap: 10,
                     width: 'calc(100% - 16px)', margin: '8px',
                     padding: '11px 12px', border: 'none', borderRadius: 8,
                     background: 'var(--red)',
@@ -520,9 +506,9 @@ export default function Navbar() {
                           onClick={() => { setCartOpen(false); abrirLogin() }}
                           style={{ color: 'var(--text)' }}
                         >
-                           Iniciar sesión
+                          Iniciar sesión
                         </button>
-                      </div>     
+                      </div>
                     ) : items.length === 0 ? (
                       <div style={{ padding: '32px 16px', textAlign: 'center' }}>
                         <img
@@ -568,7 +554,20 @@ export default function Navbar() {
                             borderBottom: index < items.length - 1 ? '1px solid var(--surface-3)' : 'none',
                           }}
                         >
-                          <div
+                          <Link
+                            to={`/producto/${item.id}`}
+                            onClick={(e) => {
+                              const estaEnCheckout = window.__checkoutBlocking && (
+                                (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) ||
+                                window.location.pathname.endsWith('/checkout') ||
+                                window.location.pathname.includes('/checkout')
+                              )
+                              if (estaEnCheckout) {
+                                e.preventDefault()
+                                window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: `/producto/${item.id}` } }))
+                              }
+                              setCartOpen(false)
+                            }}
                             style={{
                               width: 56,
                               height: 56,
@@ -592,7 +591,7 @@ export default function Navbar() {
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                               />
                             )}
-                          </div>
+                          </Link>
 
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
@@ -652,7 +651,7 @@ export default function Navbar() {
                     )}
                   </div>
                   <div className="separador-suave" style={{ display: 'flex', flexDirection: 'column', fontSize: 16, color: 'var(--text-on-bg)' }}></div>
-                 {!requiereLogin && items.length > 0 && (
+                  {!requiereLogin && items.length > 0 && (
                     <div style={{ padding: '14px 16px', borderTop: '1px solid var(--bg)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, fontWeight: 600, color: 'var(--text-on-bg)', marginBottom: 12 }}>
                         <span>Total</span>
@@ -828,22 +827,22 @@ export default function Navbar() {
             )}
             {!isAdmin && (
               <div className="nm-section">
-              <button className="nm-item" onClick={() => {
-                const estaEnCheckout = window.__checkoutBlocking && (
-                  (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) ||
-                  window.location.pathname.endsWith('/checkout') ||
-                  window.location.pathname.includes('/checkout')
-                )
-                if (estaEnCheckout) {
-                  window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/cotizar' } }))
-                  setMobileOpen(false)
-                  return
-                }
-                handleMobileNav('/cotizar')
-              }}>
-                <Calculator size={18} /> Cotiza tu producto
-              </button>
-            </div>
+                <button className="nm-item" onClick={() => {
+                  const estaEnCheckout = window.__checkoutBlocking && (
+                    (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) ||
+                    window.location.pathname.endsWith('/checkout') ||
+                    window.location.pathname.includes('/checkout')
+                  )
+                  if (estaEnCheckout) {
+                    window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: '/cotizar' } }))
+                    setMobileOpen(false)
+                    return
+                  }
+                  handleMobileNav('/cotizar')
+                }}>
+                  <Calculator size={18} /> Cotiza tu producto
+                </button>
+              </div>
             )}
 
 
@@ -931,15 +930,15 @@ export default function Navbar() {
             {/* Logo pie del menu */}
             <div className="nm-footer">
               <img
-              src={mediaPath('nombrelogo2.webp')}
-              alt="Apolo Vibes 3D"
-              loading="lazy"
-              decoding="async"
-              width="512"
-              height="171"
-              onClick={() => handleMobileNav('/')} 
+                src={mediaPath('nombrelogo2.webp')}
+                alt="Apolo Vibes 3D"
+                loading="lazy"
+                decoding="async"
+                width="512"
+                height="171"
+                onClick={() => handleMobileNav('/')}
               />
-             </div>
+            </div>
           </div>
         </div>,
         document.body

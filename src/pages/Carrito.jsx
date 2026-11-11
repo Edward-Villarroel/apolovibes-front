@@ -165,7 +165,7 @@ export default function Carrito() {
 
           {items.map(item => (
             <div
-              key={item.id}
+              key={item.itemId}
               style={{
                 display: 'flex',
                 gap: 16,
@@ -174,7 +174,9 @@ export default function Carrito() {
                 borderBottom: '1px solid var(--surface-3)',
               }}
             >
-              <div
+              <Link
+                to={`/producto/${item.id}`}
+                aria-label={`Ver detalle de ${item.nombre}`}
                 style={{
                   width: 110,
                   height: 110,
@@ -198,13 +200,13 @@ export default function Carrito() {
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 )}
-              </div>
+              </Link>
 
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <p style={{ fontWeight: 600, margin: '0 0 6px', fontSize: 15, color: 'var(--text-on-bg)' }}>
+                  <Link to={`/producto/${item.id}`} style={{ display: 'block', fontWeight: 600, margin: '0 0 6px', fontSize: 15, color: 'var(--text-on-bg)' }}>
                     {item.nombre}
-                  </p>
+                  </Link>
                   <button
                     type="button"
                     onClick={() => quitarItem(item.itemId)}
