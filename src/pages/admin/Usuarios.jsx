@@ -13,11 +13,11 @@ function numero(valor) {
 function TarjetaResumen({ icon: Icon, label, valor, detalle, color }) {
   return (
     <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12, padding: 20 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text)', marginBottom: 6 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-on-bg)', marginBottom: 6 }}>
         <Icon size={15} style={{ color: color || 'var(--accent)' }} />
         {label}
       </div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--text)' }}>{valor}</div>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--text-on-bg)' }}>{valor}</div>
       {detalle && (
         <div style={{ fontSize: 11.5, color: 'var(--text-on-bg)', marginTop: 6 }}>{detalle}</div>
       )}

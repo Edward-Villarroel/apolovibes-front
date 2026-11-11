@@ -27,7 +27,7 @@ const ESTILO_ESTADO = {
   cancelado: { bg: '#FFD9D9', color: '#8C1212' },
 };
 
-const ESTILO_LISTO_RETIRO = { bg: '#DCE9FF', color: '#123F8C' };
+const ESTILO_LISTO_RETIRO = { bg: 'var(--accent)', color: '#fff' };
 
 const ETIQUETA_ENTREGA = {
   envio: 'Envío a domicilio',
