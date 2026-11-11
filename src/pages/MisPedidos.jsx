@@ -742,6 +742,36 @@ export default function MisPedidos() {
     return <Navigate to="/" replace />;
   }
 
+  if (cargando) {
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'transparent',
+      }}
+    >
+      <style>{`
+        @keyframes pedidos-spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+
+      <RefreshCw
+        size={38}
+        color="var(--accent, #FA7F19)"
+        strokeWidth={2.5}
+        style={{
+          animation: 'pedidos-spin 1s linear infinite',
+        }}
+      />
+    </div>
+  );
+}
+
   return (
     <div className="wrap cot-pagina" style={{ minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--text-on-bg)' }}>
@@ -751,9 +781,7 @@ export default function MisPedidos() {
         Aquí puedes revisar el estado de cada pedido y su seguimiento de envío.
       </p>
 
-      {cargando ? (
-        <p style={{ color: 'var(--text-dim)' }}>Cargando tus pedidos…</p>
-      ) : error ? (
+      {error ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#b60303', fontSize: 13 }}>
           <AlertTriangle size={16} />
           {error}
