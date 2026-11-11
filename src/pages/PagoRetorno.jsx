@@ -4,6 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { confirmarPago } from '../services/payment.js'
 import { useCart } from '../context/CartContext.jsx'
 import { mediaPath } from '../utils/media.js'
+import { RefreshCw } from 'lucide-react'
 
 const RESULTADOS_FALLIDOS = ['failed', 'aborted', 'cancelled']
 
@@ -129,8 +130,12 @@ export default function PagoRetorno() {
         {/* VERIFICANDO */}
         {estado === 'verificando' && (
           <>
-            <div className="pago-retorno-spinner" />
-
+            <RefreshCw
+              className="pago-retorno-spinner-icono"
+              size={38}
+              color="var(--accent, #FA7F19)"
+              strokeWidth={2.5}
+            />
             <h1
               style={{
                 fontFamily: 'var(--font-display)',
@@ -140,7 +145,6 @@ export default function PagoRetorno() {
             >
               Estamos procesando tu pago
             </h1>
-
             <p style={{ color: 'var(--text-dim)', marginBottom: 24 }}>
               Por favor, espera un momento...
             </p>
