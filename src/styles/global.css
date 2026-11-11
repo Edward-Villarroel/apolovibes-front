@@ -1488,6 +1488,19 @@ label {
   }
 }
 
+/* Movimiento reducido: el loader respira en vez de girar, para que nunca
+   se vea congelado (un spinner parado parece roto, no "procesando"). */
+@keyframes pago-pulso {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .3;
+  }
+}
+
 .pago-retorno-spinner-icono {
   display: block;
   margin: 0 auto 20px;
@@ -1520,9 +1533,12 @@ label {
 
 @media (prefers-reduced-motion: reduce) {
   .pago-retorno-panel,
-  .pago-retorno-imagen,
-  .pago-retorno-spinner-icono {
+  .pago-retorno-imagen {
     animation: none !important;
+  }
+
+  .pago-retorno-spinner-icono {
+    animation: pago-pulso 1.4s ease-in-out infinite !important;
   }
 }
 
