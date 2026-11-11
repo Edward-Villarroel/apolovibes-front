@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const GAP = 20
 
-export default function ProductCarousel({ productos }) {
+export default function ProductCarousel({ productos, prioridad = false }) {
     const scrollRef = useRef(null)
     const [enInicio, setEnInicio] = useState(true)
     const [enFinal, setEnFinal] = useState(false)
@@ -90,7 +90,7 @@ export default function ProductCarousel({ productos }) {
                 >
                     {productos.map((p, i) => (
                         <div key={p.id} className="carousel-item" style={{ minWidth: 0 }}>
-                            <ProductCard producto={p} index={i} />
+                            <ProductCard producto={p} index={i} prioridad={prioridad && 1 < 4}/>
                         </div>
                     ))}
                 </div>

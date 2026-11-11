@@ -86,7 +86,7 @@ export default function Home() {
           </p>
         )}
         {hayRanking && rankingSemanal.productos.length > 0 && (
-          <ProductCarousel productos={rankingSemanal.productos} />
+          <ProductCarousel productos={rankingSemanal.productos} prioridad />
         )}
       </section>
 

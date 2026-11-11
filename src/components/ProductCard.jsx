@@ -13,7 +13,7 @@ const COLOR_DESCUENTO = '#FA7F19'
 const COLOR_SIN_STOCK = '#db0b0b91'
 const COLOR_BUTTON = '#FA7F19'
 
-export default function ProductCard({ producto, index = 0 }) {
+export default function ProductCard({ producto, index = 0, prioridad = false }) {
   const { agregarProducto } = useCart()
   const { isAdmin } = useAuth()
   const { categorias } = useProductos()
@@ -87,7 +87,10 @@ export default function ProductCard({ producto, index = 0 }) {
             <img
               src={urlMedia(imagenTarjeta)}
               alt={producto.nombre}
-              loading="lazy"
+              width="400"
+              height="400"
+              loading={ prioridad ? 'eager' : 'lazy'}
+              fetchPriority={prioridad ? 'high' : 'auto'}
               decoding="async"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
