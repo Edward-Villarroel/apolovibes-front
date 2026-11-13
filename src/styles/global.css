@@ -1592,3 +1592,24 @@ label {
   .cat-txt strong{font-size:.9rem}
   .cat-txt small{font-size:.7rem}
 }
+
+/* Escritorio y tablet: tarjetas en vertical, una al lado de la otra */
+@media (min-width: 769px) {
+  .cat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cat-card {
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 18px 12px 16px;
+    min-height: 196px;
+  }
+  .cat-card.ancha { grid-column: auto; }
+  .cat-card img { width: 72px; height: 72px; }
+  .cat-txt { flex: none; align-items: center; }
+  .cat-go { display: none; }
+}
+
+/* Escritorio ancho: las 7 tarjetas en una sola fila */
+@media (min-width: 1100px) {
+  .cat-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+}

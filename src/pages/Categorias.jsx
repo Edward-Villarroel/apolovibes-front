@@ -4,12 +4,11 @@ import ProductCard from '../components/ProductCard.jsx'
 import { useProductos } from '../context/ProductContext.jsx'
 import { mediaPath } from '../utils/media.js'
 
-// Parte ESTÁTICA: la clave (slug) debe coincidir con slugify(nombre) de la BD
 const CATEGORIAS_UI = [
   { slug: 'videojuegos-y-cine', img: 'cat-videojuegos.webp', desc: 'Tus personajes favoritos' },
   { slug: 'articulados',        img: 'cat-articulados.webp', desc: 'Arma, exhibe y disfruta' },
   { slug: 'llaveros',           img: 'cat-llaveros.webp',    desc: 'Llévalos siempre contigo' },
-  { slug: 'animales',           img: 'cat-animales.webp',    desc: 'Tus mascotas favoritas' },
+  { slug: 'animales',           img: 'cat-animales.webp',    desc: 'Tus animales favoritos' },
   { slug: 'accesorios',         img: 'cat-accesorios.webp',  desc: 'Detalles que hacen la diferencia' },
   { slug: 'disenos-a-medida',   img: 'cat-medida.webp',      desc: 'Convierte tu idea en una creación 3D', ancha: true },
 ]
