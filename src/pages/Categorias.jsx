@@ -44,7 +44,6 @@ export default function Categorias() {
   const { productos, categorias, cargando, error } = useProductos()
   const [params, setParams] = useSearchParams()
   const productosRef = useRef(null)
-  const categoriasRef = useRef(null)
 
   const slugActivo = params.get('cat')
   const catActiva = categorias.find(
@@ -57,10 +56,13 @@ export default function Categorias() {
     else setParams({})
 
     const esMovil = window.matchMedia('(max-width: 768px)').matches
-    const destino = esMovil ? productosRef.current : categoriasRef.current
-    requestAnimationFrame(() =>
-      destino?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    )
+    requestAnimationFrame(() => {
+      if (esMovil) {
+        productosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    })
   }
 
   const filtrados = activa ? productos.filter((p) => p.categoria_id === activa) : productos
@@ -71,7 +73,7 @@ export default function Categorias() {
         Catálogo
       </h1>
 
-      <div className="cat-grid" ref={categoriasRef} style={{ scrollMarginTop: 120 }}>
+      <div className="cat-grid">
         <TarjetaCategoria
           img="cat-todas.webp"
           titulo="Todas"
