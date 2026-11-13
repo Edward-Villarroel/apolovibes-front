@@ -16,7 +16,7 @@ const CATEGORIAS_UI = [
 const slugify = (texto) =>
   texto
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
@@ -44,6 +44,7 @@ export default function Categorias() {
   const { productos, categorias, cargando, error } = useProductos()
   const [params, setParams] = useSearchParams()
   const productosRef = useRef(null)
+  const categoriasRef = useRef(null)
 
   const slugActivo = params.get('cat')
   const catActiva = categorias.find(
@@ -54,8 +55,11 @@ export default function Categorias() {
   const seleccionar = (cat) => {
     if (cat) setParams({ cat: slugify(cat.nombre) })
     else setParams({})
+
+    const esMovil = window.matchMedia('(max-width: 768px)').matches
+    const destino = esMovil ? productosRef.current : categoriasRef.current
     requestAnimationFrame(() =>
-      productosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      destino?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     )
   }
 
@@ -67,7 +71,7 @@ export default function Categorias() {
         Catálogo
       </h1>
 
-      <div className="cat-grid">
+      <div className="cat-grid" ref={categoriasRef} style={{ scrollMarginTop: 120 }}>
         <TarjetaCategoria
           img="cat-todas.webp"
           titulo="Todas"
