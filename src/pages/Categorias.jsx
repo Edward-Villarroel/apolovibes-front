@@ -97,7 +97,7 @@ export default function Categorias() {
         })}
       </div>
 
-      <div ref={productosRef} style={{ scrollMarginTop: 80 }} />
+      <div ref={productosRef} style={{ scrollMarginTop: 120 }} />
 
       {cargando ? (
         <p style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '4px 0' }}>
