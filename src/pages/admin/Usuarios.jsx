@@ -409,6 +409,7 @@ export default function Usuarios() {
                   : `No hay usuarios que coincidan con${busqueda ? ` "${busqueda}"` : ''}${filtroRol !== 'todos' ? ` y rol "${filtroRol}"` : ''}`}
               </p>
           ) : (
+            <>
             <div className="admin-table-wrap">
               <table className="admin-table admin-table--usuarios">
                 <thead>
@@ -554,6 +555,7 @@ export default function Usuarios() {
                 </button>
               </div>
             )}
+            </>
           )}
         </>
       )}
