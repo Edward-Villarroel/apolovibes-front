@@ -74,12 +74,12 @@ export default function ResenasSeccion({ producto, resenas, cargando, error }) {
                 <>
                     {/* Resumen */}
                     <div style={{
-                        background: '#FFFFFF', border: '1px solid var(--line)', borderRadius: 14,
+                        background: 'var(--input-bg)', border: '1px solid var(--line)', borderRadius: 14,
                         padding: '24px 28px', marginBottom: 28,
                         display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 40,
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                            <span style={{ fontSize: 52, fontWeight: 700, lineHeight: 1, color: '#2b3640' }}>
+                            <span style={{ fontSize: 52, fontWeight: 700, lineHeight: 1, color: 'var(--text)' }}>
                                 {rating.toFixed(1)}
                             </span>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -129,8 +129,8 @@ export default function ResenasSeccion({ producto, resenas, cargando, error }) {
                                         display: 'flex', alignItems: 'center', gap: 6,
                                         padding: '6px 16px', borderRadius: 20, fontSize: 13,
                                         border: `1px solid ${activo ? '#FA7F19' : '#d5dbe1'}`,
-                                        background: activo ? '#fff1e4' : '#FFFFFF',
-                                        color: '#2b3640', cursor: vacio ? 'not-allowed' : 'pointer',
+                                        background: activo ? '#fff1e4' : 'var(--input-bg)',
+                                        color: 'var(--text)', cursor: vacio ? 'not-allowed' : 'pointer',
                                         opacity: vacio ? 0.45 : 1,
                                     }}
                                 >

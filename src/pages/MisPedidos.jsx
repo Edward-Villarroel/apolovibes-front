@@ -332,7 +332,7 @@ function DetalleModal({ pedido, onClose, onPagar, procesando, onCancelado, onMen
                     }}
                   >
                     <div style={{
-                      width: 56, height: 56, borderRadius: 10, background: '#FFFFFF', flexShrink: 0,
+                      width: 56, height: 56, borderRadius: 10, background: 'var(--input-bg)', flexShrink: 0,
                       overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
                       {item.imagen ? (

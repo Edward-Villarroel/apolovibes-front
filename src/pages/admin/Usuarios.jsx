@@ -165,6 +165,7 @@ function ModalAltaUsuario({ abierto, onCerrar, onGuardar, guardando, error }) {
               }}
             >
               <option value="cliente">Cliente</option>
+              <option value="empleado">Empleado</option>
               <option value="admin">Administrador</option>
             </select>
           </div>
@@ -198,7 +199,10 @@ export default function Usuarios() {
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState(null)
   const [busqueda, setBusqueda] = useState('')
+  const [filtroRol, setFiltroRol] = useState('todos')
+  const [pagina, setPagina] = useState(1)
   const [recarga, setRecarga] = useState(0)
+  const FILAS_POR_PAGINA = 15
   const [modalAbierto, setModalAbierto] = useState(false)
   const [guardando, setGuardando] = useState(false)
   const [errorAlta, setErrorAlta] = useState(null)
@@ -229,12 +233,22 @@ export default function Usuarios() {
 
   const filtrados = useMemo(() => {
     const termino = busqueda.trim().toLowerCase()
-    if (!termino) return usuarios
     return usuarios.filter(u => {
       const nombre = `${u.nombre_completo || ''} ${u.nombre || ''} ${u.apellido || ''}`
-      return nombre.toLowerCase().includes(termino) || (u.email || '').toLowerCase().includes(termino)
+      const coincideBusqueda = !termino
+        || nombre.toLowerCase().includes(termino)
+        || (u.email || '').toLowerCase().includes(termino)
+      const coincideRol = filtroRol === 'todos' || u.rol === filtroRol
+      return coincideBusqueda && coincideRol
     })
-  }, [usuarios, busqueda])
+  }, [usuarios, busqueda, filtroRol])
+
+  const usuariosPagina = useMemo(() => {
+    const inicio = (pagina - 1) * FILAS_POR_PAGINA
+    return filtrados.slice(inicio, inicio + FILAS_POR_PAGINA)
+  }, [filtrados, pagina])
+
+  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / FILAS_POR_PAGINA))
 
   const resumen = useMemo(() => usuarios.reduce((acc, u) => ({
     productos: acc.productos + Number(u.productos_comprados || 0),
@@ -309,7 +323,7 @@ export default function Usuarios() {
             <input
               type="search"
               value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
+              onChange={(e) => { setBusqueda(e.target.value); setPagina(1) }}
               placeholder="Buscar por nombre o correo..."
               aria-label="Buscar usuarios"
               style={{
@@ -319,6 +333,21 @@ export default function Usuarios() {
               }}
             />
           </div>
+          <select
+            value={filtroRol}
+            onChange={(e) => { setFiltroRol(e.target.value); setPagina(1) }}
+            aria-label="Filtrar por tipo de usuario"
+            style={{
+              padding: '9px 12px', borderRadius: 10,
+              border: '1px solid var(--line)', background: 'var(--input-bg)',
+              color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
+            }}
+          >
+            <option value="todos">Todos los usuarios</option>
+            <option value="cliente">Cliente</option>
+            <option value="empleado">Empleado</option>
+            <option value="admin">Administrador</option>
+          </select>
           <button
             type="button"
             onClick={() => { setErrorAlta(null); setModalAbierto(true) }}
@@ -373,8 +402,12 @@ export default function Usuarios() {
             />
           </div>
 
-          {filtrados.length === 0 ? (
-            <p style={{ color: 'var(--text-on-bg)' }}>No hay usuarios que coincidan con «{busqueda}»</p>
+            {filtrados.length === 0 ? (
+              <p style={{ color: 'var(--text-on-bg)' }}>
+                {!busqueda && filtroRol === 'todos'
+                  ? 'No hay usuarios registrados.'
+                  : `No hay usuarios que coincidan con${busqueda ? ` "${busqueda}"` : ''}${filtroRol !== 'todos' ? ` y rol "${filtroRol}"` : ''}`}
+              </p>
           ) : (
             <div className="admin-table-wrap">
               <table className="admin-table admin-table--usuarios">
@@ -391,7 +424,7 @@ export default function Usuarios() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filtrados.map(u => {
+                  {usuariosPagina.map(u => {
                     const esPropia = esAdminActual && String(u.id) === String(usuarioActual?.id)
                     return (
                       <>
@@ -484,6 +517,43 @@ export default function Usuarios() {
                 </tbody>
               </table>
             </div>
+
+            {totalPaginas > 1 && (
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                gap: 8, marginTop: 20, flexWrap: 'wrap',
+              }}>
+                <button
+                  type="button"
+                  onClick={() => setPagina(p => Math.max(1, p - 1))}
+                  disabled={pagina === 1}
+                  style={{
+                    padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)',
+                    background: 'var(--input-bg)', color: 'var(--text-on-bg)',
+                    fontSize: 12.5, cursor: pagina === 1 ? 'not-allowed' : 'pointer',
+                    opacity: pagina === 1 ? 0.5 : 1,
+                  }}
+                >
+                  Anterior
+                </button>
+                <span style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>
+                  Página {pagina} de {totalPaginas}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))}
+                  disabled={pagina === totalPaginas}
+                  style={{
+                    padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)',
+                    background: 'var(--input-bg)', color: 'var(--text-on-bg)',
+                    fontSize: 12.5, cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
+                    opacity: pagina === totalPaginas ? 0.5 : 1,
+                  }}
+                >
+                  Siguiente
+                </button>
+              </div>
+            )}
           )}
         </>
       )}

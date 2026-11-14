@@ -76,7 +76,7 @@ export default function ProductCard({ producto, index = 0, prioridad = false }) 
             position: 'relative',
             width: '100%',
             aspectRatio: '1 / 1',
-            background: imagenTarjeta ? '#FFFFFF' : 'var(--surface-2)',
+            background: imagenTarjeta ? 'var(--input-bg)' : 'var(--surface-2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

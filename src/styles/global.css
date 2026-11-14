@@ -46,6 +46,7 @@
   --gold-soft: rgba(246, 217, 118, 0.12);
   --navy: #1E3A5F;
   --input-text: #EDEDE5;
+  --input-bg: #23272F;
 }
 
 * {
@@ -1392,6 +1393,11 @@ label {
   border-radius: 12px;
   padding: 14px;
   margin-bottom: 12px;
+}
+
+[data-theme="dark"] .pedido-card {
+  background: var(--surface);
+  border-color: var(--surface-2);
 }
 
 .pedido-card-fila {

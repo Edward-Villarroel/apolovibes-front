@@ -573,7 +573,7 @@ export default function Navbar() {
                               height: 56,
                               borderRadius: 8,
                               overflow: 'hidden',
-                              background: item.imagen ? '#FFFFFF' : 'var(--surface-2)',
+                              background: item.imagen ? 'var(--input-bg)' : 'var(--surface-2)',
                               flexShrink: 0,
                               display: 'flex',
                               alignItems: 'center',

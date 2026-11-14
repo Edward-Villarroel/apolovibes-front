@@ -350,7 +350,7 @@ export default function SeguridadModal({ onClose }) {
                                         <img
                                             src={qrData}
                                             alt="Código QR de autenticación"
-                                            style={{ width: 180, height: 180, display: 'block', margin: '0 auto 12px', borderRadius: 8, background: '#fff', padding: 8, boxSizing: 'border-box' }}
+                                            style={{ width: 180, height: 180, display: 'block', margin: '0 auto 12px', borderRadius: 8, background: 'var(--input-bg)', padding: 8, boxSizing: 'border-box' }}
                                         />
                                     )}
                                     <label style={{ fontSize: 12, color: 'var(--text-dim)', display: 'block', marginBottom: 6 }}>

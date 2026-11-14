@@ -182,7 +182,7 @@ export default function ProductoDetalle() {
           <div style={{
             position: 'relative',
             height: 600,
-            background: fotoActual ? '#FFFFFF' : 'var(--surface)',
+            background: fotoActual ? 'var(--input-bg)' : 'var(--surface)',
             borderRadius: 1,
             display: 'flex',
             alignItems: 'center',
