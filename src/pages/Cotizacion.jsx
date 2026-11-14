@@ -69,6 +69,7 @@ export default function Cotizacion() {
   const [estadoImagen, setEstadoImagen] = useState('idle')
   const [enviando, setEnviando] = useState(false)
   const [enviado, setEnviado] = useState(false)
+  const [segundosRestantes, setSegundosRestantes] = useState(0)
   const [error, setError] = useState(null)
   const [tocado, setTocado] = useState({})
   const fileInputRef = useRef(null)
@@ -82,6 +83,31 @@ export default function Cotizacion() {
   useLayoutEffect(() => {
     if (enviado) window.scrollTo(0, 0)
   }, [enviado])
+
+  useEffect(() => {
+    if (!enviado || segundosRestantes <= 0) return
+    const id = setInterval(() => {
+      setSegundosRestantes(s => {
+        if (s <= 1) {
+          setEnviado(false)
+          setSegundosRestantes(0)
+          setError(null)
+          setArchivo(null)
+          setPrevisualizacion(null)
+          setCotizacion(null)
+          setEstadoImagen('idle')
+          setProgreso({ status: 'idle', percent: 0, message: '' })
+          setValidandoImagen(false)
+          setTocado({})
+          setForm({ ...ESTADO_INICIAL, nombre: user?.nombre || '', email: user?.email || '' })
+          if (fileInputRef.current) fileInputRef.current.value = ''
+          return 0
+        }
+        return s - 1
+      })
+    }, 1000)
+    return () => clearInterval(id)
+  }, [enviado, segundosRestantes])
 
   const email = form.email.trim()
   const telefono = form.telefono.trim()
@@ -227,8 +253,10 @@ export default function Cotizacion() {
     } catch (err) {
       const msg = err?.datos?.mensaje || err?.message || 'No pudimos enviar tu solicitud. Intenta nuevamente.'
       setError(msg)
+      setEnviado(true)
     } finally {
       setEnviando(false)
+      setSegundosRestantes(10)
     }
   }
 
@@ -241,6 +269,11 @@ export default function Cotizacion() {
           Recibimos tu pieza de referencia.
           Nuestro equipo revisará tu cotización. Te avisaremos dentro de 24 a 48 horas hábiles a tu correo: {form.email}. También puedes revisar el estado en Mis-cotizaciones.
         </p>
+        {segundosRestantes > 0 && (
+          <p style={{ marginTop: 18, fontSize: 14, color: 'var(--accent)', fontWeight: 600 }}>
+            Volveremos al formulario en {segundosRestantes} segundo{segundosRestantes !== 1 ? 's' : ''}…
+          </p>
+        )}
       </section>
     )
   }
@@ -551,7 +584,7 @@ export default function Cotizacion() {
                     padding: '7px 14px', borderRadius: 8, cursor: 'pointer', fontSize: 13,
                     border: `1px solid ${activo ? 'var(--accent)' : 'var(--line)'}`,
                     background: activo ? 'var(--accent)' : 'var(--input-bg)',
-                    color: activo ? 'var(--text)' : 'var(--surface-2)', transition: 'border-color .15s, background .15s',
+                    color: activo ? 'var(--text)' : 'var(--text-dim)', transition: 'border-color .15s, background .15s',
                   }}
                 >
                   {c}

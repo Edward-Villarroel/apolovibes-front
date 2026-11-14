@@ -238,6 +238,8 @@
     flex: 1 1 100%;
   }
 
+  .admin-header-actions > div,
+  .admin-header-actions > select,
   .admin-header-actions > button,
   .admin-header-actions .btn {
     width: 100%;

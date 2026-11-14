@@ -68,38 +68,42 @@ function SidebarContent({ onLogout, user, theme, toggleTheme }) {
         paddingTop: 14,
       }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '4px 12px 12px' }}>
-          <div style={{
-            width: 34, height: 34, borderRadius: '50%',
-            background: user?.foto ? 'transparent' : '#28c72242',
-            display: 'flex', alignItems: 'center',
-            justifyContent: 'center', flexShrink: 0,
-            border: user?.foto ? 'none' : '1px solid var(--green)',
-            overflow: 'hidden',
-          }}
-          >
-            {user?.foto ? (
-              <img
-                src={user.foto}
-                alt={nombreCompleto}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            ) : (
-              <User size={16} style={{ color: 'var(--green)' }} />
-            )}
-          </div>
-          <div style={{ lineHeight: 1.25, overflow: 'hidden' }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {nombreCompleto}
+        <div style={{ padding: '4px 12px 12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{
+              width: 34, height: 34, borderRadius: '50%',
+              background: user?.foto ? 'transparent' : '#28c72242',
+              display: 'flex', alignItems: 'center',
+              justifyContent: 'center', flexShrink: 0,
+              border: user?.foto ? 'none' : '1px solid var(--green)',
+              overflow: 'hidden',
+            }}
+            >
+              {user?.foto ? (
+                <img
+                  src={user.foto}
+                  alt={nombreCompleto}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                <User size={16} style={{ color: 'var(--green)' }} />
+              )}
             </div>
-            {rolLabel && (
-              <div style={{ fontSize: 11.5, color: 'var(--text)' }}>
-                {rolLabel}
+            <div style={{ lineHeight: 1.25, overflow: 'hidden' }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {nombreCompleto}
               </div>
-            )}
+              {rolLabel && (
+                <div style={{ fontSize: 11.5, color: 'var(--text)' }}>
+                  {rolLabel}
+                </div>
+              )}
+            </div>
+          </div>
+          <div style={{ marginTop: 8, display: 'flex', justifyContent: 'center' }}>
             <button
               style={{
-                marginLeft: 12, padding: '6px 12px', borderRadius: '50%',
+                padding: '6px 12px', borderRadius: '50%',
                 border: '1.5px solid rgba(251,247,238,.3)',
                 background: 'rgba(251,247,238,.1)', color: '#FBF7EE',
                 fontSize: 12, cursor: 'pointer',

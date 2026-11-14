@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { AlertTriangle, CheckCircle2, FileText, Plus, RefreshCw, Search, ShoppingBag, Trash2, Users, XCircle } from 'lucide-react'
+import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, FileText, Plus, RefreshCw, Search, ShoppingBag, Trash2, Users, XCircle } from 'lucide-react'
 import { usuariosApi } from '../../services/usuarios.js'
 import ConfirmModal from '../../components/ConfirmModal.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
@@ -200,6 +200,7 @@ export default function Usuarios() {
   const [error, setError] = useState(null)
   const [busqueda, setBusqueda] = useState('')
   const [filtroRol, setFiltroRol] = useState('todos')
+  const [filtroCuenta, setFiltroCuenta] = useState('empresa')
   const [pagina, setPagina] = useState(1)
   const [recarga, setRecarga] = useState(0)
   const FILAS_POR_PAGINA = 15
@@ -233,15 +234,20 @@ export default function Usuarios() {
 
   const filtrados = useMemo(() => {
     const termino = busqueda.trim().toLowerCase()
+    const esEmpresa = (u) => String(u.email || '').toLowerCase().endsWith('@apolovibes.cl')
     return usuarios.filter(u => {
       const nombre = `${u.nombre_completo || ''} ${u.nombre || ''} ${u.apellido || ''}`
       const coincideBusqueda = !termino
         || nombre.toLowerCase().includes(termino)
         || (u.email || '').toLowerCase().includes(termino)
       const coincideRol = filtroRol === 'todos' || u.rol === filtroRol
-      return coincideBusqueda && coincideRol
+      const coincideCuenta =
+        filtroCuenta === 'todos'
+        || (filtroCuenta === 'empresa' && esEmpresa(u))
+        || (filtroCuenta === 'personal' && !esEmpresa(u))
+      return coincideBusqueda && coincideRol && coincideCuenta
     })
-  }, [usuarios, busqueda, filtroRol])
+  }, [usuarios, busqueda, filtroRol, filtroCuenta])
 
   const usuariosPagina = useMemo(() => {
     const inicio = (pagina - 1) * FILAS_POR_PAGINA
@@ -348,6 +354,20 @@ export default function Usuarios() {
             <option value="empleado">Empleado</option>
             <option value="admin">Administrador</option>
           </select>
+          <select
+            value={filtroCuenta}
+            onChange={(e) => { setFiltroCuenta(e.target.value); setPagina(1) }}
+            aria-label="Filtrar por tipo de cuenta"
+            style={{
+              padding: '9px 12px', borderRadius: 10,
+              border: '1px solid var(--line)', background: 'var(--input-bg)',
+              color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
+            }}
+          >
+            <option value="todos">Todas las cuentas</option>
+            <option value="empresa">Cuenta de empresa (@apolovibes.cl)</option>
+            <option value="personal">Cuenta personal</option>
+          </select>
           <button
             type="button"
             onClick={() => { setErrorAlta(null); setModalAbierto(true) }}
@@ -404,9 +424,9 @@ export default function Usuarios() {
 
             {filtrados.length === 0 ? (
               <p style={{ color: 'var(--text-on-bg)' }}>
-                {!busqueda && filtroRol === 'todos'
+                {!busqueda && filtroRol === 'todos' && filtroCuenta === 'todos'
                   ? 'No hay usuarios registrados.'
-                  : `No hay usuarios que coincidan con${busqueda ? ` "${busqueda}"` : ''}${filtroRol !== 'todos' ? ` y rol "${filtroRol}"` : ''}`}
+                  : `No hay usuarios que coincidan con${busqueda ? ` "${busqueda}"` : ''}${filtroRol !== 'todos' ? ` y rol "${filtroRol}"` : ''}${filtroCuenta !== 'todos' ? ` y cuenta "${filtroCuenta === 'empresa' ? 'empresa' : 'personal'}"` : ''}`}
               </p>
           ) : (
             <>
@@ -522,37 +542,56 @@ export default function Usuarios() {
             {totalPaginas > 1 && (
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                gap: 8, marginTop: 20, flexWrap: 'wrap',
+                gap: 6, marginTop: 20, padding: '20px 16px 12px',
+                background: 'var(--bg)',
               }}>
-                <button
-                  type="button"
-                  onClick={() => setPagina(p => Math.max(1, p - 1))}
-                  disabled={pagina === 1}
-                  style={{
-                    padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)',
-                    background: 'var(--input-bg)', color: 'var(--text-on-bg)',
-                    fontSize: 12.5, cursor: pagina === 1 ? 'not-allowed' : 'pointer',
-                    opacity: pagina === 1 ? 0.5 : 1,
-                  }}
-                >
-                  Anterior
-                </button>
-                <span style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>
-                  Página {pagina} de {totalPaginas}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))}
-                  disabled={pagina === totalPaginas}
-                  style={{
-                    padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)',
-                    background: 'var(--input-bg)', color: 'var(--text-on-bg)',
-                    fontSize: 12.5, cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
-                    opacity: pagina === totalPaginas ? 0.5 : 1,
-                  }}
-                >
-                  Siguiente
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <button
+                      onClick={() => setPagina(p => Math.max(1, p - 1))}
+                      disabled={pagina === 1}
+                      style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: 30,
+                          height: 30,
+                          borderRadius: 8,
+                          border: '1px solid var(--surface-3)',
+                          background: 'transparent',
+                          color: 'var(--text-dim)',
+                          cursor: pagina === 1 ? 'not-allowed' : 'pointer',
+                          opacity: pagina === 1 ? 0.4 : 1,
+                      }}
+                      aria-label="Página anterior"
+                  >
+                      <ChevronLeft size={15} />
+                  </button>
+
+                  <span style={{ padding: '0 8px', fontFamily: 'var(--font-mono)' }}>
+                      {pagina} / {totalPaginas}
+                  </span>
+
+                  <button
+                      onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))}
+                      disabled={pagina === totalPaginas}
+                      style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: 30,
+                          height: 30,
+                          borderRadius: 8,
+                          border: '1px solid var(--surface-3)',
+                          background: 'transparent',
+                          color: 'var(--text-dim)',
+                          cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
+                          opacity: pagina === totalPaginas ? 0.4 : 1,
+                      }}
+                      aria-label="Página siguiente"
+                  >
+                      <ChevronRight size={15} />
+                  </button>
+                </div>
               </div>
             )}
             </>

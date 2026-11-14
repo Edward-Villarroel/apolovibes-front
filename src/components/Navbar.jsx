@@ -72,6 +72,14 @@ export default function Navbar() {
     if (isLoggedIn && solicitarLogin && !cargandoCarrito) cerrarLogin()
   }, [isLoggedIn, solicitarLogin, cargandoCarrito, cerrarLogin])
 
+  // Si el menú móvil está abierto y el usuario acaba de iniciar sesión,
+  // cerrarlo para que al reabrirse se renderice con el estado de auth actualizado
+  useEffect(() => {
+    if (isLoggedIn && mobileOpen) {
+      setMobileOpen(false)
+    }
+  }, [isLoggedIn, mobileOpen])
+
   useEffect(() => {
     function interceptarNavegacion(e) {
       const target = e.target
