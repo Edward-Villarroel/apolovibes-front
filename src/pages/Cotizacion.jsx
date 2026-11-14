@@ -74,8 +74,9 @@ export default function Cotizacion() {
   const fileInputRef = useRef(null)
   const timerReestimacion = useRef(null)
   const [validandoImagen, setValidandoImagen] = useState(false)
-  const [cotizacionIA, setCotizacionIA] = useState(null)
+  const [cotizacion, setCotizacion] = useState(null)
   const [calculandoEstimacion, setCalculandoEstimacion] = useState(false)
+  const [aviso, setAviso] = useState(null)
 
 
   useLayoutEffect(() => {
@@ -128,12 +129,12 @@ export default function Cotizacion() {
     const file = e.target.files[0]
     if (!file) return
     if (!file.type.startsWith('image/')) return
-    if (file.size > 8 * 1024 * 1024) return
+    if (file.size > 5 * 1024 * 1024) return
 
     setError(null)
     setArchivo(file)
     setPrevisualizacion(URL.createObjectURL(file))
-    setCotizacionIA(null)
+    setCotizacion(null)
     setEstadoImagen('validando')
 
     setValidandoImagen(true)
@@ -150,28 +151,34 @@ export default function Cotizacion() {
     }
   }
 
-  async function estimar(referencia = archivo) {
-    if (!referencia) return
-    setCalculandoEstimacion(true)
-    try {
-      const resultado = await estimarPieza(referencia, form)
-      setCotizacionIA(resultado)
-    } catch (err) {
-      console.warn('Fallo la estimacion IA en el upload', err)
-    } finally {
-      setCalculandoEstimacion(false)
+ async function estimar(referencia = archivo) {
+  if (!referencia) return
+  setCalculandoEstimacion(true)
+  setAviso(null)
+  try {
+    const resultado = await estimarPieza(referencia, form)
+    setCotizacion(resultado)
+  } catch (err) {
+    if (err?.status === 429) {
+     setAviso('Demasiadas solicitudes, espera 1 minuto y vuelve a intentarlo. Puedes seguir completando tu solicitud.')
+    } else {
+      setAviso(null)
     }
+  } finally {
+    setCalculandoEstimacion(false)
   }
+}
 
   function quitarImagen() {
     if (procesando) return
-    setCotizacionIA(null)
+    setCotizacion(null)
     setArchivo(null)
     setPrevisualizacion(null)
     setEstadoImagen('idle')
     setProgreso({ status: 'idle', percent: 0, message: '' })
     setValidandoImagen(false)
     setError(null)
+    setAviso(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
@@ -183,8 +190,8 @@ export default function Cotizacion() {
     setError(null)
 
     const colorFinal = form.color === 'Otro' ? form.colorOtro.trim() : form.color
-    const cotizacion = cotizacionIA
-    const firma = cotizacion ? (cotizacion.firma || firmaEspecificaciones(form)) : firmaEspecificaciones(form)
+    const estimacion = cotizacion
+    const firma = estimacion ? (estimacion.firma || firmaEspecificaciones(form)) : firmaEspecificaciones(form)
 
     const data = new FormData()
     data.append('nombre', form.nombre.trim())
@@ -200,17 +207,16 @@ export default function Cotizacion() {
     data.append('color', colorFinal)
     data.append('descripcion', form.descripcion.trim())
 
-    if (cotizacion) {
+    if (estimacion) {
       data.append('estimacion_firma', firma)
-      data.append('precio_estimado_ia', cotizacion.precio_estimado_ia ?? cotizacion.precio_clp)
-      data.append('precio_unitario_ia', cotizacion.precio_unitario_ia ?? cotizacion.precio_unitario_clp)
-      data.append('gramos_estimados_ia', cotizacion.gramos_estimados_ia ?? cotizacion.gramos_estimados)
-      data.append('tiempo_estimado_horas_ia', cotizacion.tiempo_estimado_horas_ia ?? cotizacion.tiempo_estimado_horas)
-      data.append('material_sugerido_ia', cotizacion.material_sugerido_ia ?? cotizacion.material_detectado)
-      data.append('complejidad_ia', cotizacion.complejidad_ia ?? cotizacion.complejidad)
-      data.append('confianza_material_ia', cotizacion.confianza_material_ia ?? cotizacion.confianza_material)
-      data.append('confianza_complejidad_ia', cotizacion.confianza_complejidad_ia ?? cotizacion.confianza_complejidad)
-      data.append('detalle_costos', JSON.stringify(cotizacion.detalle))
+      data.append('precio_estimado', estimacion.precio_estimado ?? estimacion.precio_clp)
+      data.append('precio_unitario', estimacion.precio_unitario ?? estimacion.precio_unitario_clp)
+      data.append('gramos_estimados', estimacion.gramos_estimados)
+      data.append('tiempo_estimado_horas', estimacion.tiempo_estimado_horas)
+      data.append('material_sugerido', estimacion.material_sugerido ?? estimacion.material_detectado)
+      data.append('complejidad', estimacion.complejidad)
+      data.append('confianza_material', estimacion.confianza_material)
+      data.append('confianza_complejidad', estimacion.confianza_complejidad)
     }
 
     data.append('imagen', archivo)
@@ -384,6 +390,12 @@ export default function Cotizacion() {
             style={{ display: 'none' }}
           />
         </Paso>
+
+        {aviso && (
+          <p role="alert" style={{ fontSize: 13, color: '#92400e', background: '#fef3c7', padding: '10px 14px', borderRadius: 8, marginBottom: 24 }}>
+            {aviso}
+            </p>
+        )}
 
         {/* ─── Paso 2: Datos de contacto ─── */}
         <Paso

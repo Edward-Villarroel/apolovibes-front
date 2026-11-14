@@ -218,6 +218,8 @@ function postFormData(path, formData) {
       `${BASE_URL}${path}`,
       {
         method: 'POST',
+        credentials: 'include',
+        headers: {...authHeaders()},
         body: formData
       },
       TIMEOUT_SUBIDA_MS
@@ -229,6 +231,6 @@ function postFormData(path, formData) {
 }
 
 export const apiCotizador = {
-  estimar: (formData) => postFormData('/cotizaciones/estimar-ia', formData),
+  estimar: (formData) => postFormData('/cotizaciones/estimar', formData),
   validarImagen: (formData) => postFormData('/cotizaciones/validar-imagen', formData),
 } 

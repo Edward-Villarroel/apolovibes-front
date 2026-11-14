@@ -1,14 +1,10 @@
 import { apiCotizador } from './api.js'
 
-// Firma canonica de las especificaciones de la pieza. Debe coincidir con la
-// que calcula el backend (`_firma_especificaciones` en CrearSolicitudDiseno) para
-// decidir si una estimacion calculada por el cliente se puede reutilizar.
 function numeroFirma(valor, defecto = '10') {
   const texto = valor === null || valor === undefined ? '' : String(valor).trim()
   if (texto === '') return defecto
   const numero = Number(texto.replace(',', '.'))
   if (!Number.isFinite(numero)) return texto
-  const entero = Number.isInteger(numero)
   return String(numero)
 }
 
@@ -40,5 +36,23 @@ export async function estimarPieza(archivo, form) {
   fd.append('color', form.color === 'Otro' ? form.colorOtro : form.color)
 
   const resultado = await apiCotizador.estimar(fd)
-  return { ...resultado, firma: firmaEspecificaciones(form) }
+
+  const pick = (...nombres) => {
+    for (const n of nombres) {
+      const v = resultado?.[n]
+      if (v !== undefined && v !== null && String(v).trim() !== '') return v
+    }
+    return undefined
+  }
+  return { 
+     precio_estimado: pick('precio_estimado', 'precio_estimado_ia', 'precio_clp'),
+    precio_unitario: pick('precio_unitario', 'precio_unitario_ia', 'precio_unitario_clp'),
+    gramos_estimados: pick('gramos_estimados', 'gramos_estimados_ia'),
+    tiempo_estimado_horas: pick('tiempo_estimado_horas', 'tiempo_estimado_horas_ia'),
+    material_sugerido: pick('material_sugerido', 'material_sugerido_ia', 'material_detectado'),
+    complejidad: pick('complejidad', 'complejidad_ia'),
+    confianza_material: pick('confianza_material', 'confianza_material_ia'),
+    confianza_complejidad: pick('confianza_complejidad', 'confianza_complejidad_ia'),
+    firma: firmaEspecificaciones(form),
+  }
 }
