@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { RefreshCw, AlertTriangle, Eye, Star, Package, CircleCheck, X, ChevronLeft, ChevronRight, Check, Clock, Truck, Store, User, Phone, Mail, FileText, Building2, Briefcase, Trash2, CreditCard, Info } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useTheme } from '../context/ThemeContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { pedidosApi } from '../services/orders.js';
 import { mediaPath, urlMedia } from '../utils/media.js';
@@ -46,11 +47,11 @@ const DIRECCION_RETIRO = 'Álvarez 1106, Viña del Mar';
 const PASOS = ['pendiente', 'en_produccion', 'enviado', 'entregado'];
 const FONDO_TARJETA = 'rgba(255,255,255,.06)';
 
-function coloresTema() {
-  const isDark = typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark';
+function useTemaColores() {
+  const { theme } = useTheme()
   return {
-    texto: isDark ? '#FFFFFF' : 'var(--text-on-bg)',
-    apagado: isDark ? '#B9C6DA' : 'var(--text-dim-light)',
+    texto: theme === 'dark' ? '#FFFFFF' : 'var(--text-on-bg)',
+    apagado: theme === 'dark' ? '#B9C6DA' : 'var(--text-dim-light)',
   };
 }
 const LINEA = 'rgba(255,255,255,.18)';
@@ -86,7 +87,7 @@ function LineaEstado({ estado, entrega, tieneSeguimiento }) {
 
   const actual = Math.max(0, PASOS.indexOf(estadoEfectivo));
   const DIAMETRO = 30;
-  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = coloresTema();
+  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = useTemaColores();
 
   return (
     <div style={{ display: 'flex', marginBottom: 24 }}>
@@ -123,7 +124,7 @@ function LineaEstado({ estado, entrega, tieneSeguimiento }) {
 }
 
 function FilaDato({ icono: Icono, etiqueta, valor }) {
-  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = coloresTema();
+  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = useTemaColores();
   return (
     <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
       <Icono size={16} color={COLOR_APAGADO} style={{ marginTop: 2, flexShrink: 0 }} />
@@ -599,7 +600,7 @@ export default function MisPedidos() {
     () => (window.innerWidth <= 768 ? 5 : 10)
   );
 
-  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = coloresTema();
+  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = useTemaColores();
 
   async function cargar(silencioso = false) {
     if (!silencioso) {

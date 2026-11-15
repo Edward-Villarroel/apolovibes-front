@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { mediaPath, urlMedia } from '../utils/media.js'
 import { Trash2, Minus, Plus, ShoppingCart, Truck, Tag } from 'lucide-react'
 import { useCart } from '../context/CartContext.jsx'
+import { useTheme } from '../context/ThemeContext.jsx'
 import { api } from '../services/api.js'
 import { useState } from 'react'
 
@@ -10,7 +11,8 @@ const ENVIO_GRATIS_DESDE = 50000
 export default function Carrito() {
   const { items, quitarItem, actualizarCantidadItem, vaciarCarrito, error, total, requiereLogin, abrirLogin } = useCart()
   const navigate = useNavigate() || ((path) => { window.location.hash = `#${path}` })
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const colorTextoSuave = isDark ? 'var(--text-dim)' : 'var(--text-dim-light)'
   const envioGratis = total >= ENVIO_GRATIS_DESDE
   const cantidadTotal = items.reduce((acc, item) => acc + item.cantidad, 0)
@@ -250,7 +252,7 @@ export default function Carrito() {
                     >
                       <Minus size={15} style={{ color: isDark ? '#FFFFFF' : '#475569' }} />
                     </button>
-                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: isDark ? '#FFFFFF' : '#475569' }}>
+                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: isDark ? '#FFFFFF' : 'var(--text-on-bg)' }}>
                       {item.cantidad}
                     </span>
                     <button
