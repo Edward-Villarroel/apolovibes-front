@@ -8,6 +8,7 @@ import SelectOpciones from '../components/SelectOpciones.jsx'
 import { Upload, X } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import { mediaPath } from '../utils/media.js'
+import { optimizarImagen } from '../utils/optimizarImagen.js'
 
 const ESTADO_INICIAL = {
   nombre: '', email: '', telefono: '',
@@ -155,19 +156,24 @@ export default function Cotizacion() {
     const file = e.target.files[0]
     if (!file) return
     if (!file.type.startsWith('image/')) return
-    if (file.size > 5 * 1024 * 1024) return
+    if (file.size > 15 * 1024 * 1024) {
+      setError('La imagen supera los 15 MB. Elige una mas liviana.')
+      return
+    }
 
     setError(null)
     setArchivo(file)
     setPrevisualizacion(URL.createObjectURL(file))
     setCotizacion(null)
     setEstadoImagen('validando')
-
     setValidandoImagen(true)
+
     try {
       await validarImagenSegura(file, setProgreso)
+      const liviana = await optimizarImagen(file)
+      setArchivo(liviana)
       setEstadoImagen('valida')
-      await estimar(file)
+      await estimar(liviana)
     } catch (err) {
       setEstadoImagen('invalida')
       setProgreso(prev => ({ ...prev, status: 'failed', message: err?.message || 'La imagen no es válida.' }))
@@ -320,7 +326,7 @@ export default function Cotizacion() {
               </span>
 
               <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-                JPG, PNG o WEBP · máx. 8MB
+                JPG, PNG o WEBP · máx. 15MB
               </span>
             </label>
           ) : (
