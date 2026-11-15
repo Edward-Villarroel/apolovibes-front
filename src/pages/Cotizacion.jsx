@@ -133,14 +133,15 @@ export default function Cotizacion() {
   const paso2Completo = paso1Completo && !erroresCampo.nombre && !erroresCampo.email && !erroresCampo.telefono
   const paso3Completo = paso2Completo && !erroresCampo.tamano && !erroresCampo.cantidad && !erroresCampo.color
 
-  const camposQueReestiman = ['alto', 'ancho', 'largo', 'cantidad', 'uso', 'material', 'color', 'unidad']
+  const camposQueReestiman = ['alto', 'ancho', 'largo', 'cantidad', 'uso', 'material', 'color', 'colorOtro', 'unidad']
 
   function actualizar(campo, valor) {
-    setForm(prev => ({ ...prev, [campo]: valor }))
+    const nuevoForm = { ...form, [campo]: valor }
+    setForm(nuevoForm)
     if (camposQueReestiman.includes(campo)) {
       window.clearTimeout(timerReestimacion.current)
       timerReestimacion.current = setTimeout(() => {
-        if (archivo && paso1Completo) estimar()
+        if (archivo && paso1Completo) estimarConForm(nuevoForm)
       }, 700)
     }
   }
@@ -169,8 +170,9 @@ export default function Cotizacion() {
     setValidandoImagen(true)
 
     try {
-      await validarImagenSegura(file, setProgreso)
       const liviana = await optimizarImagen(file)
+      await validarImagenSegura(liviana, setProgreso)
+      
       setArchivo(liviana)
       setEstadoImagen('valida')
       await estimar(liviana)
@@ -183,22 +185,25 @@ export default function Cotizacion() {
     }
   }
 
- async function estimar(referencia = archivo) {
+async function estimarConForm(formAUsar = form, referencia = archivo) {
   if (!referencia) return
   setCalculandoEstimacion(true)
+  const colorFinal = formAUsar.color === 'Otro' ? formAUsar.colorOtro.trim() : formAUsar.color
   setAviso(null)
   try {
-    const resultado = await estimarPieza(referencia, form)
+    const resultado = await estimarPieza(referencia, { ...formAUsar, color: colorFinal })
     setCotizacion(resultado)
   } catch (err) {
     if (err?.status === 429) {
-     setAviso('Demasiadas solicitudes, espera 1 minuto y vuelve a intentarlo. Puedes seguir completando tu solicitud.')
-    } else {
-      setAviso(null)
+      setAviso('Demasiadas solicitudes, espera 1 minuto y vuelve a intentarlo.')
     }
   } finally {
     setCalculandoEstimacion(false)
   }
+}
+
+async function estimar(referencia = archivo) {
+  return estimarConForm(form, referencia)
 }
 
   function quitarImagen() {
@@ -216,14 +221,15 @@ export default function Cotizacion() {
 
   async function enviarSolicitud(e) {
     e.preventDefault()
-    if (!paso3Completo || enviando) return
+    if (!paso3Completo || enviando || calculandoEstimacion) return
 
     setEnviando(true)
     setError(null)
 
     const colorFinal = form.color === 'Otro' ? form.colorOtro.trim() : form.color
     const estimacion = cotizacion
-    const firma = estimacion ? (estimacion.firma || firmaEspecificaciones(form)) : firmaEspecificaciones(form)
+    const formParaFirma = { ...form, color: colorFinal }
+    const firma = firmaEspecificaciones(formParaFirma)
 
     const data = new FormData()
     data.append('nombre', form.nombre.trim())
@@ -633,7 +639,7 @@ export default function Cotizacion() {
         <button
           className="btn btn-primary"
           type="submit"
-          disabled={!paso3Completo || enviando}
+          disabled={!paso3Completo || enviando || calculandoEstimacion}
           style={{
             width: '100%', padding: '14px 0', fontSize: 15,
             justifyContent: 'center', opacity: paso3Completo ? 1 : 0.5,
