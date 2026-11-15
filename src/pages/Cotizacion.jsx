@@ -234,6 +234,7 @@ export default function Cotizacion() {
     data.append('descripcion', form.descripcion.trim())
 
     if (estimacion) {
+      if (estimacion.token) data.append('estimacion_token', estimacion.token)
       data.append('estimacion_firma', firma)
       data.append('precio_estimado', estimacion.precio_estimado ?? estimacion.precio_clp)
       data.append('precio_unitario', estimacion.precio_unitario ?? estimacion.precio_unitario_clp)

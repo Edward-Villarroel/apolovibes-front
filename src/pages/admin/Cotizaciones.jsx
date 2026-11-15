@@ -294,7 +294,7 @@ function DetalleCotizacionModal({ cotizacion, onClose, precios, setPrecios, usar
             <div style={{ background: FONDO_TARJETA, borderRadius: 12, padding: 14, marginBottom: 20 }}>
               <p style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 600, color: COLOR_APAGADO }}>Datos del cliente</p>
               <div style={{ display: 'flex', gap: 12 }}>
-                <MiniaturaModal src={c.imagen} nombre={c.nombre} />
+                <MiniaturaModal src={c.imagen_thumb || c.imagen} nombre={c.nombre} />
                 <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
                   <FilaDatoModal icono={User} valor={c.nombre} />
                   <FilaDatoModal icono={Mail} valor={c.email} />
