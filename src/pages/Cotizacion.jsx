@@ -231,17 +231,18 @@ async function enviarSolicitud(e) {
   setError(null)
 
   try {
-    const estimacionFresca = await estimarConForm(form, archivo)
-    const estimacion = estimacionFresca || cotizacion
+
+    let estimacion = cotizacion
 
     if (!estimacion?.token) {
-      setError('No pudimos calcular la estimación. Intenta de nuevo.')
-      return
+      try {
+        const estimacionFresca = await estimarConForm(form, archivo)
+        if (estimacionFresca?.token) estimacion = estimacionFresca
+      } catch {
+      }
     }
 
     const colorFinal = form.color === 'Otro' ? form.colorOtro.trim() : form.color
-    const formParaFirma = { ...form, color: colorFinal }
-    const firma = firmaEspecificaciones(formParaFirma)
 
     const data = new FormData()
     data.append('nombre', form.nombre.trim())
@@ -257,16 +258,22 @@ async function enviarSolicitud(e) {
     data.append('color', colorFinal)
     data.append('descripcion', form.descripcion.trim())
 
-    if (estimacion.token) data.append('estimacion_token', estimacion.token)
-    data.append('estimacion_firma', firma)
-    data.append('precio_estimado', estimacion.precio_estimado_ia ?? estimacion.precio_estimado ?? estimacion.precio_clp)
-    data.append('precio_unitario', estimacion.precio_unitario_ia ?? estimacion.precio_unitario ?? estimacion.precio_unitario_clp)
-    data.append('gramos_estimados', estimacion.gramos_estimados_ia ?? estimacion.gramos_estimados)
-    data.append('tiempo_estimado_horas', estimacion.tiempo_estimado_horas_ia ?? estimacion.tiempo_estimado_horas)
-    data.append('material_sugerido', estimacion.material_sugerido_ia ?? estimacion.material_sugerido ?? estimacion.material_detectado)
-    data.append('complejidad', estimacion.complejidad_ia ?? estimacion.complejidad)
-    data.append('confianza_material', estimacion.confianza_material_ia ?? estimacion.confianza_material)
-    data.append('confianza_complejidad', estimacion.confianza_complejidad_ia ?? estimacion.confianza_complejidad)
+  
+    if (estimacion?.token) {
+      const formParaFirma = { ...form, color: colorFinal }
+      const firma = firmaEspecificaciones(formParaFirma)
+
+      data.append('estimacion_token', estimacion.token)
+      data.append('estimacion_firma', firma)
+      data.append('precio_estimado', estimacion.precio_estimado_ia ?? estimacion.precio_estimado ?? estimacion.precio_clp)
+      data.append('precio_unitario', estimacion.precio_unitario_ia ?? estimacion.precio_unitario ?? estimacion.precio_unitario_clp)
+      data.append('gramos_estimados', estimacion.gramos_estimados_ia ?? estimacion.gramos_estimados)
+      data.append('tiempo_estimado_horas', estimacion.tiempo_estimado_horas_ia ?? estimacion.tiempo_estimado_horas)
+      data.append('material_sugerido', estimacion.material_sugerido_ia ?? estimacion.material_sugerido ?? estimacion.material_detectado)
+      data.append('complejidad', estimacion.complejidad_ia ?? estimacion.complejidad)
+      data.append('confianza_material', estimacion.confianza_material_ia ?? estimacion.confianza_material)
+      data.append('confianza_complejidad', estimacion.confianza_complejidad_ia ?? estimacion.confianza_complejidad)
+    }
 
     data.append('imagen', archivo)
 
