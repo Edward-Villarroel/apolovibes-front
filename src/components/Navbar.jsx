@@ -621,7 +621,7 @@ export default function Navbar() {
                                 <Trash2 size={16} />
                               </button>
                             </div>
-                            <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: '0 0 8px' }}>
+                            <p style={{ fontSize: 12, color: 'var(--text)', margin: '0 0 8px' }}>
                               ${item.precio.toLocaleString('es-CL')} c/u
                             </p>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
@@ -633,7 +633,7 @@ export default function Navbar() {
                                   style={{
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     width: 26, height: 26, border: 'none', background: 'var(--surface-3)',
-                                    color: 'inherit', cursor: 'pointer',
+                                    color: 'var(--text-on-bg)', cursor: 'pointer',
                                   }}
                                 >
                                   <Minus size={13} style={{ color: 'var(--text-on-bg)' }} />
@@ -648,13 +648,13 @@ export default function Navbar() {
                                   style={{
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     width: 26, height: 26, border: 'none', background: 'var(--surface-3)',
-                                    color: 'inherit', cursor: 'pointer',
+                                    color: 'var(--text-on-bg)', cursor: 'pointer',
                                   }}
                                 >
                                   <Plus size={13} style={{ color: 'var(--text-on-bg)' }} />
                                 </button>
                               </div>
-                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 800, color: 'var(--surface-2)' }}>
+                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 800, color: 'var(--text-on-bg)' }}>
                                 ${(item.precio * item.cantidad).toLocaleString('es-CL')}
                               </span>
                             </div>

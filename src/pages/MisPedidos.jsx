@@ -844,7 +844,7 @@ if (cargando) {
                           </span>
                         </div>
                       </td>
-                      <td style={{ padding: '14px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', textAlign: 'center' }}>
+                      <td style={{ padding: '14px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)', textAlign: 'center' }}>
                         ${p.total.toLocaleString('es-CL')}
                       </td>
                       <td style={{ padding: '14px 10px', color: 'var(--text-dim)', textAlign: 'center' }}>
