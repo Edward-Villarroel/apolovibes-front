@@ -212,9 +212,9 @@ export default function Carrito() {
                     onClick={() => quitarItem(item.itemId)}
                     aria-label={`Quitar ${item.nombre} del carrito`}
                     title="Quitar producto"
-                    style={{ background: 'none', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', padding: 4 }}
+                    style={{ background: 'none', border: 'none', color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--text-dim)', cursor: 'pointer', padding: 4 }}
                   >
-                    <Trash2 size={20} />
+                    <Trash2 size={20} style={{ color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--text-dim)' }} />
                   </button>
                 </div>
 
@@ -224,7 +224,7 @@ export default function Carrito() {
                   </p>
                 )}
 
-                <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: '0 0 16px' }}>
+                <p style={{ fontSize: 12, color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--text-dim)', margin: '0 0 16px' }}>
                   ${item.precio.toLocaleString('es-CL')} c/u
                 </p>
 
@@ -242,13 +242,13 @@ export default function Carrito() {
                       onClick={() => actualizarCantidadItem(item.itemId, Math.max(1, item.cantidad - 1))}
                       style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        width: 32, height: 32, border: 'none', background: 'var(--surface-3)',
-                        color: 'inherit', cursor: 'pointer',
+                        width: 32, height: 32, border: 'none', background: document.documentElement.getAttribute('data-theme') === 'dark' ? '#334155' : 'var(--surface-3)',
+                        color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'inherit', cursor: 'pointer',
                       }}
                     >
-                      <Minus size={15} style={{ color: 'var(--surface-2)' }} />
+                      <Minus size={15} style={{ color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--surface-2)' }} />
                     </button>
-                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: 'var(--surface-2)' }}>
+                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--surface-2)' }}>
                       {item.cantidad}
                     </span>
                     <button
@@ -256,15 +256,15 @@ export default function Carrito() {
                       onClick={() => actualizarCantidadItem(item.itemId, item.cantidad + 1)}
                       style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        width: 32, height: 32, border: 'none', background: 'var(--surface-3)',
-                        color: 'inherit', cursor: 'pointer',
+                        width: 32, height: 32, border: 'none', background: document.documentElement.getAttribute('data-theme') === 'dark' ? '#334155' : 'var(--surface-3)',
+                        color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'inherit', cursor: 'pointer',
                       }}
                     >
-                      <Plus size={15} style={{ color: 'var(--surface-2)' }} />
+                      <Plus size={15} style={{ color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--surface-2)' }} />
                     </button>
                   </div>
 
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 600, color: 'var(--surface-2)' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 600, color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--surface-2)' }}>
                     ${(item.precio * item.cantidad).toLocaleString('es-CL')}
                   </span>
                 </div>
