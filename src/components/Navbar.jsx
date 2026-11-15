@@ -26,6 +26,7 @@ export default function Navbar() {
   const [confirmarLogout, setConfirmarLogout] = useState(false)
   const userMenuRef = useRef(null)
   const cartMenuRef = useRef(null)
+  const prevIsLoggedIn = useRef(isLoggedIn)
   const navigate = useNavigate()
   const { categorias } = useProductos()
 
@@ -73,9 +74,13 @@ export default function Navbar() {
   }, [isLoggedIn, solicitarLogin, cargandoCarrito, cerrarLogin])
 
   // Si el menú móvil está abierto y el usuario acaba de iniciar sesión,
-  // cerrarlo para que al reabrirse se renderice con el estado de auth actualizado
+  // cerrarlo solo una vez para que al reabrirse se renderice con el estado de auth actualizado.
+  // Se usa un ref para detectar solo la transición de no logueado → logueado; así no se cierra
+  // el menú cada vez que se abre estando ya logueado (lo que impedía abrirlo en móvil tras el login).
   useEffect(() => {
-    if (isLoggedIn && mobileOpen) {
+    const acaboDeIniciarSesion = !prevIsLoggedIn.current && isLoggedIn
+    prevIsLoggedIn.current = isLoggedIn
+    if (acaboDeIniciarSesion && mobileOpen) {
       setMobileOpen(false)
     }
   }, [isLoggedIn, mobileOpen])
