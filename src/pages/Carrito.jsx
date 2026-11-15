@@ -250,7 +250,7 @@ export default function Carrito() {
                     >
                       <Minus size={15} style={{ color: isDark ? '#FFFFFF' : '#475569' }} />
                     </button>
-                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: isDark ? '#FFFFFF' : '#475569', background: isDark ? '#334155' : '#E2E8F0', borderRadius: 4, padding: '0 6px' }}>
+                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: isDark ? '#FFFFFF' : '#475569' }}>
                       {item.cantidad}
                     </span>
                     <button
