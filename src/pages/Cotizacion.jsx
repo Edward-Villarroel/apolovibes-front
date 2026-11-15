@@ -186,17 +186,19 @@ export default function Cotizacion() {
   }
 
 async function estimarConForm(formAUsar = form, referencia = archivo) {
-  if (!referencia) return
+  if (!referencia) return null
   setCalculandoEstimacion(true)
   const colorFinal = formAUsar.color === 'Otro' ? formAUsar.colorOtro.trim() : formAUsar.color
   setAviso(null)
   try {
     const resultado = await estimarPieza(referencia, { ...formAUsar, color: colorFinal })
     setCotizacion(resultado)
+    return resultado 
   } catch (err) {
     if (err?.status === 429) {
       setAviso('Demasiadas solicitudes, espera 1 minuto y vuelve a intentarlo.')
     }
+    return null
   } finally {
     setCalculandoEstimacion(false)
   }
@@ -219,15 +221,25 @@ async function estimar(referencia = archivo) {
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
-  async function enviarSolicitud(e) {
-    e.preventDefault()
-    if (!paso3Completo || enviando || calculandoEstimacion) return
+async function enviarSolicitud(e) {
+  e.preventDefault()
+  if (!paso3Completo || enviando || calculandoEstimacion) return
 
-    setEnviando(true)
-    setError(null)
+  window.clearTimeout(timerReestimacion.current)
+
+  setEnviando(true)
+  setError(null)
+
+  try {
+    const estimacionFresca = await estimarConForm(form, archivo)
+    const estimacion = estimacionFresca || cotizacion
+
+    if (!estimacion?.token) {
+      setError('No pudimos calcular la estimación. Intenta de nuevo.')
+      return
+    }
 
     const colorFinal = form.color === 'Otro' ? form.colorOtro.trim() : form.color
-    const estimacion = cotizacion
     const formParaFirma = { ...form, color: colorFinal }
     const firma = firmaEspecificaciones(formParaFirma)
 
@@ -245,33 +257,29 @@ async function estimar(referencia = archivo) {
     data.append('color', colorFinal)
     data.append('descripcion', form.descripcion.trim())
 
-    if (estimacion) {
-      if (estimacion.token) data.append('estimacion_token', estimacion.token)
-      data.append('estimacion_firma', firma)
-      data.append('precio_estimado', estimacion.precio_estimado ?? estimacion.precio_clp)
-      data.append('precio_unitario', estimacion.precio_unitario ?? estimacion.precio_unitario_clp)
-      data.append('gramos_estimados', estimacion.gramos_estimados)
-      data.append('tiempo_estimado_horas', estimacion.tiempo_estimado_horas)
-      data.append('material_sugerido', estimacion.material_sugerido ?? estimacion.material_detectado)
-      data.append('complejidad', estimacion.complejidad)
-      data.append('confianza_material', estimacion.confianza_material)
-      data.append('confianza_complejidad', estimacion.confianza_complejidad)
-    }
+    if (estimacion.token) data.append('estimacion_token', estimacion.token)
+    data.append('estimacion_firma', firma)
+    data.append('precio_estimado', estimacion.precio_estimado_ia ?? estimacion.precio_estimado ?? estimacion.precio_clp)
+    data.append('precio_unitario', estimacion.precio_unitario_ia ?? estimacion.precio_unitario ?? estimacion.precio_unitario_clp)
+    data.append('gramos_estimados', estimacion.gramos_estimados_ia ?? estimacion.gramos_estimados)
+    data.append('tiempo_estimado_horas', estimacion.tiempo_estimado_horas_ia ?? estimacion.tiempo_estimado_horas)
+    data.append('material_sugerido', estimacion.material_sugerido_ia ?? estimacion.material_sugerido ?? estimacion.material_detectado)
+    data.append('complejidad', estimacion.complejidad_ia ?? estimacion.complejidad)
+    data.append('confianza_material', estimacion.confianza_material_ia ?? estimacion.confianza_material)
+    data.append('confianza_complejidad', estimacion.confianza_complejidad_ia ?? estimacion.confianza_complejidad)
 
     data.append('imagen', archivo)
 
-    try {
-      await api.post('/cotizaciones', data)
-      setEnviado(true)
-    } catch (err) {
-      const msg = err?.datos?.mensaje || err?.message || 'No pudimos enviar tu solicitud. Intenta nuevamente.'
-      setError(msg)
-      setEnviado(true)
-    } finally {
-      setEnviando(false)
-      setSegundosRestantes(10)
-    }
+    await api.post('/cotizaciones', data)
+    setEnviado(true)
+    setSegundosRestantes(10)
+  } catch (err) {
+    const msg = err?.datos?.mensaje || err?.message || 'No pudimos enviar tu solicitud. Intenta nuevamente.'
+    setError(msg)
+  } finally {
+    setEnviando(false)
   }
+}
 
   if (enviado) {
     return (
