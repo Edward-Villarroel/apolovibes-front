@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect } from 'react'
+import { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import { api } from '../services/api.js'
 import { firmaEspecificaciones, estimarPieza } from '../services/cotizador.js'
 import { validarImagenSegura } from '../services/validacion-imagen.js'
