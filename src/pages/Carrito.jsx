@@ -250,7 +250,7 @@ export default function Carrito() {
                     >
                       <Minus size={15} style={{ color: isDark ? '#FFFFFF' : '#475569' }} />
                     </button>
-                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: isDark ? '#FFFFFF' : '#475569' }}>
+                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: isDark ? '#FFFFFF' : '#475569', background: isDark ? '#334155' : '#E2E8F0', borderRadius: 4, padding: '0 6px' }}>
                       {item.cantidad}
                     </span>
                     <button
@@ -368,7 +368,7 @@ export default function Carrito() {
               onClick={irAlCheckout}
               disabled={redirigiendo}
               className="btn btn-primary"
-              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: isDark ? 'var(--text)' : 'var(--input-bg)', background: isDark ? 'var(--surface-2)' : 'var(--surface)', marginBottom: 12 }}>
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: isDark ? 'var(--text)' : 'var(--input-bg)', background: isDark ? 'var(--accent)' : 'var(--surface)', marginBottom: 12 }}>
               Paga con Tuu
             </button>
 
