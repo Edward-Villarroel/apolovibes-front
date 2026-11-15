@@ -79,6 +79,7 @@ export default function Cotizacion() {
   const [cotizacion, setCotizacion] = useState(null)
   const [calculandoEstimacion, setCalculandoEstimacion] = useState(false)
   const [aviso, setAviso] = useState(null)
+  const ultimaFirmaEstimada = useRef(null)
 
 
   useLayoutEffect(() => {
@@ -96,6 +97,7 @@ export default function Cotizacion() {
           setArchivo(null)
           setPrevisualizacion(null)
           setCotizacion(null)
+          ultimaFirmaEstimada.current = null
           setEstadoImagen('idle')
           setProgreso({ status: 'idle', percent: 0, message: '' })
           setValidandoImagen(false)
@@ -142,7 +144,7 @@ export default function Cotizacion() {
       window.clearTimeout(timerReestimacion.current)
       timerReestimacion.current = setTimeout(() => {
         if (archivo && paso1Completo) estimarConForm(nuevoForm)
-      }, 700)
+      }, 1500)
     }
   }
 
@@ -172,10 +174,10 @@ export default function Cotizacion() {
     try {
       const liviana = await optimizarImagen(file)
       await validarImagenSegura(liviana, setProgreso)
-      
+
       setArchivo(liviana)
       setEstadoImagen('valida')
-      await estimar(liviana)
+      ultimaFirmaEstimada.current = null
     } catch (err) {
       setEstadoImagen('invalida')
       setProgreso(prev => ({ ...prev, status: 'failed', message: err?.message || 'La imagen no es válida.' }))
@@ -185,32 +187,45 @@ export default function Cotizacion() {
     }
   }
 
-async function estimarConForm(formAUsar = form, referencia = archivo) {
-  if (!referencia) return null
-  setCalculandoEstimacion(true)
-  const colorFinal = formAUsar.color === 'Otro' ? formAUsar.colorOtro.trim() : formAUsar.color
-  setAviso(null)
-  try {
-    const resultado = await estimarPieza(referencia, { ...formAUsar, color: colorFinal })
-    setCotizacion(resultado)
-    return resultado 
-  } catch (err) {
-    if (err?.status === 429) {
-      setAviso('Demasiadas solicitudes, espera 1 minuto y vuelve a intentarlo.')
-    }
-    return null
-  } finally {
-    setCalculandoEstimacion(false)
-  }
-}
+  async function estimarConForm(formAUsar = form, referencia = archivo) {
+    if (!referencia) return null
 
-async function estimar(referencia = archivo) {
-  return estimarConForm(form, referencia)
-}
+    const colorFinal = formAUsar.color === 'Otro' ? formAUsar.colorOtro.trim() : formAUsar.color
+    if (!esPositivo(formAUsar.alto) || !esPositivo(formAUsar.ancho) || !esPositivo(formAUsar.largo) || !colorFinal) {
+      return cotizacion
+    }
+
+    const firmaActual = firmaEspecificaciones({ ...formAUsar, color: colorFinal })
+    if (firmaActual === ultimaFirmaEstimada.current && cotizacion?.token) {
+      return cotizacion
+    }
+
+    setCalculandoEstimacion(true)
+    setAviso(null)
+    try {
+      const resultado = await estimarPieza(referencia, { ...formAUsar, color: colorFinal })
+      setCotizacion(resultado)
+      ultimaFirmaEstimada.current = firmaActual
+      return resultado
+    } catch (err) {
+      if (err?.status === 429) {
+        setAviso('Demasiadas solicitudes, espera 1 minuto y vuelve a intentarlo.')
+      }
+      return cotizacion
+    } finally {
+      setCalculandoEstimacion(false)
+    }
+  }
+
+  async function estimar(referencia = archivo) {
+    return estimarConForm(form, referencia)
+  }
 
   function quitarImagen() {
     if (procesando) return
     setCotizacion(null)
+    ultimaFirmaEstimada.current = null
+    window.clearTimeout(timerReestimacion.current)
     setArchivo(null)
     setPrevisualizacion(null)
     setEstadoImagen('idle')
@@ -221,72 +236,72 @@ async function estimar(referencia = archivo) {
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
-async function enviarSolicitud(e) {
-  e.preventDefault()
-  if (!paso3Completo || enviando || calculandoEstimacion) return
+  async function enviarSolicitud(e) {
+    e.preventDefault()
+    if (!paso3Completo || enviando || calculandoEstimacion) return
 
-  window.clearTimeout(timerReestimacion.current)
+    window.clearTimeout(timerReestimacion.current)
 
-  setEnviando(true)
-  setError(null)
+    setEnviando(true)
+    setError(null)
 
-  try {
+    try {
 
-    let estimacion = cotizacion
+      let estimacion = cotizacion
 
-    if (!estimacion?.token) {
-      try {
-        const estimacionFresca = await estimarConForm(form, archivo)
-        if (estimacionFresca?.token) estimacion = estimacionFresca
-      } catch {
+      if (!estimacion?.token) {
+        try {
+          const estimacionFresca = await estimarConForm(form, archivo)
+          if (estimacionFresca?.token) estimacion = estimacionFresca
+        } catch {
+        }
       }
+
+      const colorFinal = form.color === 'Otro' ? form.colorOtro.trim() : form.color
+
+      const data = new FormData()
+      data.append('nombre', form.nombre.trim())
+      data.append('email', form.email.trim())
+      data.append('telefono', '+56' + form.telefono.trim())
+      data.append('material', form.material)
+      data.append('alto', form.alto)
+      data.append('ancho', form.ancho)
+      data.append('largo', form.largo)
+      data.append('unidad', form.unidad)
+      data.append('cantidad', form.cantidad)
+      data.append('uso', form.uso)
+      data.append('color', colorFinal)
+      data.append('descripcion', form.descripcion.trim())
+
+
+      if (estimacion?.token) {
+        const formParaFirma = { ...form, color: colorFinal }
+        const firma = firmaEspecificaciones(formParaFirma)
+
+        data.append('estimacion_token', estimacion.token)
+        data.append('estimacion_firma', firma)
+        data.append('precio_estimado', estimacion.precio_estimado_ia ?? estimacion.precio_estimado ?? estimacion.precio_clp)
+        data.append('precio_unitario', estimacion.precio_unitario_ia ?? estimacion.precio_unitario ?? estimacion.precio_unitario_clp)
+        data.append('gramos_estimados', estimacion.gramos_estimados_ia ?? estimacion.gramos_estimados)
+        data.append('tiempo_estimado_horas', estimacion.tiempo_estimado_horas_ia ?? estimacion.tiempo_estimado_horas)
+        data.append('material_sugerido', estimacion.material_sugerido_ia ?? estimacion.material_sugerido ?? estimacion.material_detectado)
+        data.append('complejidad', estimacion.complejidad_ia ?? estimacion.complejidad)
+        data.append('confianza_material', estimacion.confianza_material_ia ?? estimacion.confianza_material)
+        data.append('confianza_complejidad', estimacion.confianza_complejidad_ia ?? estimacion.confianza_complejidad)
+      }
+
+      data.append('imagen', archivo)
+
+      await api.post('/cotizaciones', data)
+      setEnviado(true)
+      setSegundosRestantes(10)
+    } catch (err) {
+      const msg = err?.datos?.mensaje || err?.message || 'No pudimos enviar tu solicitud. Intenta nuevamente.'
+      setError(msg)
+    } finally {
+      setEnviando(false)
     }
-
-    const colorFinal = form.color === 'Otro' ? form.colorOtro.trim() : form.color
-
-    const data = new FormData()
-    data.append('nombre', form.nombre.trim())
-    data.append('email', form.email.trim())
-    data.append('telefono', '+56' + form.telefono.trim())
-    data.append('material', form.material)
-    data.append('alto', form.alto)
-    data.append('ancho', form.ancho)
-    data.append('largo', form.largo)
-    data.append('unidad', form.unidad)
-    data.append('cantidad', form.cantidad)
-    data.append('uso', form.uso)
-    data.append('color', colorFinal)
-    data.append('descripcion', form.descripcion.trim())
-
-  
-    if (estimacion?.token) {
-      const formParaFirma = { ...form, color: colorFinal }
-      const firma = firmaEspecificaciones(formParaFirma)
-
-      data.append('estimacion_token', estimacion.token)
-      data.append('estimacion_firma', firma)
-      data.append('precio_estimado', estimacion.precio_estimado_ia ?? estimacion.precio_estimado ?? estimacion.precio_clp)
-      data.append('precio_unitario', estimacion.precio_unitario_ia ?? estimacion.precio_unitario ?? estimacion.precio_unitario_clp)
-      data.append('gramos_estimados', estimacion.gramos_estimados_ia ?? estimacion.gramos_estimados)
-      data.append('tiempo_estimado_horas', estimacion.tiempo_estimado_horas_ia ?? estimacion.tiempo_estimado_horas)
-      data.append('material_sugerido', estimacion.material_sugerido_ia ?? estimacion.material_sugerido ?? estimacion.material_detectado)
-      data.append('complejidad', estimacion.complejidad_ia ?? estimacion.complejidad)
-      data.append('confianza_material', estimacion.confianza_material_ia ?? estimacion.confianza_material)
-      data.append('confianza_complejidad', estimacion.confianza_complejidad_ia ?? estimacion.confianza_complejidad)
-    }
-
-    data.append('imagen', archivo)
-
-    await api.post('/cotizaciones', data)
-    setEnviado(true)
-    setSegundosRestantes(10)
-  } catch (err) {
-    const msg = err?.datos?.mensaje || err?.message || 'No pudimos enviar tu solicitud. Intenta nuevamente.'
-    setError(msg)
-  } finally {
-    setEnviando(false)
   }
-}
 
   if (enviado) {
     return (
@@ -370,7 +385,7 @@ async function enviarSolicitud(e) {
                 </p>
 
                 <div className="cot-ref-marco">
-                  <img src={previsualizacion} alt="Referencia subida"/>
+                  <img src={previsualizacion} alt="Referencia subida" />
 
                   <button
                     type="button"
@@ -455,7 +470,7 @@ async function enviarSolicitud(e) {
         {aviso && (
           <p role="alert" style={{ fontSize: 13, color: '#92400e', background: '#fef3c7', padding: '10px 14px', borderRadius: 8, marginBottom: 24 }}>
             {aviso}
-            </p>
+          </p>
         )}
 
         {/* ─── Paso 2: Datos de contacto ─── */}
