@@ -54,5 +54,6 @@ export async function estimarPieza(archivo, form) {
     confianza_material: pick('confianza_material', 'confianza_material_ia'),
     confianza_complejidad: pick('confianza_complejidad', 'confianza_complejidad_ia'),
     firma: firmaEspecificaciones(form),
+    token: resultado?.token,
   }
 }
