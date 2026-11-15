@@ -10,6 +10,8 @@ const ENVIO_GRATIS_DESDE = 50000
 export default function Carrito() {
   const { items, quitarItem, actualizarCantidadItem, vaciarCarrito, error, total, requiereLogin, abrirLogin } = useCart()
   const navigate = useNavigate() || ((path) => { window.location.hash = `#${path}` })
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+  const colorTextoSuave = isDark ? 'var(--text-dim)' : 'var(--text-dim-light)'
   const envioGratis = total >= ENVIO_GRATIS_DESDE
   const cantidadTotal = items.reduce((acc, item) => acc + item.cantidad, 0)
   const [cuponCodigo, setCuponCodigo] = useState('')
@@ -90,8 +92,8 @@ export default function Carrito() {
   if (requiereLogin) {
     return (
       <div className="wrap" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', justifyContent: 'center' }}>
-        <ShoppingCart size={64} strokeWidth={1.5} style={{ marginBottom: 20, color: 'var(--text-dim)' }} />
-        <p style={{ color: 'var(--text-dim)', marginBottom: 20 }}>
+        <ShoppingCart size={64} strokeWidth={1.5} style={{ marginBottom: 20, color: colorTextoSuave }} />
+        <p style={{ color: colorTextoSuave, marginBottom: 20 }}>
           Inicia sesión para ver tu carrito y seguir comprando.
         </p>
         <button className="btn btn-primary" onClick={abrirLogin}>
@@ -113,7 +115,7 @@ export default function Carrito() {
           height="512"
           style={{ display: 'block', height: 100, width: 'auto', margin: '0 auto 0' }}
         />
-        <p style={{ color: 'var(--text-dim)', marginBottom: 20 }}> Tu carrito está vacío. </p>
+        <p style={{ color: colorTextoSuave, marginBottom: 20 }}> Tu carrito está vacío. </p>
         <Link to="/categorias" className="btn btn-primary"> Ver catálogo</Link>
       </div>
     )
@@ -125,7 +127,7 @@ export default function Carrito() {
         <div style={{ flex: 2, minWidth: 340 }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 6 }}>
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, margin: 0, color: 'var(--text-on-bg)' }}> Tu carrito</h1>
-            <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
+            <span style={{ fontSize: 13, color: colorTextoSuave }}>
               ({cantidadTotal} {cantidadTotal === 1 ? 'producto' : 'productos'})
             </span>
             <button
@@ -133,7 +135,7 @@ export default function Carrito() {
               onClick={() => window.confirm('¿Vaciar todo el carrito?') && vaciarCarrito()}
               style={{
                 marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer',
-                color: 'var(--text-dim)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 5,
+                color: colorTextoSuave, fontSize: 13, display: 'flex', alignItems: 'center', gap: 5,
               }}
             >
               <Trash2 size={15} /> Vaciar carrito
@@ -142,7 +144,7 @@ export default function Carrito() {
           {error && (
             <p style={{ color: '#ef4444', fontSize: 13, margin: '0 0 12px' }}>{error}</p>
           )}
-          <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 16 }}>
+          <p style={{ fontSize: 13, color: colorTextoSuave, marginBottom: 16 }}>
             Los Productos en tu carrito no están reservados.
           </p>
 
@@ -154,11 +156,11 @@ export default function Carrito() {
             marginBottom: 24,
           }}
           >
-            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--surface-2)', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: isDark ? 'var(--surface-2)' : 'var(--text-on-bg)', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 6 }}>
               <Truck size={20} color="#FA7F19" />
               {envioGratis ? 'Tu pedido tiene envio gratis' : `Envío gratis en compras sobre $${ENVIO_GRATIS_DESDE.toLocaleString('es-CL')}`}
             </p>
-            <p style={{ fontSize: 12, color: 'var(--surface-2)', margin: 0, lineHeight: 1.5 }}>
+            <p style={{ fontSize: 12, color: isDark ? 'var(--surface-2)' : 'var(--text-on-bg)', margin: 0, lineHeight: 1.5 }}>
               {envioGratis ? 'Felicidades, no pagarás costo de envio en esta compra.' : 'Bajo ese monto se aplica costo de envío segun la empresa de transporte.'}
             </p>
           </div>
@@ -212,19 +214,19 @@ export default function Carrito() {
                     onClick={() => quitarItem(item.itemId)}
                     aria-label={`Quitar ${item.nombre} del carrito`}
                     title="Quitar producto"
-                    style={{ background: 'none', border: 'none', color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--text-dim)', cursor: 'pointer', padding: 4 }}
+                    style={{ background: 'none', border: 'none', color: isDark ? '#FFFFFF' : '#5A6B7D', cursor: 'pointer', padding: 4 }}
                   >
-                    <Trash2 size={20} style={{ color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--text-dim)' }} />
+                    <Trash2 size={20} style={{ color: isDark ? '#FFFFFF' : '#5A6B7D' }} />
                   </button>
                 </div>
 
                 {item.color && (
-                  <p style={{ margin: '0 0 5px', fontSize: 12, color: 'var(--text-dim)', marginTop: -5 }}>
+                  <p style={{ margin: '0 0 5px', fontSize: 12, color: colorTextoSuave, marginTop: -5 }}>
                     Color: {item.color}
                   </p>
                 )}
 
-                <p style={{ fontSize: 12, color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--text-dim)', margin: '0 0 16px' }}>
+                <p style={{ fontSize: 12, color: isDark ? '#FFFFFF' : 'var(--text-on-bg)', margin: '0 0 16px' }}>
                   ${item.precio.toLocaleString('es-CL')} c/u
                 </p>
 
@@ -242,13 +244,13 @@ export default function Carrito() {
                       onClick={() => actualizarCantidadItem(item.itemId, Math.max(1, item.cantidad - 1))}
                       style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        width: 32, height: 32, border: 'none', background: document.documentElement.getAttribute('data-theme') === 'dark' ? '#334155' : 'var(--surface-3)',
-                        color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'inherit', cursor: 'pointer',
+                        width: 32, height: 32, border: 'none', background: isDark ? '#334155' : '#E2E8F0',
+                        color: isDark ? '#FFFFFF' : '#475569', cursor: 'pointer',
                       }}
                     >
-                      <Minus size={15} style={{ color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--surface-2)' }} />
+                      <Minus size={15} style={{ color: isDark ? '#FFFFFF' : '#475569' }} />
                     </button>
-                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--surface-2)' }}>
+                    <span style={{ minWidth: 32, textAlign: 'center', fontSize: 14, color: isDark ? '#FFFFFF' : '#475569' }}>
                       {item.cantidad}
                     </span>
                     <button
@@ -256,15 +258,15 @@ export default function Carrito() {
                       onClick={() => actualizarCantidadItem(item.itemId, item.cantidad + 1)}
                       style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        width: 32, height: 32, border: 'none', background: document.documentElement.getAttribute('data-theme') === 'dark' ? '#334155' : 'var(--surface-3)',
-                        color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'inherit', cursor: 'pointer',
+                        width: 32, height: 32, border: 'none', background: isDark ? '#334155' : '#E2E8F0',
+                        color: isDark ? '#FFFFFF' : '#475569', cursor: 'pointer',
                       }}
                     >
-                      <Plus size={15} style={{ color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--surface-2)' }} />
+                      <Plus size={15} style={{ color: isDark ? '#FFFFFF' : '#475569' }} />
                     </button>
                   </div>
 
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 600, color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#FFFFFF' : 'var(--surface-2)' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 600, color: isDark ? '#FFFFFF' : 'var(--text-on-bg)' }}>
                     ${(item.precio * item.cantidad).toLocaleString('es-CL')}
                   </span>
                 </div>
@@ -289,25 +291,25 @@ export default function Carrito() {
             <h2 style={{ fontSize: 15, fontWeight: 300, color: 'var(--accent)', marginBottom: '20px', textAlign: 'center' }}>
               Resumen del pedido
             </h2>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-dim)', marginBottom: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: colorTextoSuave, marginBottom: 8 }}>
               <span>{cantidadTotal} {cantidadTotal === 1 ? 'producto' : 'productos'}</span>
               <span>${subtotal.toLocaleString('es-CL')}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-dim)', marginBottom: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: colorTextoSuave, marginBottom: 16 }}>
               <span>Envío</span>
               <span>{envioGratis ? 'Gratis' : 'Se calcula al pagar'}</span>
             </div>
 
             <div style={{ marginBottom: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: 'var(--surface-2)', fontSize: 13 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: isDark ? 'var(--surface-2)' : 'var(--text-on-bg)', fontSize: 13 }}>
                 <span>¿Tienes cupón de descuento?</span>
               </div>
               {cupon ? (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 10px', borderRadius: 8, border: '1px solid var(--line)', background: 'var(--surface-4)' }}>
-                  <div style={{ fontSize: 12, color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>
+                  <div style={{ fontSize: 12, color: colorTextoSuave, fontFamily: 'var(--font-mono)' }}>
                     {cupon.codigo}
                   </div>
-                  <button type="button" onClick={quitarCupon} style={{ background: 'none', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', fontSize: 12 }}>Quitar</button>
+                  <button type="button" onClick={quitarCupon} style={{ background: 'none', border: 'none', color: colorTextoSuave, cursor: 'pointer', fontSize: 12 }}>Quitar</button>
                 </div>
               ) : (
                 <div style={{ display: 'flex', gap: 8 }}>
@@ -315,7 +317,7 @@ export default function Carrito() {
                     value={cuponCodigo}
                     onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
                     placeholder="Ingresa tu código"
-                    style={{ flex: 1, padding: '8px 10px', borderRadius: 8, border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--surface-2)', fontSize: 13}}
+                    style={{ flex: 1, padding: '8px 10px', borderRadius: 8, border: '1px solid var(--line)', background: 'var(--bg)', color: isDark ? 'var(--surface-2)' : 'var(--text-on-bg)', fontSize: 13}}
                   />
                   <button type="button" onClick={aplicarCupon} disabled={aplicandoCupon || !cuponCodigo.trim()} className="btn btn-ghost" style={{ padding: '8px 12px', fontSize: 13 }}>
                     {aplicandoCupon ? 'Aplicando' : 'Aplicar'}
@@ -327,29 +329,29 @@ export default function Carrito() {
 
             <div className="separador-suave" style={{ display: 'flex', flexDirection: 'column', fontSize: 16, color: 'var(--text-on-bg)', paddingTop: 14, marginBottom: 20 }}>
               {cupon && montoCupon > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-dim)', marginBottom: 8 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: colorTextoSuave, marginBottom: 8 }}>
                   <span>Cupón de descuento</span>
                   <span>-${montoCupon.toLocaleString('es-CL')}</span>
                 </div>
               )}
               {montoDescuento > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-dim)', marginBottom: 8 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: colorTextoSuave, marginBottom: 8 }}>
                   <span>Descuento</span>
                   <span>-${montoDescuento.toLocaleString('es-CL')}</span>
                 </div>
               )}
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-dim)', marginBottom: 8 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: colorTextoSuave, marginBottom: 8 }}>
                 <span>Monto neto</span>
                 <span>${montoNeto.toLocaleString('es-CL')}</span>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-dim)', marginBottom: 8 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: colorTextoSuave, marginBottom: 8 }}>
                 <span>IVA (19%)</span>
                 <span>${montoIva.toLocaleString('es-CL')}</span>
               </div>
               <div className="separador-suave" style={{ display: 'flex', flexDirection: 'column', fontSize: 16, color: 'var(--text-on-bg)', marginBottom: 20 }}></div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 15, color: 'var(--text-dim)', marginBottom: 8, fontWeight: 600 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 15, color: colorTextoSuave, marginBottom: 8, fontWeight: 600 }}>
                 <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>Total</span>
                 <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>${montoConIva.toLocaleString('es-CL')}</span>
               </div>
@@ -357,7 +359,7 @@ export default function Carrito() {
             <h1 style={{ fontSize: 14, color: 'var(--text-on-bg)', textAlign: 'justify', margin: '0 0 5px' }}>
               Información Del Pago
             </h1>
-            <p style={{ fontSize: 11, marginTop: -5, color: 'var(--text-dim)', textAlign: 'justify', margin: '0 0 10px' }}>
+            <p style={{ fontSize: 11, marginTop: -5, color: colorTextoSuave, textAlign: 'justify', margin: '0 0 10px' }}>
               Todas las transacciones son realizadas mediante conexión segura. La información de tu tarjetas no se guarda en este sitio*
             </p>
 
@@ -366,16 +368,16 @@ export default function Carrito() {
               onClick={irAlCheckout}
               disabled={redirigiendo}
               className="btn btn-primary"
-              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: 'var(--text)', marginBottom: 12 }}>
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, color: isDark ? 'var(--text)' : 'var(--input-bg)', background: isDark ? 'var(--surface-2)' : 'var(--surface)', marginBottom: 12 }}>
               Paga con Tuu
             </button>
 
-            <p style={{ fontSize: 11, marginTop: -5, color: 'var(--text-dim)', textAlign: 'justify', margin: '0 0 20px' }}>
+            <p style={{ fontSize: 11, marginTop: -5, color: colorTextoSuave, textAlign: 'justify', margin: '0 0 20px' }}>
               Tus datos personales se utilizarán para procesar tu pedido y mejorar tu experiencia en Apolovibes3D.
             </p>
             <div className="separador-suave" style={{ paddingTop: 16 }}>
               <p style={{
-                fontSize: 11, fontWeight: 600, letterSpacing: 0.5, textTransform: 'uppercase', color: 'var(--text-dim)', margin: '0 0 10px',
+                fontSize: 11, fontWeight: 600, letterSpacing: 0.5, textTransform: 'uppercase', color: colorTextoSuave, margin: '0 0 10px',
               }}>
                 Formas de pago aceptadas
               </p>
