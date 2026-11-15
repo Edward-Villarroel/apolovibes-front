@@ -301,7 +301,7 @@ export default function Carrito() {
             </div>
 
             <div style={{ marginBottom: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: isDark ? 'var(--surface-2)' : 'var(--text-on-bg)', fontSize: 13 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: colorTextoSuave, fontSize: 13 }}>
                 <span>¿Tienes cupón de descuento?</span>
               </div>
               {cupon ? (
@@ -317,7 +317,7 @@ export default function Carrito() {
                     value={cuponCodigo}
                     onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
                     placeholder="Ingresa tu código"
-                    style={{ flex: 1, padding: '8px 10px', borderRadius: 8, border: '1px solid var(--line)', background: 'var(--bg)', color: isDark ? 'var(--surface-2)' : 'var(--text-on-bg)', fontSize: 13}}
+                    style={{ flex: 1, padding: '8px 10px', borderRadius: 8, border: '1px solid var(--line)', background: 'var(--bg)', color: isDark ? 'var(--text)' : 'var(--text-on-bg)', fontSize: 13}}
                   />
                   <button type="button" onClick={aplicarCupon} disabled={aplicandoCupon || !cuponCodigo.trim()} className="btn btn-ghost" style={{ padding: '8px 12px', fontSize: 13 }}>
                     {aplicandoCupon ? 'Aplicando' : 'Aplicar'}

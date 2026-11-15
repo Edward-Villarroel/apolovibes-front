@@ -44,9 +44,15 @@ const puedeEliminar = (p) => !PAGOS_CONFIRMADOS.has(p.estado_pago)
 const DIRECCION_RETIRO = 'Álvarez 1106, Viña del Mar';
 
 const PASOS = ['pendiente', 'en_produccion', 'enviado', 'entregado'];
-const COLOR_TEXTO = '#FFFFFF';
-const COLOR_APAGADO = '#B9C6DA';
 const FONDO_TARJETA = 'rgba(255,255,255,.06)';
+
+function coloresTema() {
+  const isDark = typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark';
+  return {
+    texto: isDark ? '#FFFFFF' : 'var(--text-on-bg)',
+    apagado: isDark ? '#B9C6DA' : 'var(--text-dim-light)',
+  };
+}
 const LINEA = 'rgba(255,255,255,.18)';
 const ACENTO = '#FA7F19';
 
@@ -80,6 +86,7 @@ function LineaEstado({ estado, entrega, tieneSeguimiento }) {
 
   const actual = Math.max(0, PASOS.indexOf(estadoEfectivo));
   const DIAMETRO = 30;
+  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = coloresTema();
 
   return (
     <div style={{ display: 'flex', marginBottom: 24 }}>
@@ -116,6 +123,7 @@ function LineaEstado({ estado, entrega, tieneSeguimiento }) {
 }
 
 function FilaDato({ icono: Icono, etiqueta, valor }) {
+  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = coloresTema();
   return (
     <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
       <Icono size={16} color={COLOR_APAGADO} style={{ marginTop: 2, flexShrink: 0 }} />
@@ -590,6 +598,8 @@ export default function MisPedidos() {
   const [filasPorPagina, setFilasPorFagina] = useState(
     () => (window.innerWidth <= 768 ? 5 : 10)
   );
+
+  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = coloresTema();
 
   async function cargar(silencioso = false) {
     if (!silencioso) {
