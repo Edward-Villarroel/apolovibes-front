@@ -11,7 +11,7 @@ const CONTENT = {
     actualizacion: fechaLegalLarga(),
     texto:
       `1. Identificación del Proveedor
-El sitio de Apolo Vibes 3D es operado por Apolo Vibes SPA, RUT: 78.064.166-5 con domicilio en calle Pasaje el Boldo Nro:33, Viña del Mar, Chile. Puede contactarnos en contacto@apolovibes3d.cl.
+El sitio de Apolo Vibes 3D es operado por Apolo Vibes SPA, RUT: 78.064.166-5 con domicilio en Pasaje El Boldo N° 33, Viña del Mar, Chile. Puede contactarnos en contacto@apolovibes3d.cl.
 
 2. Aceptación de los Términos
 Al acceder y utilizar el Sitio, usted acepta estos Términos y Condiciones. Si no está de acuerdo con ellos, le solicitamos no utilizar el Sitio.
@@ -72,10 +72,10 @@ Para consultas sobre estos Términos: contacto@apolovibes3d.cl`,
     actualizacion: fechaLegalLarga(),
     texto:
       `1. Responsable del Tratamiento
-El responsable de sus datos personales es Apolo Vibes SPA, RUT 78.064.166-5, con domicilio en calle Pasaje el Boldo Nro: 33, Viña del Mar, Chile. Puede contactarnos en seguridad@apolovibes3d.cl.
+El responsable de sus datos personales es Apolo Vibes SPA, RUT 78.064.166-5, con domicilio en Pasaje El Boldo N° 33, Viña del Mar, Chile. Para consultas y solicitudes sobre sus datos personales puede escribirnos a seguridad@apolovibes3d.cl.
 
 2. Datos que Recopilamos
-- Datos de identificación y contacto: nombre, apellidos, RUT, correo y teléfono.
+- Datos de identificación y contacto: nombre, apellidos, correo y teléfono.
 - Datos de envío: región, comuna, ciudad, dirección, número, departamento y código postal.
 - Datos de pedidos y cotizaciones: productos, montos, tipo de documento tributario (boleta o factura) y comunicaciones con nosotros.
 - Datos de facturación, si solicita factura: RUT, razón social y giro.
@@ -94,13 +94,13 @@ El responsable de sus datos personales es Apolo Vibes SPA, RUT 78.064.166-5, con
 - Cumplir obligaciones tributarias y contables (obligación legal).
 - Mantener la seguridad de su cuenta y prevenir fraudes o accesos no autorizados (interés legítimo).
 - Publicar las reseñas que usted envía sobre productos comprados (con su consentimiento al enviarlas).
-- Mejorar el Sitio (interés legítimo).
+- Detectar y corregir errores técnicos y mantener el funcionamiento del Sitio (interés legítimo).
 Actualmente no enviamos boletines ni promociones por correo. Si lo hacemos en el futuro, será solo con su consentimiento previo, que podrá retirar cuando quiera.
 
 4. Uso de Herramientas Automatizadas
-
 - Para estimar cotizaciones, las imágenes y descripciones que usted envía se procesan mediante un servicio automatizado que analiza las características del diseño y calcula una estimación de materiales, complejidad y precio.
-- El procesamiento se realiza en nuestro propio servicio de cotización, alojado en Render (https://cotizadorapoloai.onrender.com), mediante modelos de inteligencia artificial ejecutados dentro del propio servicio. De acuerdo con la arquitectura técnica revisada, el análisis de imágenes utiliza modelos locales TensorFlow Lite y no requiere enviar las imágenes a APIs externas de inteligencia artificial.
+- Este servicio es un modelo de inteligencia artificial desarrollado por Apolo Vibes, que se ejecuta en nuestro propio servicio de cotización, alojado en Render. El análisis se realiza dentro de ese servicio y no envía sus imágenes a servicios externos de inteligencia artificial.
+- La estimación es referencial: el precio definitivo lo confirma una persona de nuestro equipo antes de producir, y no tomamos decisiones que le afecten basadas únicamente en este procesamiento automatizado. Si desea que una persona revise su cotización, puede solicitarlo en seguridad@apolovibes3d.cl.
 - Las imágenes y descripciones se utilizan exclusivamente para prestar el servicio de cotización solicitado. No las utilizamos para entrenar modelos de terceros ni para fines distintos sin una autorización o fundamento válido.
 - No envíe mediante el cotizador datos sensibles ni imágenes de otras personas sin contar con la autorización correspondiente.
 
@@ -108,15 +108,15 @@ Actualmente no enviamos boletines ni promociones por correo. Si lo hacemos en el
 No vendemos sus datos personales. Los compartimos solo con proveedores que los necesitan para prestarnos el servicio (encargados del tratamiento):
 - Proveedores de pago (Tuu).
 - Empresas de transporte y envío (Starken y Bluexpress), únicamente con los datos necesarios para el despacho. Sus imágenes de referencia no se comparten con ellas.
-- Proveedores de alojamiento web y de correo transaccional (V2NET, Render y Resend).
-- Base de datos y almacenamiento (Supabase).
-- Servicio de estimación automatizada de cotizaciones (nuestro cotizador IA).
+- Proveedores de alojamiento web y de servidores (V2NET y Render) y de correo transaccional (Resend).
+- Base de datos y almacenamiento de archivos, incluidas las imágenes de referencia de sus cotizaciones (Supabase).
+- Nuestro servicio propio de estimación de cotizaciones, alojado en Render.
 - Proveedores de autenticación (Google), si inicia sesión con su cuenta.
 - Proveedores de verificación de seguridad (Google reCAPTCHA).
 También podemos comunicarlos cuando lo exija la ley o una autoridad competente.
 
 6. Transferencias Internacionales
-Algunos de estos proveedores pueden almacenar o procesar datos fuera de Chile. En esos casos exigimos medidas de protección adecuadas conforme a la ley.
+Algunos de estos proveedores (como Render, Supabase, Resend y Google) pueden almacenar o procesar datos en servidores ubicados fuera de Chile. En esos casos procuramos que cuenten con medidas de protección adecuadas, conforme a la ley.
 
 7. Cookies
 Usamos solo cookies esenciales para el funcionamiento del Sitio y no utilizamos cookies de analítica, publicidad ni seguimiento. Puede configurar su navegador para rechazarlas, aunque algunas funciones, como mantener la sesión o completar un pago, dejarían de funcionar. El detalle está en nuestra Política de Cookies.
@@ -125,16 +125,17 @@ Usamos solo cookies esenciales para el funcionamiento del Sitio y no utilizamos 
 - Datos de su cuenta: mientras la cuenta esté activa.
 - Datos de pedidos y documentos tributarios: 6 años, por obligaciones legales.
 - Cotizaciones que no se concretan: 12 meses.
-- Archivos e imágenes de cotización: mientras la relación comercial esté activa o hasta que usted solicite su eliminación.
+- Archivos e imágenes de cotización: mientras la relación comercial esté activa o hasta que usted solicite su eliminación; en las cotizaciones que no se concretan, hasta 12 meses.
 - Registros de seguridad: durante el tiempo necesario para prevenir fraudes y atender reclamos.
-Puede solicitar en cualquier momento la eliminación total de sus archivos y cotizaciones escribiendo a seguridad@apolovibes3d.cl. Ejecutaremos la eliminación en nuestros sistemas activos en un máximo de 48 horas desde que verifiquemos su identidad. Esta eliminación no alcanza a los datos y documentos que debamos conservar por obligaciones legales o tributarias (por ejemplo, boletas y facturas, que se conservan por 6 años).
+Puede solicitar en cualquier momento la eliminación total de sus archivos y cotizaciones escribiendo a seguridad@apolovibes3d.cl. Podremos pedirle que acredite su identidad. Ejecutaremos la eliminación en nuestros sistemas activos en un máximo de 48 horas desde que verifiquemos su identidad. Esta eliminación no alcanza a los datos y documentos que debamos conservar por obligaciones legales o tributarias (por ejemplo, boletas y facturas, que se conservan por 6 años).
+Mantenemos copias de respaldo cifradas de nuestra base de datos, que se conservan hasta 6 meses y se eliminan por rotación. Si fuera necesario restaurar una copia, volveríamos a aplicar las eliminaciones ya realizadas.
 Una vez cumplidos esos plazos, eliminamos o anonimizamos los datos. No usamos sus datos para marketing, por lo que no mantenemos información con esa finalidad.
 
 9. Seguridad
 Aplicamos medidas técnicas y organizativas razonables para proteger sus datos contra acceso no autorizado, pérdida o alteración. Las contraseñas se almacenan con hash, ofrecemos verificación en dos pasos y usamos reCAPTCHA en el registro y el inicio de sesión. Usamos conexiones cifradas (TLS) para el sitio y la API. Nuestras prácticas se inspiran en la norma ISO/IEC 27001:2022, aunque no contamos con certificación en esa norma. Ningún sistema es completamente infalible. Si ocurre una brecha de seguridad que afecte sus datos, actuaremos y notificaremos según exige la ley.
 
 10. Sus Derechos
-Usted puede solicitar el acceso, la rectificación, la supresión, la oposición al tratamiento, la portabilidad de sus datos y el bloqueo temporal, además de retirar su consentimiento en cualquier momento. Para ejercer estos derechos, escríbanos a seguridad@apolovibes3d.cl indicando su nombre y qué solicita. Le responderemos dentro de los plazos legales. Estas solicitudes se tramitan conforme a la normativa chilena de protección de datos personales, incluida la Ley N° 21.719 en las disposiciones que se encuentren vigentes. Si considera que no atendimos su solicitud, puede reclamar ante la autoridad de protección de datos competente.
+Usted puede solicitar el acceso, la rectificación, la supresión, la oposición al tratamiento, la portabilidad de sus datos y el bloqueo temporal, además de retirar su consentimiento en cualquier momento y oponerse a decisiones basadas únicamente en el tratamiento automatizado de sus datos. Para ejercer estos derechos, escríbanos a seguridad@apolovibes3d.cl indicando su nombre y qué solicita; podremos pedirle que acredite su identidad. Le responderemos dentro de los plazos legales. Estas solicitudes se tramitan conforme a la normativa chilena de protección de datos personales, incluida la Ley N° 21.719, a contar de su entrada en vigor el 1 de diciembre de 2026. Si considera que no atendimos su solicitud, puede reclamar ante la Agencia de Protección de Datos Personales.
 
 11. Menores de Edad
 El Sitio no está dirigido a menores de 18 años y no recopilamos intencionalmente sus datos personales.
@@ -143,8 +144,9 @@ El Sitio no está dirigido a menores de 18 años y no recopilamos intencionalmen
 Podemos actualizar esta Política. Publicaremos los cambios en esta página con la fecha de última actualización. Si el cambio es relevante, lo informaremos por los canales de contacto del Sitio.
 
 13. Contacto
-- Correo: contacto@apolovibes3d.cl
-- Dirección: calle Pasaje el Boldo Nro: 33, Viña del Mar, Chile.
+- Seguridad y datos personales: seguridad@apolovibes3d.cl
+- Consultas generales: contacto@apolovibes3d.cl
+- Dirección: Pasaje El Boldo N° 33, Viña del Mar, Chile.
 
 14. Principios de Seguridad de la Información
 Apolo Vibes SPA orienta sus prácticas de seguridad de la información conforme a los siguientes principios:
@@ -155,7 +157,7 @@ b) Integridad: aplicamos medidas para prevenir la alteración no autorizada de l
 
 c) Disponibilidad: nos esforzamos por mantener nuestros servicios operativos. Algunos componentes tecnológicos pueden presentar demoras de arranque o interrupciones puntuales. Si ocurre un incidente que afecte de forma relevante el servicio o los datos personales, actuaremos conforme a los procedimientos establecidos y a la normativa aplicable.
 
-d) Privacidad: adecuamos nuestras prácticas al marco normativo chileno de protección de datos personales, incluida la Ley N.º 21.719, en las disposiciones que se encuentren vigentes.
+d) Privacidad: adecuamos nuestras prácticas al marco normativo chileno de protección de datos personales, incluida la Ley N.º 21.719, a contar de su entrada en vigor el 1 de diciembre de 2026.
 
 
 15. Compromiso de la Dirección
@@ -221,11 +223,11 @@ Para consultas sobre cambios, devoluciones o garantías: contacto@apolovibes3d.c
     titulo: 'Política de Cookies',
     actualizacion: fechaLegalLarga(),
     texto:
-      `1. Qué son las Cookies
+       `1. Qué son las Cookies
 Las cookies son pequeños archivos que el navegador guarda en su dispositivo cuando visita un sitio web. Permiten recordar información sobre su visita, como su sesión o sus preferencias. También usamos tecnologías equivalentes, como el almacenamiento local del navegador (localStorage y sessionStorage), que cumplen una función similar.
 
 2. Cookies Propias
-El Sitio utiliza únicamente estas cookies, todas necesarias para su funcionamiento. Los nombres técnicos van entre paréntesis para que pueda identificarlas si alguna vez necesita eliminarlas desde su navegador:
+El Sitio utiliza únicamente estas cookies, todas necesarias para su funcionamiento:
 - Cookie de sesión: mantiene su sesión iniciada y renueva el acceso sin volver a pedirle sus datos. Dura mientras el navegador está abierto y no puede ser leída por el código del Sitio, solo por nuestros servidores.
 - Cookie de verificación en dos pasos: recuerda, por un máximo de 5 minutos, que ya completó el segundo paso del inicio de sesión cuando su cuenta tiene activada la autenticación de dos factores.
 Ninguna de estas cookies se usa para publicidad ni para seguimiento.
@@ -247,7 +249,7 @@ No utilizamos cookies de analítica, publicidad, redes sociales ni píxeles de s
 Puede eliminar o bloquear las cookies y el almacenamiento local desde la configuración de su navegador (Chrome, Edge, Firefox o Safari). Si bloquea las cookies propias, no podrá mantener su sesión iniciada, usar la autenticación de dos factores ni completar un pago.
 
 6. Base Legal
-Tratamos los datos obtenidos a través de cookies conforme a nuestra Política de Privacidad y a la Ley 19.496 y la normativa chilena de protección de datos personales, incluidas las disposiciones de la Ley 21.719 que se encuentren vigentes.
+Tratamos los datos obtenidos a través de cookies conforme a nuestra Política de Privacidad y a la Ley 19.496 y la normativa chilena de protección de datos personales, incluida la Ley 21.719, a contar de su entrada en vigor el 1 de diciembre de 2026.
 
 7. Cambios en esta Política
 Podemos actualizar esta Política cuando incorporemos nuevas cookies o cambie la normativa aplicable. Publicaremos la versión vigente en esta página con su fecha de actualización.
