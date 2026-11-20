@@ -621,7 +621,7 @@ export default function Navbar() {
                                 <Trash2 size={16} />
                               </button>
                             </div>
-                            <p style={{ fontSize: 12, color: 'var(--text)', margin: '0 0 8px' }}>
+                            <p style={{ fontSize: 12, color: 'var(--text-on-bg)', margin: '0 0 8px' }}>
                               ${item.precio.toLocaleString('es-CL')} c/u
                             </p>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>

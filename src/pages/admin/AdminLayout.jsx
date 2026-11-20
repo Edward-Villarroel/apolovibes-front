@@ -5,6 +5,7 @@ import { useTheme } from '../../context/ThemeContext.jsx'
 import { Menu, LogOut, LayoutDashboard, ClipboardList, Package, FileText, ShoppingCart, User, Tag, Users, Sun, Moon } from 'lucide-react'
 import ConfirmModal from '../../components/ConfirmModal.jsx'
 import '../../styles/admin.css'
+import { mediaPath } from '../../utils/media.js'
 
 const navItems = [
   { to: '/admin', end: true, label: 'Dashboard', icon: LayoutDashboard },
@@ -176,22 +177,35 @@ export default function AdminLayout() {
         <SidebarContent onLogout={() => setShowConfirm(true)} user={user} theme={theme} toggleTheme={toggleTheme} />
       </aside>
 
-      <button
-        className="admin-mobile-toggle"
-        onClick={() => setSidebarOpen(true)}
-        aria-label="Abrir menú"
-        style={{
-          display: 'none',
-          position: 'fixed', top: 16, left: 16, zIndex: 20,
-          width: 40, height: 40, borderRadius: '50%',
-          background: 'var(--accent)', border: '1px solid var(--line)',
-          color: '#fff', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,.15)',
-        }}
-      >
-        <Menu size={20} />
-      </button>
       <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        <header className="admin-mobile-header">
+          <button
+            className="admin-mobile-hamburger"
+            onClick={() => setSidebarOpen(true)}
+            aria-label="Abrir menú"
+          >
+            <Menu size={24} />
+          </button>
+
+          <Link to="/" className="admin-mobile-logo">
+            <img
+              src={mediaPath('nombrelogo2.webp')}
+              alt="Apolo Vibes"
+              width="512"
+              height="171"
+              style={{ height: 40, width: 'auto' }}
+            />
+          </Link>
+
+          <button
+            className="admin-mobile-theme"
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+        </header>
+
         <main className="admin-main">
           <Outlet />
         </main>
@@ -206,10 +220,50 @@ export default function AdminLayout() {
       )}
 
       <style>{`
-        @media (max-width: 900px) {
-          .admin-mobile-toggle { display: flex !important; }
-        }
-      `}</style>
+  .admin-mobile-header { display: none; }
+
+  @media (max-width: 900px) {
+    .admin-mobile-header {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 12px 16px;
+      background: rgba(250,127,25,1);
+      border-bottom: 1px solid rgba(30,58,95,.15);
+      color: #FBF7EE;
+    }
+    .admin-mobile-hamburger {
+      justify-self: start;
+      display: inline-flex;
+      background: none;
+      border: none;
+      padding: 0;
+      color: #FBF7EE;
+      cursor: pointer;
+    }
+    .admin-mobile-logo {
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+    .admin-mobile-theme {
+      justify-self: end;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(251,247,238,.3);
+      background: rgba(251,247,238,.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FBF7EE;
+      cursor: pointer;
+    }
+  }
+`}</style>
     </div >
   )
 }

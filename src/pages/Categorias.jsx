@@ -1,8 +1,11 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import ProductCard from '../components/ProductCard.jsx'
 import { useProductos } from '../context/ProductContext.jsx'
 import { mediaPath } from '../utils/media.js'
+
+const FILAS_POR_PAGINA = 5
 
 const CATEGORIAS_UI = [
   { slug: 'videojuegos-y-cine', img: 'cat-videojuegos.webp', desc: 'Tus personajes favoritos' },
@@ -44,6 +47,10 @@ export default function Categorias() {
   const { productos, categorias, cargando, error } = useProductos()
   const [params, setParams] = useSearchParams()
   const productosRef = useRef(null)
+  const gridRef = useRef(null)
+
+  const [pagina, setPagina] = useState(1)
+  const [columnas, setColumnas] = useState(4)
 
   const slugActivo = params.get('cat')
   const catActiva = categorias.find(
@@ -51,9 +58,43 @@ export default function Categorias() {
   )
   const activa = catActiva ? catActiva.id : null
 
+  const filtrados = activa ? productos.filter((p) => p.categoria_id === activa) : productos
+
+  const hayGrid = !cargando && !error && filtrados.length > 0
+
+  useEffect(() => {
+    const el = gridRef.current
+    if (!el) return undefined
+    const medir = () => {
+      const n = getComputedStyle(el).gridTemplateColumns.split(' ').filter(Boolean).length
+      if (n > 0) setColumnas(n)
+    }
+    medir()
+    const ro = new ResizeObserver(medir)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [hayGrid])
+
+  const productosPorPagina = columnas * FILAS_POR_PAGINA
+  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / productosPorPagina))
+
+  useEffect(() => {
+    setPagina(1)
+  }, [activa])
+
+  useEffect(() => {
+    if (pagina > totalPaginas) setPagina(totalPaginas)
+  }, [pagina, totalPaginas])
+
+  const productosPagina = useMemo(() => {
+    const inicio = (pagina - 1) * productosPorPagina
+    return filtrados.slice(inicio, inicio + productosPorPagina)
+  }, [pagina, productosPorPagina, filtrados])
+
   const seleccionar = (cat) => {
     if (cat) setParams({ cat: slugify(cat.nombre) })
     else setParams({})
+    setPagina(1)
 
     const esMovil = window.matchMedia('(max-width: 768px)').matches
     requestAnimationFrame(() => {
@@ -65,7 +106,12 @@ export default function Categorias() {
     })
   }
 
-  const filtrados = activa ? productos.filter((p) => p.categoria_id === activa) : productos
+  const cambiarPagina = (nueva) => {
+    setPagina(nueva)
+    requestAnimationFrame(() => {
+      productosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
 
   return (
     <section className="wrap section-py-mobile" style={{ paddingTop: '48px', paddingBottom: '80px' }}>
@@ -123,11 +169,68 @@ export default function Categorias() {
           </p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 20 }}>
-          {filtrados.map((p, i) => (
-            <ProductCard key={p.id} producto={p} index={i} />
-          ))}
-        </div>
+        <>
+          <div
+            ref={gridRef}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 20 }}
+          >
+            {productosPagina.map((p, i) => (
+              <ProductCard key={p.id} producto={p} index={i} />
+            ))}
+          </div>
+
+          {totalPaginas > 1 && (
+            <div
+              style={{
+                position: 'sticky', bottom: 0, zIndex: 10,
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                gap: 8, padding: '20px 16px 12px', marginTop: 24,
+                background: 'var(--bg)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-dim)' }}>
+                <button
+                  onClick={() => cambiarPagina(Math.max(1, pagina - 1))}
+                  disabled={pagina === 1}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
+                    background: 'transparent', color: 'var(--text-dim)',
+                    cursor: pagina === 1 ? 'not-allowed' : 'pointer',
+                    opacity: pagina === 1 ? 0.4 : 1,
+                  }}
+                  aria-label="Página anterior"
+                >
+                  <ChevronLeft size={15} />
+                </button>
+
+                <span style={{ padding: '0 8px', fontFamily: 'var(--font-mono)' }}>
+                  {pagina} / {totalPaginas}
+                </span>
+
+                <button
+                  onClick={() => cambiarPagina(Math.min(totalPaginas, pagina + 1))}
+                  disabled={pagina === totalPaginas}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
+                    background: 'transparent', color: 'var(--text-dim)',
+                    cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
+                    opacity: pagina === totalPaginas ? 0.4 : 1,
+                  }}
+                  aria-label="Página siguiente"
+                >
+                  <ChevronRight size={15} />
+                </button>
+              </div>
+
+              <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+                Mostrando {(pagina - 1) * productosPorPagina + 1}
+                –{Math.min(pagina * productosPorPagina, filtrados.length)} de {filtrados.length}
+              </span>
+            </div>
+          )}
+        </>
       )}
     </section>
   )
