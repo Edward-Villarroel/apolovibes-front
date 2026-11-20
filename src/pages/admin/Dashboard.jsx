@@ -21,10 +21,6 @@ function formatoPesos(valor) {
   return `$${Number(valor || 0).toLocaleString('es-CL')}`;
 }
 
-// Etiqueta corta del eje X: `YYYY-MM-DD` (fecha local de Chile que ya calcula el
-// backend) -> `DD/MM`. Se parsea a mano y no con `new Date(iso)`: el constructor
-// interpreta `YYYY-MM-DD` como medianoche UTC y, al mostrarlo en hora de Chile,
-// restaría un día.
 function formatoDiaMes(iso) {
   const partes = String(iso || '').slice(0, 10).split('-');
   if (partes.length !== 3) return '';
@@ -61,12 +57,6 @@ function Sparkline({ data, up }) {
     return `${x},${y}`;
   }).join(' ');
   const color = up ? 'var(--green, #22c55e)' : 'var(--red, #ef4444)';
-
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} width="100%" height={28} preserveAspectRatio="none">
-      <polyline points={points} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
 }
 
 function VentasChart({ data }) {
@@ -87,7 +77,7 @@ function VentasChart({ data }) {
   const area = `${padX},${h - padY} ${linea} ${padX + (data.length - 1) * stepX},${h - padY}`
 
   return (
-    <svg viewBox={`0 0 ${w} ${h + 20}`} width="100%" height={h + 20}>
+    <svg viewBox={`0 0 ${w} ${h + 28}`} width="100%" style={{ display: 'block', height: 'auto' }}>
       <defs>
         <linearGradient id="ventasFill" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.35" />
@@ -103,7 +93,7 @@ function VentasChart({ data }) {
       ))}
 
       {puntos.map((p, i) => (
-        <text key={i} x={p.x} y={h + 14} fontSize="11" fill="var(--surface)" textAnchor="middle">
+        <text key={i} x={p.x} y={h + 18} fontSize="18" fill="var(--text-on-bg)" textAnchor="middle">
           {p.label}
         </text>
       ))}
@@ -115,12 +105,10 @@ function VentasChart({ data }) {
 
 function Panel({ title, action, children }) {
   return (
-    <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12, padding: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-on-bg)' }}>{title}</div>
-        {action && (
-          <span style={{ fontSize: 12, color: 'var(--accent)', cursor: 'pointer', fontWeight: 500 }}>{action}</span>
-        )}
+    <div className="admin-card admin-panel">
+      <div className="admin-panel__head">
+        <div className="admin-panel__title">{title}</div>
+        {action && <span className="admin-panel__action">{action}</span>}
       </div>
       {children}
     </div>
@@ -128,13 +116,9 @@ function Panel({ title, action, children }) {
 }
 
 export default function Dashboard() {
-  // "Productos más vendidos" sale del ranking real del backend
-  // (`GET /api/productos/mas-vendidos`), no de una lista fija: el histórico
-  // completo, que es lo que interesa para decidir qué volver a producir.
   const [topProductos, setTopProductos] = useState([]);
   const [errorTopProductos, setErrorTopProductos] = useState(null);
 
-  // Reporte general de ventas y pedidos (backend admin-only).
   const [reporte, setReporte] = useState(null);
   const [cargandoReporte, setCargandoReporte] = useState(true);
   const [errorReporte, setErrorReporte] = useState(null);
@@ -193,9 +177,6 @@ export default function Dashboard() {
     },
   ];
 
-  // Cada punto es una semana (lunes a domingo, en hora de Chile). El eje X
-  // muestra la fecha de inicio de esa semana en DD/MM; el backend ya entrega
-  // `desde` como fecha local, así que la etiqueta coincide con los datos.
   const ventasSemana = (ventas.semanas || []).map(w => ({
     label: formatoDiaMes(w.desde),
     valor: Number(w.total) || 0,
@@ -223,10 +204,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, marginBottom: 24, color: 'var(--text-on-bg)' }}>
-        Dashboard
-      </h1>
-
+      <h1 className="admin-page-title">Dashboard</h1>
       {errorReporte && (
         <p style={{ color: 'var(--red, #ef4444)', margin: '0 0 16px', fontSize: 13 }}>
           No se pudo cargar el reporte de ventas: {errorReporte}
@@ -239,11 +217,9 @@ export default function Dashboard() {
           <p style={{ color: 'var(--text-on-bg)', gridColumn: '1 / -1', margin: 0 }}>Cargando…</p>
         ) : (
           stats.map(s => (
-            <div key={s.label} style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12, padding: 20 }}>
-              <div style={{ fontSize: 13, color: 'var(--text-on-bg)', marginBottom: 6 }}>{s.label}</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 10 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--text-on-bg)' }}>{s.valor}</span>
-              </div>
+            <div key={s.label} className="admin-card admin-stat">
+              <div className="admin-stat__label">{s.label}</div>
+              <div className="admin-stat__value">{s.valor}</div>
             </div>
           ))
         )}
@@ -279,7 +255,7 @@ export default function Dashboard() {
                 const pct = (p.ingresos / maxMonto) * 100
                 return (
                   <div key={p.id}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, color: 'var(--text-on-bg)', marginBottom: 5 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 12.5, color: 'var(--text-on-bg)', marginBottom: 5 }}>
                       <span>{p.nombre}</span>
                       <span style={{ fontFamily: 'var(--font-mono)' }}>
                         ${Number(p.ingresos).toLocaleString('es-CL')} CLP
@@ -306,24 +282,24 @@ export default function Dashboard() {
           ) : (
             <div className="admin-table-wrap">
               <table className="admin-table admin-table--dashboard">
-              <tbody>
-                {pedidosRecientes.map(p => (
-                  <tr key={p.id} style={{ borderTop: '1px solid var(--line)' }}>
-                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{p.id}</td>
-                    <td style={{ padding: '10px 6px', color: 'var(--text-on-bg)' }}>{p.cliente}</td>
-                    <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{p.monto}</td>
-                    <td style={{ padding: '10px 6px' }}>
-                      <span style={{
-                        fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 20,
-                        color: COLOR_ESTADO[p.estado] || 'var(--text-on-bg)', background: `${COLOR_ESTADO[p.estado] || 'var(--text-on-bg)'}22`,
-                      }}>
-                        {p.estado}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                <tbody>
+                  {pedidosRecientes.map(p => (
+                    <tr key={p.id} style={{ borderTop: '1px solid var(--line)' }}>
+                      <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{p.id}</td>
+                      <td style={{ padding: '10px 6px', color: 'var(--text-on-bg)' }}>{p.cliente}</td>
+                      <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{p.monto}</td>
+                      <td style={{ padding: '10px 6px' }}>
+                        <span style={{
+                          fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 20,
+                          color: COLOR_ESTADO[p.estado] || 'var(--text-on-bg)', background: `${COLOR_ESTADO[p.estado] || 'var(--text-on-bg)'}22`,
+                        }}>
+                          {p.estado}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </Panel>
@@ -344,8 +320,14 @@ export default function Dashboard() {
                     }}>
                       <Icon size={15} />
                     </div>
-                    <div style={{ flex: 1, fontSize: 12.5, color: 'var(--text-on-bg)' }}>{a.texto}</div>
-                    <div style={{ fontSize: 11.5, color: 'var(--text-on-bg)', whiteSpace: 'nowrap' }}>{a.tiempo ? formatearFecha(a.tiempo) : ''}</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>{a.texto}</div>
+                      {a.tiempo && (
+                        <div style={{ fontSize: 11.5, color: 'var(--text-on-bg)', opacity: .7, marginTop: 2 }}>
+                          {formatearFecha(a.tiempo)}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )
               })
