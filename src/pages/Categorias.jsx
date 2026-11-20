@@ -108,8 +108,7 @@ export default function Categorias() {
 
   const cambiarPagina = (nueva) => {
     setPagina(nueva)
-    requestAnimationFrame(() => {
-      productosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    window.scrollTo({ top: 0, behavior: 'smooth'
     })
   }
 
@@ -181,11 +180,9 @@ export default function Categorias() {
 
           {totalPaginas > 1 && (
             <div
-              style={{
-                position: 'sticky', bottom: 0, zIndex: 10,
+              style={{               
                 display: 'flex', flexDirection: 'column', alignItems: 'center',
-                gap: 8, padding: '20px 16px 12px', marginTop: 24,
-                background: 'var(--bg)',
+                gap: 8, padding: '32px 16px 0', marginTop: 8,
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-dim)' }}>
