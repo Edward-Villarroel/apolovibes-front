@@ -1759,3 +1759,107 @@ label {
   justify-content: center;
 }
 .am-footer img { height: 40px; width: auto; }
+
+/* ── Admin: Registrar venta local (antes en un <style> dentro de RegistrarVentaLocal.jsx) ──
+   Los tokens --rv-* son alias de las variables globales del sitio,
+   así la página sigue el tema claro/oscuro sin lógica extra. */
+.rv-root{
+  --rv-ink:var(--text-on-bg);
+  --rv-muted:color-mix(in srgb, var(--text-on-bg) 68%, transparent);
+  --rv-line:var(--line);
+  --rv-line-strong:color-mix(in srgb, var(--text-on-bg) 35%, transparent);
+  --rv-divider:color-mix(in srgb, var(--text-on-bg) 12%, transparent);
+  --rv-green-dark:color-mix(in srgb, var(--green) 55%, var(--text-on-bg));
+  --rv-green-tint:color-mix(in srgb, var(--green) 16%, transparent);
+  --rv-red:var(--red);
+  --rv-red-tint:color-mix(in srgb, var(--red) 14%, transparent);
+  color:var(--rv-ink); font-family:var(--font-body);
+}
+.rv-root *{box-sizing:border-box}
+.rv-root button{font-family:inherit}
+.rv-wrap{max-width:1280px;margin:0 auto}
+.rv-head{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.rv-title{margin:0;font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--rv-ink)}
+.rv-session{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--surface-3);border:1px solid var(--rv-line);border-radius:14px;padding:10px 12px 10px 18px}
+.rv-badge{display:inline-flex;align-items:center;gap:6px;background:var(--rv-green-tint);color:var(--rv-green-dark);font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.rv-badge i{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.rv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:24px;align-items:start}
+.rv-card{background:var(--surface-3);border:1px solid var(--rv-line);border-radius:16px;padding:24px}
+.rv-h2{font-family:var(--font-display);font-size:18px;font-weight:700;margin:0 0 18px;color:var(--rv-ink)}
+.rv-lbl{display:block;font-size:12px;font-weight:600;color:var(--rv-ink);margin-bottom:6px;letter-spacing:.02em}
+.rv-fld{height:46px;font-size:14px}
+.rv-btn{height:48px;border-radius:10px;border:0;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:filter .15s}
+.rv-btn:hover:not(:disabled){filter:brightness(.94)}
+.rv-btn:disabled{opacity:.55;cursor:not-allowed}
+.rv-pri{background:var(--accent);color:var(--navy)}
+.rv-danger{height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--rv-red);background:transparent;color:var(--rv-red);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.rv-danger:hover{background:var(--rv-red-tint)}
+.rv-chip{height:44px;padding:0 22px;border-radius:999px;border:1px solid var(--rv-line-strong);background:transparent;font-size:14px;font-weight:600;color:var(--rv-ink);cursor:pointer}
+.rv-chip.on{background:var(--surface);border-color:var(--accent);color:var(--text);box-shadow:0 0 0 1px var(--accent)}
+.rv-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--rv-divider)}
+.rv-mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600}
+.rv-step{width:44px;height:46px;border:1px solid var(--rv-line-strong);background:transparent;border-radius:10px;cursor:pointer;color:var(--rv-ink);display:flex;align-items:center;justify-content:center}
+.rv-icon{width:44px;height:44px;border:0;background:transparent;cursor:pointer;color:var(--rv-red);display:flex;align-items:center;justify-content:center}
+.rv-th{padding:0 12px 12px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--rv-muted)}
+.rv-td{padding:14px 12px;border-top:1px solid var(--rv-divider);font-size:14px;color:var(--rv-ink)}
+.rv-tiles{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.rv-tile{flex:1;min-width:160px;border:1px solid var(--rv-divider);border-radius:12px;padding:16px 18px;background:var(--surface-3)}
+.rv-tl{font-size:12px;font-weight:600;color:var(--rv-muted)}
+.rv-tv{font-family:var(--font-mono);font-size:22px;font-weight:600;margin-top:4px;color:var(--rv-ink)}
+.rv-pill{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--rv-divider);color:var(--rv-ink)}
+.rv-pill.tuu{background:var(--accent-soft)}
+.rv-msg{margin:0 0 16px;font-size:13px;font-weight:500;padding:10px 14px;border-radius:10px}
+.rv-msg.ok{background:var(--rv-green-tint);color:var(--rv-green-dark)}
+.rv-msg.error{background:var(--rv-red-tint);color:color-mix(in srgb, var(--red) 70%, var(--text-on-bg))}
+.rv-overlay{position:fixed;inset:0;background:rgba(0,0,0,.49);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(4px);padding:16px}
+.rv-modal{background:var(--surface);color:var(--text);border-radius:16px;padding:32px 28px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center}
+.rv-root button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:720px){
+  .rv-card{padding:18px}
+  .rv-session{width:100%;flex-direction:column;align-items:stretch;gap:12px;padding:14px}
+  .rv-session .rv-danger{height:46px}
+  .rv-fld{font-size:16px;height:48px}
+  .rv-step{height:48px;width:48px}
+  .rv-chip{flex:1;height:48px}
+  .rv-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .rv-tile{min-width:0;padding:14px}
+}
+
+/* Utilidades que antes eran estilos inline en RegistrarVentaLocal.jsx */
+.rv-card-estrecho{max-width:440px}
+.rv-fecha{font-size:13px;color:var(--rv-muted);margin:12px 0 18px}
+.rv-lugar{font-size:14px;font-weight:600}
+.rv-meta{font-size:12px;color:var(--rv-muted)}
+.rv-stock{margin-top:6px}
+.rv-field{margin-bottom:16px}
+.rv-field-qty{margin-bottom:22px}
+.rv-stepper{display:flex;gap:8px}
+.rv-qty{width:84px;text-align:center}
+.rv-subtotal{margin-left:auto;align-self:center;text-align:right}
+.rv-subtotal-val{font-size:16px}
+.rv-card-head{display:flex;justify-content:space-between;align-items:baseline}
+.rv-count{font-size:13px;color:var(--rv-muted)}
+.rv-vacio{color:var(--rv-muted);font-size:14px;margin:8px 0 20px}
+.rv-vacio-flush{margin:0}
+.rv-item{flex:1}
+.rv-item-name{font-size:14px;font-weight:600}
+.rv-item-x{color:var(--rv-muted);font-weight:500}
+.rv-totales{padding:16px 0 4px;display:flex;flex-direction:column;gap:6px}
+.rv-total-row{display:flex;justify-content:space-between;font-size:13px;color:var(--rv-ink)}
+.rv-total-final{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding-top:12px;border-top:1px solid var(--rv-line)}
+.rv-total-label{font-size:15px;font-weight:700}
+.rv-total-valor{font-family:var(--font-display);font-size:30px;font-weight:700;color:var(--rv-ink)}
+.rv-pago{margin:18px 0 20px}
+.rv-chips{display:flex;gap:10px}
+.rv-btn-lg{height:54px;font-size:16px}
+.rv-card-ventas{margin-top:24px}
+.rv-tile-accent{background:var(--accent-soft);border-color:var(--accent)}
+.rv-tile-accent .rv-tl{color:var(--rv-ink)}
+.rv-table-wrap{overflow-x:auto}
+.rv-table{width:100%;border-collapse:collapse}
+.rv-right{text-align:right}
+.rv-modal-title{margin:0 0 8px;font-size:18px;font-weight:700;font-family:var(--font-display)}
+.rv-modal-text{margin:0 0 22px;font-size:14px;color:var(--text);opacity:.8;line-height:1.5}
+.rv-modal-actions{display:flex;gap:10px}
+.rv-btn-cancel{flex:1;height:46px;background:transparent;border:1px solid var(--text-dim);color:var(--text);font-size:14px}
+.rv-btn-confirm{flex:1;height:46px;background:var(--rv-red);color:#fff;font-size:14px}
