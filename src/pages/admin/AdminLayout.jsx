@@ -40,10 +40,10 @@ const itemStyle = ({ isActive }) => ({
 })
 
 const sidebarBtnStyle = {
-  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, width: '100%',
-  padding: '12px 14px', borderRadius: 999, fontSize: 14,
-  color: '#B60303', background: '#E8F4F8', border: 'none',
-  cursor: 'pointer', fontWeight: 600,
+  display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 10, width: '100%',
+  padding: '11px 12px', borderRadius: 8, fontSize: 13,
+  color: '#fff', background: 'var(--red)', border: 'none',
+  cursor: 'pointer', fontWeight: 600, textAlign: 'left',
 }
 
 function SidebarContent({ onLogout, onClose, user, theme, toggleTheme }) {
@@ -180,14 +180,6 @@ function MobileSidebarContent({ onLogout, onClose, user, theme, toggleTheme }) {
             {label}
           </NavLink>
         ))}
-      </div>
-
-      <div className="am-section">
-        <button className="am-item" onClick={toggleTheme}>
-          {theme === 'dark'
-            ? <><Sun size={18} /> Modo claro</>
-            : <><Moon size={18} /> Modo oscuro</>}
-        </button>
       </div>
 
       <div className="am-section am-section--pad">

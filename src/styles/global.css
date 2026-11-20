@@ -1732,17 +1732,30 @@ label {
 .am-item.active { background: rgba(251,247,238,.18); font-weight: 600; }
 
 .am-logout {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; padding: 13px 14px;
-  border: none; border-radius: 999px;
-  background: #E8F4F8; color: #B60303;
-  font-size: 15px; font-weight: 600; cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--red);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: filter .15s;
 }
+.am-logout:hover,
+.am-logout:active { filter: brightness(.85); }
 
 .am-footer {
   margin-top: auto;
   border-top: 1px solid rgba(251,247,238,.35);
-  padding: 20px;
-  display: flex; justify-content: center;
+  padding: 16px 20px 20px;
+  display: flex;
+  justify-content: center;
 }
 .am-footer img { height: 40px; width: auto; }
