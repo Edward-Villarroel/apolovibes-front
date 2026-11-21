@@ -40,7 +40,7 @@ function normalizarSpecs(valor) {
 
 function urlImagenApi(id, thumb = false) {
   if (!id) return null
-  return `/api/productos/${id}/imagen${thumb ? '/thumb' : ''}`
+  return thumb ? `/api/productos/${id}/thumb` : `/api/productos/${id}/imagen`
 }
 
 export function normalizarProductoPublico(p) {
