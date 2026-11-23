@@ -47,7 +47,7 @@ export default function ResenasSeccion({ producto, resenas, cargando, error }) {
     return (
         <div style={{ margin: '64px auto 0', textAlign: 'left' }}>
             <hr className="separador" />
-            <h2 style={{ textAlign: 'center', fontSize: 22, fontWeight: 600, color: 'var(--surface-2)', margin: '0 0 20px' }}>
+            <h2 style={{ textAlign: 'center', fontSize: 22, fontWeight: 600, color: 'var(--text-on-bg)', margin: '0 0 20px' }}>
                 Opiniones del producto
             </h2>
 
