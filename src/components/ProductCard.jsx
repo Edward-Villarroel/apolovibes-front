@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext.jsx'
 import { useProductos } from '../context/ProductContext.jsx'
 import { Star, ImageOff } from 'lucide-react'
 import { useState } from 'react'
-import { productoApi } from '../services/products.js'
+import { productoApi, registrarColores } from '../services/products.js'
 
 const ACENTOS = ['#FA7F19', '#F6D976', '#E8863E']
 const COLOR_NUEVO = '#2fa018'
@@ -32,6 +32,7 @@ export default function ProductCard({ producto, index = 0, prioridad = false }) 
       try {
         const resp = await productoApi.listarColores(producto.id)
         colores = resp.colores || []
+        registrarColores(producto.id, colores)
       } catch (e) {
         // Sin saber los colores no se agrega a ciegas: va al detalle a elegir.
         navigate('/producto/' + producto.id)

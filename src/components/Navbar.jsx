@@ -597,7 +597,7 @@ export default function Navbar() {
                               <img
                                 src={urlMedia(item.imagen)}
                                 alt={item.nombre}
-                                loading="lazy"
+                                loading="eager"
                                 decoding="async"
                                 width="56"
                                 height="56"

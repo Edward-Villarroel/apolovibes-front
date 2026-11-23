@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { carritoApi } from '../services/cart.js'
 import { imagenDeColor } from '../services/products.js'
+import { urlMedia } from '../utils/media.js'
 import { useAuth } from './AuthContext.jsx'
 import { useProductos } from './ProductContext.jsx'
 import { useToast } from './ToastContext.jsx'
@@ -9,10 +10,13 @@ const CartContext = createContext(null)
 
 function enrichItem(linea, productos) {
   const prod = productos.find(p => p.id === linea.producto_id)
-  const imagen = linea.imagen
-    ?? imagenDeColor(linea.producto_id, linea.color)
-    ?? prod?.imagen
-    ?? null
+  const imagenColor = imagenDeColor(linea.producto_id, linea.color)
+  const imagenProducto = prod?.imagen_url || prod?.imagen || null
+  // Reutiliza primero la URL del bucket que ya cargó la grilla/detalle: la ruta
+  // /thumb de Render tarda ~1s y provoca el salto al abrir el carrito por primera vez.
+  const imagen = linea.color
+    ? (imagenColor ?? linea.imagen ?? imagenProducto ?? null)
+    : (imagenProducto ?? linea.imagen ?? null)
   return {
     id: linea.producto_id,
     itemId: linea.id,
@@ -30,6 +34,17 @@ function enrichCart(carrito, productos) {
   return (carrito?.items ?? []).map(linea => enrichItem(linea, productos))
 }
 
+function precargarImagenesCarrito(items, yaPrecargadas) {
+  if (typeof window === 'undefined') return
+  for (const item of items) {
+    const url = urlMedia(item.imagen)
+    if (!url || yaPrecargadas.has(url)) continue
+    yaPrecargadas.add(url)
+    const img = new Image()
+    img.src = url
+  }
+}
+
 export function CartProvider({ children }) {
   const { isLoggedIn } = useAuth()
   const { productos } = useProductos()
@@ -45,10 +60,13 @@ export function CartProvider({ children }) {
   const productosRef = useRef(productos)
   const cargadoRef = useRef(false)
   const cargaEnCursoRef = useRef(null)
+  const imagenesPrecargadasRef = useRef(new Set())
 
   const syncItems = useCallback((carrito) => {
     carritoRef.current = carrito
-    actualizarItems(enrichCart(carrito, productosRef.current))
+    const items = enrichCart(carrito, productosRef.current)
+    actualizarItems(items)
+    precargarImagenesCarrito(items, imagenesPrecargadasRef.current)
   }, [])
 
   useEffect(() => {

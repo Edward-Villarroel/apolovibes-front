@@ -13,7 +13,7 @@ function numero(valor) {
 function TarjetaResumen({ icon: Icon, label, valor, detalle, children }) {
   return (
     <div style={{
-      background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 12,
+      background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12,
       padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 10,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -356,16 +356,13 @@ export default function Usuarios() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
           <div>
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, margin: 0, color: 'var(--text-on-bg)' }}>Usuarios</h1>
-            <p style={{ margin: '4px 0 0', fontSize: 14, color: 'var(--text-on-bg)', opacity: 0.8 }}>
-              Gestiona cuentas, compras y cotizaciones
-            </p>
           </div>
           <button
             type="button"
             onClick={() => { setErrorAlta(null); setModalAbierto(true) }}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 8, minHeight: 44, padding: '0 20px',
-              borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff',
+              borderRadius: 10, border: 'none', background: 'var(--surface)', color: '#fff',
               fontSize: 14, fontWeight: 600, cursor: 'pointer',
             }}
           >
@@ -377,7 +374,7 @@ export default function Usuarios() {
         {/* Fila 2: barra de filtros */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
-          background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 12, padding: 12,
+          background: 'var(--accent)', border: '1px solid var(--line)', borderRadius: 12, padding: 12,
         }}>
           <div style={{ position: 'relative', flex: '1 1 320px' }}>
             <Search
@@ -424,7 +421,7 @@ export default function Usuarios() {
             }}
           >
             <option value="todos">Todas las cuentas</option>
-            <option value="empresa">Cuenta de empresa (@apolovibes.cl)</option>
+            <option value="empresa">Cuenta de empresa</option>
             <option value="personal">Cuenta personal</option>
           </select>
         </div>
