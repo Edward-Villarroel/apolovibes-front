@@ -235,7 +235,7 @@ export default function Usuarios() {
   const [filtroCuenta, setFiltroCuenta] = useState('empresa')
   const [pagina, setPagina] = useState(1)
   const [recarga, setRecarga] = useState(0)
-  const FILAS_POR_PAGINA = 15
+  const [filasPorPagina, setFilasPorPagina] = useState(6)
   const [modalAbierto, setModalAbierto] = useState(false)
   const [guardando, setGuardando] = useState(false)
   const [errorAlta, setErrorAlta] = useState(null)
@@ -264,6 +264,19 @@ export default function Usuarios() {
     return () => { vigente = false }
   }, [recarga])
 
+  useEffect(() => {
+    const calcularFilas = () => {
+      // el encabezado y las tarjetas ocupan más alto que en Inventario
+      const disponible = window.innerHeight - 560
+      const base = Math.floor(disponible / 56)
+      const maximo = window.innerWidth < 768 ? 6 : 10
+      setFilasPorPagina(Math.max(3, Math.min(base, maximo)))
+    }
+    calcularFilas()
+    window.addEventListener('resize', calcularFilas)
+    return () => window.removeEventListener('resize', calcularFilas)
+  }, [])
+
   const filtrados = useMemo(() => {
     const termino = busqueda.trim().toLowerCase()
     const esEmpresa = (u) => String(u.email || '').toLowerCase().endsWith('@apolovibes.cl')
@@ -281,12 +294,16 @@ export default function Usuarios() {
     })
   }, [usuarios, busqueda, filtroRol, filtroCuenta])
 
-  const usuariosPagina = useMemo(() => {
-    const inicio = (pagina - 1) * FILAS_POR_PAGINA
-    return filtrados.slice(inicio, inicio + FILAS_POR_PAGINA)
-  }, [filtrados, pagina])
+  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / filasPorPagina))
 
-  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / FILAS_POR_PAGINA))
+  useEffect(() => {
+    if (pagina > totalPaginas) setPagina(totalPaginas)
+  }, [totalPaginas, pagina])
+
+  const usuariosPagina = useMemo(() => {
+    const inicio = (pagina - 1) * filasPorPagina
+    return filtrados.slice(inicio, inicio + filasPorPagina)
+  }, [filtrados, pagina, filasPorPagina])
 
   const resumen = useMemo(() => usuarios.reduce((acc, u) => ({
     productos: acc.productos + Number(u.productos_comprados || 0),
@@ -498,6 +515,7 @@ export default function Usuarios() {
                   <tbody>
                     {usuariosPagina.map(u => {
                       const esPropia = esAdminActual && String(u.id) === String(usuarioActual?.id)
+                      const esEmpresa = String(u.email || '').toLowerCase().endsWith('@apolovibes.cl')
                       return (
                         <tr key={u.id} style={{ borderTop: '1px solid var(--surface-3)' }}>
                           <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>
@@ -544,19 +562,31 @@ export default function Usuarios() {
                                   >
                                     Quitar admin
                                   </button>
-                                ) : (
+                                ) : u.rol === 'empleado' ? (
                                   <button
                                     type="button"
-                                    onClick={() => cambiarRol(u, 'admin')}
-                                    title="Otorgar permisos de administrador"
+                                    onClick={() => cambiarRol(u, 'cliente')}
+                                    title="Quitar rol de empleado"
                                     style={{
                                       padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
                                       background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
                                     }}
                                   >
-                                    Dar admin
+                                    Quitar empleado
                                   </button>
-                                )}
+                                ) : esEmpresa ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => cambiarRol(u, 'empleado')}
+                                    title="Otorgar rol de empleado"
+                                    style={{
+                                      padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
+                                      background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
+                                    }}
+                                  >
+                                    Dar empleado
+                                  </button>
+                                ) : null}
                                 <button
                                   type="button"
                                   onClick={() => { setErrorAlta(null); setUsuarioEliminar(u) }}
@@ -579,62 +609,59 @@ export default function Usuarios() {
                 </table>
               </div>
 
-              {totalPaginas > 1 && (
-                <div style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  gap: 6, marginTop: 20, padding: '20px 16px 12px',
-                  background: 'var(--bg)',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <button
-                      onClick={() => setPagina(p => Math.max(1, p - 1))}
-                      disabled={pagina === 1}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 30,
-                        height: 30,
-                        borderRadius: 8,
-                        border: '1px solid var(--surface-3)',
-                        background: 'transparent',
-                        color: 'var(--text-dim)',
-                        cursor: pagina === 1 ? 'not-allowed' : 'pointer',
-                        opacity: pagina === 1 ? 0.4 : 1,
-                      }}
-                      aria-label="Página anterior"
-                    >
-                      <ChevronLeft size={15} />
-                    </button>
-
-                    <span style={{ padding: '0 8px', fontFamily: 'var(--font-mono)' }}>
-                      {pagina} / {totalPaginas}
-                    </span>
-
-                    <button
-                      onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))}
-                      disabled={pagina === totalPaginas}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 30,
-                        height: 30,
-                        borderRadius: 8,
-                        border: '1px solid var(--surface-3)',
-                        background: 'transparent',
-                        color: 'var(--text-dim)',
-                        cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
-                        opacity: pagina === totalPaginas ? 0.4 : 1,
-                      }}
-                      aria-label="Página siguiente"
-                    >
-                      <ChevronRight size={15} />
-                    </button>
-                  </div>
-                </div>
-              )}
             </>
+          )}
+
+          {filtrados.length > 0 && (
+            <div
+              style={{
+                position: 'sticky', bottom: 0, zIndex: 10,
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                marginTop: 'auto', gap: 8, padding: '20px 16px 12px',
+                background: 'var(--bg)', borderTop: '1px solid var(--surface-3)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-on-bg)' }}>
+                <button
+                  onClick={() => setPagina(p => Math.max(1, p - 1))}
+                  disabled={pagina === 1}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
+                    background: 'transparent', color: 'var(--text-on-bg)',
+                    cursor: pagina === 1 ? 'not-allowed' : 'pointer',
+                    opacity: pagina === 1 ? 0.4 : 1,
+                  }}
+                  aria-label="Página anterior"
+                >
+                  <ChevronLeft size={15} />
+                </button>
+
+                <span style={{ padding: '0 8px', fontFamily: 'var(--font-mono)' }}>
+                  {pagina} / {totalPaginas}
+                </span>
+
+                <button
+                  onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))}
+                  disabled={pagina === totalPaginas}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
+                    background: 'transparent', color: 'var(--text-on-bg)',
+                    cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
+                    opacity: pagina === totalPaginas ? 0.4 : 1,
+                  }}
+                  aria-label="Página siguiente"
+                >
+                  <ChevronRight size={15} />
+                </button>
+              </div>
+
+              <span style={{ fontSize: 11, color: 'var(--text-on-bg)' }}>
+                Mostrando {(pagina - 1) * filasPorPagina + 1}
+                –{Math.min(pagina * filasPorPagina, filtrados.length)} de {filtrados.length}
+              </span>
+            </div>
           )}
         </>
       )}
