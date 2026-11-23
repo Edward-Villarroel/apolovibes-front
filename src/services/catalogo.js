@@ -27,6 +27,15 @@ const COLUMNAS_PRODUCTO_PUBLICO = [
   'imagen_thumb_content_type',
 ].join(',')
 
+const COLUMNAS_COLOR_PUBLICO = [
+  'id',
+  'producto_id',
+  'nombre',
+  'orden',
+  'imagen_url',
+  'imagen_thumb_url',
+].join(',')
+
 function normalizarSpecs(valor) {
   if (Array.isArray(valor)) return valor
   if (typeof valor !== 'string' || !valor.trim()) return null
@@ -52,10 +61,10 @@ export function normalizarProductoPublico(p, fallbackColor = null) {
   const id = String(p.id)
   const imagenUrl = p.imagen_url || null
   const fallbackImagen = fallbackColor
-    ? urlImagenColorApi(fallbackColor.id, false)
+    ? (fallbackColor.imagen_url || urlImagenColorApi(fallbackColor.id, false))
     : null
   const fallbackThumb = fallbackColor
-    ? urlImagenColorApi(fallbackColor.id, true)
+    ? (fallbackColor.imagen_thumb_url || fallbackColor.imagen_url || urlImagenColorApi(fallbackColor.id, true))
     : null
   const tieneImagen = Boolean(imagenUrl || p.imagen || p.imagen_content_type)
   const tieneThumb = Boolean(imagenUrl || p.imagen_thumb_content_type || p.imagen || p.imagen_content_type)
@@ -103,7 +112,7 @@ async function obtenerFallbackColores(productos) {
 
   const { data, error } = await supabase
     .from('producto_colores')
-    .select('id, producto_id, orden, imagen_content_type, imagen_thumb_content_type')
+    .select('id, producto_id, orden, imagen_url, imagen_thumb_url, imagen_content_type, imagen_thumb_content_type')
     .in('producto_id', faltantes)
     .order('orden', { ascending: true })
 
@@ -163,4 +172,53 @@ export async function listarProductosPublicos() {
 export async function listarCategoriasPublicas() {
   if (supabaseDisponible) return listarCategoriasDesdeSupabase()
   return listarCategoriasDesdeApi()
+}
+
+export function normalizarColorPublico(c) {
+  const id = String(c.id)
+  const imagenUrl = c.imagen_url || null
+  return {
+    id,
+    producto_id: String(c.producto_id),
+    nombre: c.nombre,
+    orden: Number(c.orden ?? 0),
+    imagen: imagenUrl || c.imagen || urlImagenColorApi(id, false),
+    imagen_thumb: c.imagen_thumb_url || imagenUrl || c.imagen_thumb || urlImagenColorApi(id, true),
+  }
+}
+
+/** Lectura pública de variantes; si falla, el backend sigue siendo el fallback. */
+export async function listarColores(productoId) {
+  if (!productoId) return []
+  if (supabaseDisponible) {
+    try {
+      const { data, error } = await supabase
+        .from('producto_colores')
+        .select(COLUMNAS_COLOR_PUBLICO)
+        .eq('producto_id', productoId)
+        .order('orden', { ascending: true })
+
+      if (error) throw error
+      return (data || []).map(normalizarColorPublico)
+    } catch {
+      // Columnas aún no migradas: se usa el endpoint privado del backend.
+    }
+  }
+  const res = await api.get(`/productos/${productoId}/colores`)
+  return (res.colores || []).map(normalizarColorPublico)
+}
+
+/** Precarga las fotos de color para que el cambio de variante sea instantáneo. */
+export function precargarColores(colores) {
+  if (typeof window === 'undefined') return
+  const urls = new Set()
+  for (const color of colores || []) {
+    for (const url of [color.imagen_thumb, color.imagen]) {
+      if (url && /^https?:/i.test(url)) urls.add(url)
+    }
+  }
+  for (const url of urls) {
+    const img = new Image()
+    img.src = url
+  }
 }

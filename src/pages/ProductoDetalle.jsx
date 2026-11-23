@@ -6,7 +6,8 @@ import { useCart } from '../context/CartContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { Minus, Plus, Star } from 'lucide-react'
 import ProductCarousel from '../components/ProductCarousel.jsx'
-import { productoApi, registrarColores } from '../services/products.js'
+import { registrarColores } from '../services/products.js'
+import { listarColores, precargarColores } from '../services/catalogo.js'
 import ResenasSeccion from '../components/ResenasSeccion.jsx'
 
 const COLOR_NUEVO = '#2fa018'
@@ -46,10 +47,11 @@ export default function ProductoDetalle() {
       setColorElegido(null)
       return
     }
-    productoApi.listarColores(id)
-      .then(({ colores }) => {
+    listarColores(id)
+      .then((colores) => {
         if (!vigente) return
         const lista = [...(colores || [])].sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))
+        precargarColores(lista)
         setColores(lista)
         if (lista.length > 1) {
           setColorElegido(null)
