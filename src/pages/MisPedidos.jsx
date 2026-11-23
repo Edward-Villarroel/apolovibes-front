@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { RefreshCw, AlertTriangle, Eye, Star, Package, CircleCheck, X, ChevronLeft, ChevronRight, Check, Clock, Truck, Store, User, Phone, Mail, FileText, Building2, Briefcase, Trash2, CreditCard, Info } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
-import { useTheme } from '../context/ThemeContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { pedidosApi } from '../services/orders.js';
 import { mediaPath, urlMedia } from '../utils/media.js';
@@ -48,10 +47,9 @@ const PASOS = ['pendiente', 'en_produccion', 'enviado', 'entregado'];
 const FONDO_TARJETA = 'rgba(255,255,255,.06)';
 
 function useTemaColores() {
-  const { theme } = useTheme()
   return {
-    texto: theme === 'dark' ? '#FFFFFF' : 'var(--text-on-bg)',
-    apagado: theme === 'dark' ? '#B9C6DA' : 'var(--text-dim-light)',
+    texto: '#FFFFFF',
+    apagado: '#B9C6DA',
   };
 }
 const LINEA = 'rgba(255,255,255,.18)';
