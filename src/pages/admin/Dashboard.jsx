@@ -1,20 +1,16 @@
 import { useEffect, useState } from 'react'
-import { CreditCard, FileText } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { CreditCard, FileText, Package, ChevronRight } from 'lucide-react'
 import { productoApi } from '../../services/products.js'
 import { reportesApi } from '../../services/reportes.js'
 
+const RUTAS = {
+  pedidos: '/admin/pedidos',
+  cotizaciones: '/admin/cotizaciones',
+};
+
 function capitalizar(texto) {
   return texto ? texto.charAt(0).toUpperCase() + texto.slice(1) : '';
-}
-
-function formatearFecha(iso) {
-  try {
-    return capitalizar(new Date(iso).toLocaleDateString('es-CL', {
-      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-    }));
-  } catch {
-    return '';
-  }
 }
 
 function formatoPesos(valor) {
@@ -29,6 +25,35 @@ function formatoDiaMes(iso) {
   return `${dia}/${mes}`;
 }
 
+function aFecha(valor) {
+  if (!valor) return null;
+  const s = String(valor);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+    const [y, m, d] = s.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
+  const f = new Date(s);
+  return Number.isNaN(f.getTime()) ? null : f;
+}
+
+const DIAS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+function etiquetaDia(f) {
+  return `${capitalizar(DIAS[f.getDay()])} ${f.getDate()} ${MESES[f.getMonth()]}`;
+}
+
+function claveDia(f) {
+  return `${f.getFullYear()}-${f.getMonth()}-${f.getDate()}`;
+}
+
+function nombrePropio(texto) {
+  const t = String(texto || '').replace(/\s+\.\s+/g, ' ').trim();
+  if (!t) return '';
+  if (t !== t.toLowerCase() && t !== t.toUpperCase()) return t;
+  return t.toLowerCase().replace(/(^|\s)(\S)/g, (_, sp, c) => sp + c.toUpperCase());
+}
+
 const ETIQUETAS_ESTADO = {
   pendiente: 'Pendiente',
   en_produccion: 'En preparación',
@@ -37,63 +62,112 @@ const ETIQUETAS_ESTADO = {
   cancelado: 'Cancelado',
 };
 
-const COLOR_ESTADO = {
-  pendiente: 'var(--orange, #f59e0b)',
-  en_produccion: 'var(--blue, #3b82f6)',
-  enviado: 'var(--blue, #3b82f6)',
-  entregado: 'var(--green, #22c55e)',
-  cancelado: 'var(--red, #ef4444)',
+const CLASE_ESTADO = {
+  pendiente: 'pend',
+  en_produccion: 'prod',
+  enviado: 'env',
+  entregado: 'ok',
+  cancelado: 'err',
 };
 
-// ---------- helpers de gráficos (SVG puro, sin librerías) ----------
+// ---------- gráfico de ventas (SVG puro) ----------
 
-function Sparkline({ data, up }) {
-  const w = 100, h = 28;
-  const max = Math.max(...data), min = Math.min(...data);
-  const range = max - min || 1;
-  const points = data.map((v, i) => {
-    const x = (i / (data.length - 1)) * w;
-    const y = h - ((v - min) / range) * h;
-    return `${x},${y}`;
-  }).join(' ');
-  const color = up ? 'var(--green, #22c55e)' : 'var(--red, #ef4444)';
+function escalaNice(max) {
+  if (max <= 0) return 1;
+  const exp = Math.pow(10, Math.floor(Math.log10(max)));
+  const f = max / exp;
+  const nice = f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10;
+  return nice * exp;
+}
+
+function etiquetaEje(v) {
+  if (v === 0) return '0';
+  if (v >= 1000) return `${(v / 1000).toLocaleString('es-CL', { maximumFractionDigits: 1 })} k`;
+  return String(v);
 }
 
 function VentasChart({ data }) {
-  const w = 560, h = 200, padX = 10, padY = 16;
   if (!data || data.length === 0) {
-    return <p style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>Sin datos de ventas todavía.</p>;
+    return <p className="db-vacio">Sin datos de ventas todavía.</p>;
   }
-  const max = Math.max(...data.map(d => Number(d.valor) || 0));
-  const stepX = (w - padX * 2) / (data.length - 1);
+  const W = 340, H = 168;
+  const xIni = 52, xFin = W - 32;
+  const yTop = 22, yBase = 130;
 
-  const puntos = data.map((d, i) => {
-    const x = padX + i * stepX;
-    const y = padY + (h - padY * 2) * (1 - (Number(d.valor) || 0) / (max || 1));
-    return { x, y, ...d };
-  });
+  const max = Math.max(...data.map(d => d.valor), 0);
+  const techo = escalaNice(max);
+  const n = data.length;
+  const stepX = n > 1 ? (xFin - xIni) / (n - 1) : 0;
 
-  const linea = puntos.map(p => `${p.x},${p.y}`).join(' ')
-  const area = `${padX},${h - padY} ${linea} ${padX + (data.length - 1) * stepX},${h - padY}`
+  const puntos = data.map((d, i) => ({
+    ...d,
+    x: n > 1 ? xIni + i * stepX : (xIni + xFin) / 2,
+    y: yBase - (d.valor / techo) * (yBase - yTop),
+  }));
+
+  const idxPico = max > 0 ? data.findIndex(d => d.valor === max) : -1;
+  const pico = idxPico >= 0 ? puntos[idxPico] : null;
+
+  const linea = puntos.map(p => `${p.x},${p.y}`).join(' ');
+  const area = `${puntos[0].x},${yBase} ${linea} ${puntos[n - 1].x},${yBase}`;
+  const ticks = [0, techo / 2, techo];
+
+  const pillAncho = 72;
+  const pillX = pico ? Math.min(Math.max(pico.x - pillAncho / 2, 2), W - pillAncho - 2) : 0;
+  const pillY = pico ? Math.max(pico.y - 26, 1) : 0;
 
   return (
-    <svg viewBox={`0 0 ${w} ${h + 28}`} width="100%" style={{ display: 'block', height: 'auto' }}>
+    <svg
+      className="db-chart"
+      viewBox={`0 0 ${W} ${H}`}
+      width="100%"
+      role="img"
+      aria-label={`Ventas por semana. ${n} semanas, máximo ${formatoPesos(max)}.`}
+    >
       <defs>
-        <linearGradient id="ventasFill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.35" />
+        <linearGradient id="dbVentasFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.28" />
           <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
         </linearGradient>
       </defs>
 
-      <polygon points={area} fill="url(#ventasFill)" />
+      {ticks.map((t, i) => {
+        const y = yBase - (t / techo) * (yBase - yTop);
+        return (
+          <g key={i}>
+            <line className="db-chart__grid" x1="40" y1={y} x2={W - 6} y2={y} />
+            <text className="db-chart__eje" x="32" y={y + 4} textAnchor="end">{etiquetaEje(t)}</text>
+          </g>
+        );
+      })}
+
+      <polygon points={area} fill="url(#dbVentasFill)" />
       <polyline points={linea} fill="none" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
 
       {puntos.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="4" fill="var(--surface-2, #fff)" stroke="var(--accent)" strokeWidth="2" />
+        i === idxPico ? null : (
+          <circle key={i} className="db-chart__punto" cx={p.x} cy={p.y} r="4" />
+        )
       ))}
 
+      {pico && (
+        <>
+          <circle className="db-chart__pico" cx={pico.x} cy={pico.y} r="6" />
+          <rect className="db-chart__pill" x={pillX} y={pillY} width={pillAncho} height="20" rx="10" />
+          <text className="db-chart__pill-txt" x={pillX + pillAncho / 2} y={pillY + 14} textAnchor="middle">
+            {formatoPesos(pico.valor)}
+          </text>
+        </>
+      )}
+
       {puntos.map((p, i) => (
-        <text key={i} x={p.x} y={h + 18} fontSize="18" fill="var(--text-on-bg)" textAnchor="middle">
+        <text
+          key={i}
+          className={`db-chart__eje db-chart__fecha${i === idxPico ? ' pico' : ''}`}
+          x={p.x}
+          y={H - 15}
+          textAnchor="middle"
+        >
           {p.label}
         </text>
       ))}
@@ -101,17 +175,24 @@ function VentasChart({ data }) {
   );
 }
 
-// ---------- panel base reutilizable ----------
+// ---------- panel base ----------
 
-function Panel({ title, action, children }) {
+function Panel({ title, sub, to, children }) {
   return (
-    <div className="admin-card admin-panel">
-      <div className="admin-panel__head">
-        <div className="admin-panel__title">{title}</div>
-        {action && <span className="admin-panel__action">{action}</span>}
+    <section className="db-card">
+      <div className="db-card__head">
+        <div>
+          <h2 className="db-card__title">{title}</h2>
+          {sub && <div className="db-card__sub">{sub}</div>}
+        </div>
+        {to && (
+          <Link to={to} className="db-more">
+            Ver todo <ChevronRight size={14} aria-hidden="true" />
+          </Link>
+        )}
       </div>
       {children}
-    </div>
+    </section>
   );
 }
 
@@ -158,24 +239,10 @@ export default function Dashboard() {
   const pedidos = reporte?.pedidos || {};
   const cotizaciones = reporte?.cotizaciones || {};
 
-  const stats = [
-    {
-      label: 'Ventas hoy',
-      valor: formatoPesos(ventas.hoy?.total ?? 0),
-    },
-    {
-      label: 'Pedidos pendientes',
-      valor: String((pedidos.pendientes || []).length),
-    },
-    {
-      label: 'Cotizaciones sin revisar',
-      valor: String((cotizaciones.sin_revisar || []).length),
-    },
-    {
-      label: 'Ingresos del mes',
-      valor: formatoPesos(ventas.mes?.total ?? 0),
-    },
-  ];
+  const totalMes = formatoPesos(ventas.mes?.total ?? 0);
+  const totalHoy = formatoPesos(ventas.hoy?.total ?? 0);
+  const nPendientes = (pedidos.pendientes || []).length;
+  const nSinRevisar = (cotizaciones.sin_revisar || []).length;
 
   const ventasSemana = (ventas.semanas || []).map(w => ({
     label: formatoDiaMes(w.desde),
@@ -183,158 +250,179 @@ export default function Dashboard() {
   }));
 
   const pedidosRecientes = (pedidos.recientes || []).map(p => ({
+    key: p.id,
     id: `#${String(p.id || '').slice(0, 8)}`,
-    cliente: p.cliente || '—',
+    cliente: nombrePropio(p.cliente) || '—',
     monto: formatoPesos(p.total),
-    estado: ETIQUETAS_ESTADO[p.estado] || p.estado,
+    estado: p.estado,
+    etiqueta: ETIQUETAS_ESTADO[p.estado] || p.estado,
   }));
 
-  const actividadReciente = [
+  
+  const eventos = [
     ...(pedidos.recientes || []).slice(0, 2).map(p => ({
-      icon: CreditCard,
-      texto: `Pago registrado en el pedido #${String(p.id || '').slice(0, 8)}`,
-      tiempo: p.fecha,
+      Icono: CreditCard,
+      tipo: 'pago',
+      cuerpo: <>Pago registrado en el pedido <b className="db-mono">#{String(p.id || '').slice(0, 8)}</b></>,
+      fecha: aFecha(p.fecha),
     })),
     ...(cotizaciones.sin_revisar || []).slice(0, 2).map(c => ({
-      icon: FileText,
-      texto: `Cotización nueva recibida${c.nombre ? ` de ${c.nombre}` : ''}`,
-      tiempo: c.creado_en,
+      Icono: FileText,
+      tipo: 'cotizacion',
+      cuerpo: <>Nueva cotización{c.nombre ? <> de <b>{nombrePropio(c.nombre)}</b></> : ''}</>,
+      fecha: aFecha(c.creado_en),
     })),
-  ];
+  ].sort((a, b) => (b.fecha?.getTime() ?? -Infinity) - (a.fecha?.getTime() ?? -Infinity));
+
+  const grupos = [];
+  eventos.forEach(ev => {
+    const clave = ev.fecha ? claveDia(ev.fecha) : 'sin-fecha';
+    const ultimo = grupos[grupos.length - 1];
+    if (ultimo && ultimo.clave === clave) ultimo.items.push(ev);
+    else grupos.push({ clave, etiqueta: ev.fecha ? etiquetaDia(ev.fecha) : '', items: [ev] });
+  });
+
+  const maxIngresos = Math.max(...topProductos.map(p => Number(p.ingresos) || 0), 1);
+  const fechaHoy = capitalizar(new Date().toLocaleDateString('es-CL', {
+    weekday: 'long', day: 'numeric', month: 'long',
+  }));
 
   return (
-    <>
-      <h1 className="admin-page-title">Dashboard</h1>
+    <div className="db-root">
+      <header className="db-head">
+        <h1 className="admin-page-title" style={{ marginBottom: 0 }}>Dashboard</h1>
+        <div className="db-fecha">{fechaHoy}</div>
+      </header>
+
       {errorReporte && (
-        <p style={{ color: 'var(--red, #ef4444)', margin: '0 0 16px', fontSize: 13 }}>
-          No se pudo cargar el reporte de ventas: {errorReporte}
-        </p>
+        <p className="db-error" role="alert">No se pudo cargar el reporte de ventas: {errorReporte}</p>
       )}
 
-      {/* Stat cards */}
-      <div className="admin-stats-grid">
+      {/* Resumen: ingresos + pendientes */}
+      <div className="db-top">
         {cargandoReporte ? (
-          <p style={{ color: 'var(--text-on-bg)', gridColumn: '1 / -1', margin: 0 }}>Cargando…</p>
+          <p className="db-cargando" style={{ gridColumn: '1 / -1' }}>Cargando…</p>
         ) : (
-          stats.map(s => (
-            <div key={s.label} className="admin-card admin-stat">
-              <div className="admin-stat__label">{s.label}</div>
-              <div className="admin-stat__value">{s.valor}</div>
-            </div>
-          ))
+          <>
+            <section className="db-hero">
+              <div>
+                <div className="db-hero__label">Ingresos del mes</div>
+                <div className="db-hero__valor">{totalMes}</div>
+              </div>
+              <div className="db-hero__hoy">
+                <span>Ventas hoy</span>
+                <strong>{totalHoy}</strong>
+              </div>
+            </section>
+
+            <Link to={RUTAS.pedidos} className="db-act">
+              <div className="db-act__top">
+                <span className="db-ic"><Package size={20} aria-hidden="true" /></span>
+                <ChevronRight size={18} className="db-act__chev" aria-hidden="true" />
+              </div>
+              <div className="db-act__num">{nPendientes}</div>
+              <div className="db-act__lab">Pedidos pendientes</div>
+            </Link>
+
+            <Link to={RUTAS.cotizaciones} className="db-act">
+              <div className="db-act__top">
+                <span className="db-ic azul"><FileText size={20} aria-hidden="true" /></span>
+                <ChevronRight size={18} className="db-act__chev" aria-hidden="true" />
+              </div>
+              <div className="db-act__num">{nSinRevisar}</div>
+              <div className="db-act__lab">Cotizaciones sin revisar</div>
+            </Link>
+          </>
         )}
       </div>
 
-      {/* Fila principal: ventas + productos */}
-      <div className="admin-main-grid">
-        <Panel title="Resumen de ventas">
+      {/* Ventas + productos */}
+      <div className="db-row">
+        <Panel title="Ventas por semana" sub={ventasSemana.length ? `Últimas ${ventasSemana.length} semanas` : undefined}>
           {cargandoReporte ? (
-            <p style={{ color: 'var(--text-on-bg)', fontSize: 13 }}>Cargando…</p>
+            <p className="db-cargando">Cargando…</p>
           ) : errorReporte ? (
-            <p style={{ fontSize: 12.5, color: 'var(--red, #ef4444)' }}>
-              No se pudo cargar el resumen de ventas.
-            </p>
+            <p className="db-error">No se pudo cargar el resumen de ventas.</p>
           ) : (
             <VentasChart data={ventasSemana} />
           )}
         </Panel>
 
-        <Panel title="Productos más vendidos">
+        <Panel title="Productos más vendidos" sub="Ingresos en CLP">
           {errorTopProductos ? (
-            <p style={{ fontSize: 12.5, color: 'var(--red, #ef4444)' }}>
-              No se pudo cargar el ranking: {errorTopProductos}
-            </p>
+            <p className="db-error">No se pudo cargar el ranking: {errorTopProductos}</p>
           ) : topProductos.length === 0 ? (
-            <p style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>
-              Todavía no hay ventas registradas.
-            </p>
+            <p className="db-vacio">Todavía no hay ventas registradas.</p>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {topProductos.map((p) => {
-                const maxMonto = topProductos[0].ingresos || 1
-                const pct = (p.ingresos / maxMonto) * 100
+            <ol className="db-rank">
+              {topProductos.map((p, i) => {
+                const ingresos = Number(p.ingresos) || 0;
                 return (
-                  <div key={p.id}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 12.5, color: 'var(--text-on-bg)', marginBottom: 5 }}>
-                      <span>{p.nombre}</span>
-                      <span style={{ fontFamily: 'var(--font-mono)' }}>
-                        ${Number(p.ingresos).toLocaleString('es-CL')} CLP
-                      </span>
+                  <li key={p.id}>
+                    <div className="db-rank__fila">
+                      <span className="db-rank__n">{i + 1}</span>
+                      <span className="db-rank__nombre">{p.nombre}</span>
+                      <span className="db-mono">{formatoPesos(ingresos)}</span>
                     </div>
-                    <div style={{ height: 6, borderRadius: 4, background: 'var(--line)', overflow: 'hidden' }}>
-                      <div style={{ width: `${pct}%`, height: '100%', background: 'var(--accent)', borderRadius: 4 }} />
+                    <div className="db-track" aria-hidden="true">
+                      <div className="db-fill" style={{ width: `${(ingresos / maxIngresos) * 100}%` }} />
                     </div>
-                  </div>
-                )
+                  </li>
+                );
               })}
-            </div>
+            </ol>
           )}
         </Panel>
       </div>
 
-      {/* Fila secundaria: pedidos recientes + actividad reciente */}
-      <div className="admin-main-grid">
-        <Panel title="Pedidos recientes" action="Ver todo">
+      {/* Pedidos + actividad */}
+      <div className="db-row">
+        <Panel title="Pedidos recientes" to={RUTAS.pedidos}>
           {cargandoReporte ? (
-            <p style={{ color: 'var(--text-on-bg)', fontSize: 13 }}>Cargando…</p>
+            <p className="db-cargando">Cargando…</p>
           ) : pedidosRecientes.length === 0 ? (
-            <p style={{ color: 'var(--text-on-bg)', fontSize: 13 }}>Todavía no hay pedidos registrados.</p>
+            <p className="db-vacio">Todavía no hay pedidos registrados.</p>
           ) : (
-            <div className="admin-table-wrap">
-              <table className="admin-table admin-table--dashboard">
-                <tbody>
-                  {pedidosRecientes.map(p => (
-                    <tr key={p.id} style={{ borderTop: '1px solid var(--line)' }}>
-                      <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{p.id}</td>
-                      <td style={{ padding: '10px 6px', color: 'var(--text-on-bg)' }}>{p.cliente}</td>
-                      <td style={{ padding: '10px 6px', fontFamily: 'var(--font-mono)', color: 'var(--text-on-bg)' }}>{p.monto}</td>
-                      <td style={{ padding: '10px 6px' }}>
-                        <span style={{
-                          fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 20,
-                          color: COLOR_ESTADO[p.estado] || 'var(--text-on-bg)', background: `${COLOR_ESTADO[p.estado] || 'var(--text-on-bg)'}22`,
-                        }}>
-                          {p.estado}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <ul className="db-lista">
+              {pedidosRecientes.map(p => (
+                <li key={p.key} className="db-ord">
+                  <div className="db-ord__info">
+                    <div className="db-ord__cliente">{p.cliente}</div>
+                    <div className="db-mono db-ord__id">{p.id}</div>
+                  </div>
+                  <div className="db-ord__der">
+                    <span className="db-mono">{p.monto}</span>
+                    <span className={`db-badge ${CLASE_ESTADO[p.estado] || ''}`}><i />{p.etiqueta}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
         </Panel>
 
-        <Panel title="Actividad reciente" action="Ver todo">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {actividadReciente.length === 0 ? (
-              <p style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>Sin actividad reciente.</p>
-            ) : (
-              actividadReciente.map((a, i) => {
-                const Icon = a.icon
-                return (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{
-                      width: 30, height: 30, borderRadius: 8, background: 'var(--accent-2)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                      color: 'var(--accent)', border: '1px solid var(--line)',
-                    }}>
-                      <Icon size={15} />
+        <Panel title="Actividad reciente" to={RUTAS.pedidos}>
+          {grupos.length === 0 ? (
+            <p className="db-vacio">Sin actividad reciente.</p>
+          ) : (
+            grupos.map(g => (
+              <div key={g.clave}>
+                {g.etiqueta && <div className="db-dia">{g.etiqueta}</div>}
+                {g.items.map((ev, i) => {
+                  const Icono = ev.Icono;
+                  return (
+                    <div key={i} className="db-ev">
+                      <span className={`db-ic${ev.tipo === 'cotizacion' ? ' azul' : ''}`}>
+                        <Icono size={18} aria-hidden="true" />
+                      </span>
+                      <p>{ev.cuerpo}</p>
                     </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 12.5, color: 'var(--text-on-bg)' }}>{a.texto}</div>
-                      {a.tiempo && (
-                        <div style={{ fontSize: 11.5, color: 'var(--text-on-bg)', opacity: .7, marginTop: 2 }}>
-                          {formatearFecha(a.tiempo)}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )
-              })
-            )}
-          </div>
+                  );
+                })}
+              </div>
+            ))
+          )}
         </Panel>
       </div>
-    </>
+    </div>
   );
 }
