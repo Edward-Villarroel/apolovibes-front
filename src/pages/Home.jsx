@@ -185,7 +185,7 @@ export default function Home() {
       `}</style>
 
       {!modoFallbackCatalogo && (
-        <section className="wrap section-py-mobile" style={{ paddingBottom: '80px' }}>
+        <section className="wrap section-py-mobile" style={{ paddingTop: '64px', paddingBottom: '80px' }}>
           <hr className="separador" />
           {cargando && categorias.length === 0 && (
             <p style={{ textAlign: 'center', color: 'var(--text-dim)' }}>Cargando categorías…</p>
@@ -240,7 +240,7 @@ export default function Home() {
         </section>
       )}
       {modoFallbackCatalogo && (
-        <section className="wrap section-py-mobile" style={{ paddingBottom: '80px' }}>
+        <section className="wrap section-py-mobile" style={{ paddingTop: '64px', paddingBottom: '80px' }}>
           <hr className="separador" />
           <AvisoFallback />
         </section>
