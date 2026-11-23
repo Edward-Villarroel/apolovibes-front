@@ -317,7 +317,6 @@ export default function Usuarios() {
     <>
       <div className="admin-page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Users size={22} style={{ color: 'var(--text-on-bg)' }} />
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text-on-bg)' }}>Usuarios</h1>
         </div>
         <div className="admin-header-actions">

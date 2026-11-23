@@ -400,7 +400,7 @@ export default function Dashboard() {
           )}
         </Panel>
 
-        <Panel title="Actividad reciente" to={RUTAS.pedidos}>
+        <Panel title="Actividad reciente">
           {grupos.length === 0 ? (
             <p className="db-vacio">Sin actividad reciente.</p>
           ) : (
