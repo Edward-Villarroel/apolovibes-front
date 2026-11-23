@@ -1861,3 +1861,102 @@ label {
 .rv-modal-actions{display:flex;gap:10px}
 .rv-btn-cancel{flex:1;height:46px;background:transparent;border:1px solid var(--text-dim);color:var(--text);font-size:14px}
 .rv-btn-confirm{flex:1;height:46px;background:var(--rv-red);color:#fff;font-size:14px}
+
+/* ───────── Dashboard admin ───────── */
+.db-root { display: flex; flex-direction: column; gap: 16px; color: var(--text-on-bg); }
+.db-root * { min-width: 0; }
+
+.db-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.db-fecha { font-size: 13px; color: var(--text-dim); }
+
+.db-error { font-size: 13px; padding: 10px 14px; border-radius: 10px;
+  background: color-mix(in srgb, var(--red) 14%, transparent);
+  color: color-mix(in srgb, var(--red) 70%, var(--text-on-bg)); }
+.db-cargando, .db-vacio { font-size: 14px; color: var(--text-dim); padding: 8px 0; }
+
+.db-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* Resumen superior */
+.db-top { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.db-hero { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 16px; flex-wrap: wrap; padding: 20px; border-radius: 16px;
+  background: var(--surface); color: var(--text); }
+.db-hero__label { font-size: 13px; opacity: .8; margin-bottom: 4px; }
+.db-hero__valor { font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1.1; }
+.db-hero__hoy { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 12px; opacity: .85; }
+.db-hero__hoy strong { font-family: var(--font-mono); font-size: 18px; color: var(--gold); }
+
+.db-act { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 16px;
+  background: var(--surface-3); border: 1px solid var(--line); transition: transform .15s, border-color .15s; }
+.db-act:hover { transform: translateY(-2px); border-color: var(--accent); }
+.db-act__top { display: flex; align-items: center; justify-content: space-between; }
+.db-act__chev { color: var(--text-dim); }
+.db-act__num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
+.db-act__lab { font-size: 13px; color: var(--text-dim); }
+
+/* Icono circular */
+.db-ic { display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--accent-soft); color: var(--accent); }
+.db-ic.azul { background: color-mix(in srgb, #3b82f6 16%, transparent); color: #3b82f6; }
+
+/* Filas y tarjetas */
+.db-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.db-card { background: var(--surface-3); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+.db-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.db-card__title { font-family: var(--font-display); font-size: 16px; font-weight: 700; }
+.db-card__sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+.db-more { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 600; color: var(--accent); white-space: nowrap; }
+
+/* Gráfico */
+.db-chart { display: block; width: 100%; height: auto; overflow: visible; }
+.db-chart__grid { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 4; }
+.db-chart__eje { font-size: 10px; fill: var(--text-dim); font-family: var(--font-body); }
+.db-chart__fecha.pico { fill: var(--accent); font-weight: 700; }
+.db-chart__punto { fill: var(--bg); stroke: var(--accent); stroke-width: 2; }
+.db-chart__pico { fill: var(--accent); stroke: var(--bg); stroke-width: 3; }
+.db-chart__pill { fill: var(--surface); }
+.db-chart__pill-txt { font-size: 11px; font-weight: 700; fill: var(--text); font-family: var(--font-mono); }
+
+/* Ranking */
+.db-rank { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.db-rank__fila { display: flex; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 6px; }
+.db-rank__n { flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 12px; font-weight: 700; background: var(--accent-soft); color: var(--accent); }
+.db-rank__nombre { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.db-track { height: 6px; border-radius: 999px; background: var(--rv-divider, rgba(0,42,94,.12)); overflow: hidden; }
+.db-fill { height: 100%; border-radius: 999px; background: var(--accent); }
+
+/* Pedidos recientes */
+.db-lista { list-style: none; }
+.db-ord { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 0; border-top: 1px solid var(--line); }
+.db-ord:first-child { border-top: none; padding-top: 0; }
+.db-ord__cliente { font-size: 14px; font-weight: 600; }
+.db-ord__id { font-size: 12px; color: var(--text-dim); font-weight: 500; }
+.db-ord__der { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; font-size: 14px; }
+
+.db-badge { --c: var(--text-dim); display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; color: var(--c);
+  background: color-mix(in srgb, var(--c) 15%, transparent); }
+.db-badge i { width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
+.db-badge.pend { --c: #d98a00; }
+.db-badge.prod { --c: #3b82f6; }
+.db-badge.env  { --c: #8b5cf6; }
+.db-badge.ok   { --c: var(--green); }
+.db-badge.err  { --c: var(--red); }
+
+/* Actividad */
+.db-dia { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--text-dim); margin: 12px 0 8px; }
+.db-dia:first-child { margin-top: 0; }
+.db-ev { display: flex; align-items: center; gap: 12px; padding: 8px 0; font-size: 14px; }
+.db-ev .db-ic { width: 34px; height: 34px; }
+
+/* Escritorio */
+@media (min-width: 901px) {
+  .db-top { grid-template-columns: 2fr 1fr 1fr; }
+  .db-hero { grid-column: auto; }
+  .db-row { grid-template-columns: 1.4fr 1fr; gap: 20px; }
+  .db-card { padding: 22px; }
+}
