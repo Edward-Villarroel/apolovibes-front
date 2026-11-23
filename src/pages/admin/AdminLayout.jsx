@@ -89,7 +89,7 @@ function SidebarContent({ onLogout, onClose, user, theme, toggleTheme }) {
         <div style={{ padding: '0 12px 12px' }}>
           <button
             onClick={toggleTheme}
-            aria-label={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+            aria-label={theme === 'dark' ? 'Modo oscuro' : 'Modo claro'}
             style={{
               display: 'flex', alignItems: 'center', gap: 10, width: '100%',
               padding: '4px 0', background: 'none', border: 'none',
@@ -101,10 +101,10 @@ function SidebarContent({ onLogout, onClose, user, theme, toggleTheme }) {
               background: 'rgba(255,255,255,.2)', border: `1px solid ${CREMA}`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              {theme === 'dark' ? <Sun size={16} color={CREMA} /> : <Moon size={16} color={CREMA} />}
+              {theme === 'dark' ? <Moon size={16} color={CREMA} /> : <Sun size={16} color={CREMA} />}
             </div>
             <span style={{ fontSize: 14, fontWeight: 600, color: CREMA }}>
-              {theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+              {theme === 'dark' ? 'Modo oscuro' : 'Modo claro'}
             </span>
           </button>
         </div>
@@ -134,26 +134,7 @@ function SidebarContent({ onLogout, onClose, user, theme, toggleTheme }) {
                 <div style={{ fontSize: 12, color: CREMA, opacity: .85 }}>{rolLabel}</div>
               )}
             </div>
-          </div>
-
-          <div style={{ marginTop: 10, display: 'flex', justifyContent: 'center' }}>
-            <button
-              style={{
-                width: 34, height: 34, borderRadius: '50%',
-                border: '1.5px solid rgba(251,247,238,.3)',
-                background: 'rgba(251,247,238,.1)', color: CREMA,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', transition: 'border-color .2s, background .2s',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(251,247,238,.6)'; e.currentTarget.style.background = 'rgba(251,247,238,.15)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(251,247,238,.3)'; e.currentTarget.style.background = 'rgba(251,247,238,.1)' }}
-              onClick={toggleTheme}
-              aria-label={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
-              title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
-            >
-              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-          </div>
+          </div>     
         </div>
       </div>
 
@@ -298,9 +279,9 @@ export default function AdminLayout() {
           <button
             className="admin-mobile-theme"
             onClick={toggleTheme}
-            aria-label={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+            aria-label={theme === 'dark' ? 'Modo oscuro' : 'Modo claro'}
           >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
           </button>
         </header>
 
