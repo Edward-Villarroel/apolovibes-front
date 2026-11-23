@@ -3,8 +3,10 @@ import { mediaPath } from '../utils/media.js'
 
 
 const COLOR_FONDO_404 = '#faf9f7'
-const MASCARA_LATERAL =
-  'linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%)'
+const MASCARA_BORDES = [
+  'linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%)',
+  'linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%)',
+].join(', ')
 
 function ContenidoNotFound() {
   const navegar = useNavigate()
@@ -33,8 +35,8 @@ function ContenidoNotFound() {
             width: '100%',
             height: '100%',
             display: 'block',
-            WebkitMaskImage: MASCARA_LATERAL,
-            maskImage: MASCARA_LATERAL,
+            WebkitMaskImage: MASCARA_BORDES,
+            maskImage: MASCARA_BORDES,
             WebkitMaskComposite: 'source-in',
             maskComposite: 'intersect',
             objectFit: 'contain',
@@ -91,8 +93,8 @@ function PantallaCompletaNotFound() {
             width: '100%',
             height: '100%',
             display: 'block',
-            WebkitMaskImage: MASCARA_LATERAL,
-            maskImage: MASCARA_LATERAL,
+            WebkitMaskImage: MASCARA_BORDES,
+            maskImage: MASCARA_BORDES,
             WebkitMaskComposite: 'source-in',
             maskComposite: 'intersect',
             objectFit: 'contain',
