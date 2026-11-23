@@ -14,6 +14,10 @@ import LoginModal from './LoginModal.jsx'
 import SeguridadModal from './SeguridadModal.jsx'
 import ConfirmModal from './ConfirmModal.jsx'
 
+const TITULOS_CATEGORIA = {
+  'disenos a medida': 'Diseños a medida',
+}
+
 const tituloCategoria = (nombre) => {
   const clave = String(nombre || '')
     .normalize('NFD')
