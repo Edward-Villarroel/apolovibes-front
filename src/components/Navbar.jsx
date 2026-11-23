@@ -14,6 +14,15 @@ import LoginModal from './LoginModal.jsx'
 import SeguridadModal from './SeguridadModal.jsx'
 import ConfirmModal from './ConfirmModal.jsx'
 
+const tituloCategoria = (nombre) => {
+  const clave = String(nombre || '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim()
+  return TITULOS_CATEGORIA[clave] || nombre
+}
+
 export default function Navbar() {
   const { items, cantidadTotal, solicitarLogin, abrirLogin, cerrarLogin, quitarItem, actualizarCantidadItem, total, requiereLogin, cargando: cargandoCarrito } = useCart()
   const { isLoggedIn, isAdmin, isEmpleado, logout, user, cargando: authCargando } = useAuth()
@@ -930,7 +939,7 @@ export default function Navbar() {
                     handleMobileNav(path)
                   }}
                 >
-                  {c.nombre} <ChevronRight size={18} className="nm-chevron" />
+                  {tituloCategoria(c.nombre)} <ChevronRight size={18} className="nm-chevron" />
                 </button>
               ))}
             </div>

@@ -13,7 +13,7 @@ const CATEGORIAS_UI = [
   { slug: 'llaveros',           img: 'cat-llaveros.webp',    desc: 'Llévalos siempre contigo' },
   { slug: 'animales',           img: 'cat-animales.webp',    desc: 'Tus animales favoritos' },
   { slug: 'accesorios',         img: 'cat-accesorios.webp',  desc: 'Detalles que hacen la diferencia' },
-  { slug: 'disenos-a-medida',   img: 'cat-medida.webp',      desc: 'Convierte tu idea en una creación 3D', ancha: true },
+  { slug: 'disenos-a-medida',   img: 'cat-medida.webp',      desc: 'Convierte tu idea en una creación 3D', ancha: true, titulo: 'Diseños a medida'},
 ]
 
 const slugify = (texto) =>
@@ -133,7 +133,7 @@ export default function Categorias() {
             <TarjetaCategoria
               key={ui.slug}
               {...ui}
-              titulo={cat?.nombre}
+              titulo={cat? (ui.titulo || cat.nombre) : undefined}
               activa={!!cat && activa === cat.id}
               deshabilitada={!cat}
               onClick={() => seleccionar(cat)}
