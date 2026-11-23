@@ -19,9 +19,10 @@ export default function ProductCard({ producto, index = 0, prioridad = false }) 
   const { categorias } = useProductos()
   const acento = ACENTOS[index % ACENTOS.length]
   const categoria = categorias.find(c => c.id === producto.categoria_id)
-  const imagenTarjeta = producto.imagen_thumb || producto.imagen
+  const imagenTarjeta = producto.imagen_url || producto.imagen_thumb || producto.imagen
   const [agregando, setAgregando] = useState(false)
   const navigate = useNavigate()
+  const soloVitrina = Boolean(producto.soloVitrina)
 
   const handleAgregar = async () => {
     if (agregando || isAdmin) return
@@ -44,7 +45,7 @@ export default function ProductCard({ producto, index = 0, prioridad = false }) 
         await agregarProducto({
           ...producto,
           color: colores[0].nombre,
-          imagen: colores[0].imagen || producto.imagen,
+          imagen: colores[0].imagen || producto.imagen_url || producto.imagen,
         })
         return
       }
@@ -55,7 +56,7 @@ export default function ProductCard({ producto, index = 0, prioridad = false }) 
   }
 
   // El admin no compra desde la tienda: su botón se comporta como agotado.
-  const bloqueado = producto.sinStock || isAdmin
+  const bloqueado = producto.sinStock || isAdmin || soloVitrina
 
   return (
     <div
@@ -276,15 +277,18 @@ export default function ProductCard({ producto, index = 0, prioridad = false }) 
           }}
           onMouseEnter={(e) => !bloqueado && (e.currentTarget.style.opacity = '.85')}
           onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-        > {agregando ? 'Agregando' : 'Agregar'}
-          <img
-            src={mediaPath('cart.png')}
-            alt=""
-            style={{
-              width: 25, height: 25, filter: 'brightness(0) invert(1)',
-              opacity: bloqueado ? 0.5 : 1,
-            }}
-          />
+        >
+          {soloVitrina ? 'Vista referencial' : agregando ? 'Agregando' : 'Agregar'}
+          {!soloVitrina && (
+            <img
+              src={mediaPath('cart.png')}
+              alt=""
+              style={{
+                width: 25, height: 25, filter: 'brightness(0) invert(1)',
+                opacity: bloqueado ? 0.5 : 1,
+              }}
+            />
+          )}
         </button>
       </div>
     </div>
