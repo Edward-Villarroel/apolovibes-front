@@ -6,7 +6,7 @@ import { useCart } from '../context/CartContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { Minus, Plus, Star } from 'lucide-react'
 import ProductCarousel from '../components/ProductCarousel.jsx'
-import { registrarColores } from '../services/products.js'
+import { productoApi, registrarColores } from '../services/products.js'
 import { listarColores, precargarColores } from '../services/catalogo.js'
 import ResenasSeccion from '../components/ResenasSeccion.jsx'
 
