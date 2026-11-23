@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CreditCard, FileText, Package, ChevronRight } from 'lucide-react'
 import { productoApi } from '../../services/products.js'
@@ -70,7 +70,7 @@ const CLASE_ESTADO = {
   cancelado: 'err',
 };
 
-// ---------- gráfico de ventas (SVG puro) ----------
+// ---------- gráfico de ventas (SVG puro, tamaño 1:1 con el contenedor) ----------
 
 function escalaNice(max) {
   if (max <= 0) return 1;
@@ -86,13 +86,42 @@ function etiquetaEje(v) {
   return String(v);
 }
 
-function VentasChart({ data }) {
-  if (!data || data.length === 0) {
-    return <p className="db-vacio">Sin datos de ventas todavía.</p>;
-  }
-  const W = 340, H = 168;
+// Mide el ancho real (px) del elemento y se actualiza al redimensionar.
+function useAncho(ref) {
+  const [ancho, setAncho] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+
+    const medir = () => setAncho(Math.floor(el.getBoundingClientRect().width));
+    medir();
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', medir);
+      return () => window.removeEventListener('resize', medir);
+    }
+
+    const ro = new ResizeObserver(entries => {
+      const w = entries[0]?.contentRect?.width;
+      if (w) setAncho(Math.floor(w));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [ref]);
+
+  return ancho;
+}
+
+function GraficoVentas({ data }) {
+  const ref = useRef(null);
+  const ancho = useAncho(ref);
+
+  // 1 unidad del viewBox = 1 px real, así el texto siempre mide lo mismo.
+  const W = Math.max(ancho, 200);
+  const H = Math.round(Math.min(Math.max(W * 0.3, 168), 240));
   const xIni = 52, xFin = W - 32;
-  const yTop = 22, yBase = 130;
+  const yTop = 22, yBase = H - 38;
 
   const max = Math.max(...data.map(d => d.valor), 0);
   const techo = escalaNice(max);
@@ -117,62 +146,75 @@ function VentasChart({ data }) {
   const pillY = pico ? Math.max(pico.y - 26, 1) : 0;
 
   return (
-    <svg
-      className="db-chart"
-      viewBox={`0 0 ${W} ${H}`}
-      width="100%"
-      role="img"
-      aria-label={`Ventas por semana. ${n} semanas, máximo ${formatoPesos(max)}.`}
-    >
-      <defs>
-        <linearGradient id="dbVentasFill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-
-      {ticks.map((t, i) => {
-        const y = yBase - (t / techo) * (yBase - yTop);
-        return (
-          <g key={i}>
-            <line className="db-chart__grid" x1="40" y1={y} x2={W - 6} y2={y} />
-            <text className="db-chart__eje" x="32" y={y + 4} textAnchor="end">{etiquetaEje(t)}</text>
-          </g>
-        );
-      })}
-
-      <polygon points={area} fill="url(#dbVentasFill)" />
-      <polyline points={linea} fill="none" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-
-      {puntos.map((p, i) => (
-        i === idxPico ? null : (
-          <circle key={i} className="db-chart__punto" cx={p.x} cy={p.y} r="4" />
-        )
-      ))}
-
-      {pico && (
-        <>
-          <circle className="db-chart__pico" cx={pico.x} cy={pico.y} r="6" />
-          <rect className="db-chart__pill" x={pillX} y={pillY} width={pillAncho} height="20" rx="10" />
-          <text className="db-chart__pill-txt" x={pillX + pillAncho / 2} y={pillY + 14} textAnchor="middle">
-            {formatoPesos(pico.valor)}
-          </text>
-        </>
-      )}
-
-      {puntos.map((p, i) => (
-        <text
-          key={i}
-          className={`db-chart__eje db-chart__fecha${i === idxPico ? ' pico' : ''}`}
-          x={p.x}
-          y={H - 15}
-          textAnchor="middle"
+    <div ref={ref} style={{ position: 'relative', width: '100%', height: H }}>
+      {ancho > 0 && (
+        <svg
+          className="db-chart"
+          viewBox={`0 0 ${W} ${H}`}
+          width={W}
+          height={H}
+          style={{ position: 'absolute', left: 0, top: 0, width: W, height: H }}
+          role="img"
+          aria-label={`Ventas por semana. ${n} semanas, máximo ${formatoPesos(max)}.`}
         >
-          {p.label}
-        </text>
-      ))}
-    </svg>
+          <defs>
+            <linearGradient id="dbVentasFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+
+          {ticks.map((t, i) => {
+            const y = yBase - (t / techo) * (yBase - yTop);
+            return (
+              <g key={i}>
+                <line className="db-chart__grid" x1="40" y1={y} x2={W - 6} y2={y} />
+                <text className="db-chart__eje" x="32" y={y + 4} textAnchor="end">{etiquetaEje(t)}</text>
+              </g>
+            );
+          })}
+
+          <polygon points={area} fill="url(#dbVentasFill)" />
+          <polyline points={linea} fill="none" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+
+          {puntos.map((p, i) => (
+            i === idxPico ? null : (
+              <circle key={i} className="db-chart__punto" cx={p.x} cy={p.y} r="4" />
+            )
+          ))}
+
+          {pico && (
+            <>
+              <circle className="db-chart__pico" cx={pico.x} cy={pico.y} r="6" />
+              <rect className="db-chart__pill" x={pillX} y={pillY} width={pillAncho} height="20" rx="10" />
+              <text className="db-chart__pill-txt" x={pillX + pillAncho / 2} y={pillY + 14} textAnchor="middle">
+                {formatoPesos(pico.valor)}
+              </text>
+            </>
+          )}
+
+          {puntos.map((p, i) => (
+            <text
+              key={i}
+              className={`db-chart__eje db-chart__fecha${i === idxPico ? ' pico' : ''}`}
+              x={p.x}
+              y={H - 15}
+              textAnchor="middle"
+            >
+              {p.label}
+            </text>
+          ))}
+        </svg>
+      )}
+    </div>
   );
+}
+
+function VentasChart({ data }) {
+  if (!data || data.length === 0) {
+    return <p className="db-vacio">Sin datos de ventas todavía.</p>;
+  }
+  return <GraficoVentas data={data} />;
 }
 
 // ---------- panel base ----------
