@@ -10,17 +10,52 @@ function numero(valor) {
 
 // ---------- tarjeta de resumen ----------
 
-function TarjetaResumen({ icon: Icon, label, valor, detalle, color }) {
+function TarjetaResumen({ icon: Icon, label, valor, detalle, children }) {
   return (
-    <div style={{ background: 'var(--surface-3)', border: '1px solid var(--line)', borderRadius: 12, padding: 20 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-on-bg)', marginBottom: 6 }}>
-        <Icon size={15} style={{ color: color || 'var(--accent)' }} />
-        {label}
+    <div style={{
+      background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 12,
+      padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 10,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span style={{
+          width: 36, height: 36, borderRadius: '50%', background: 'rgba(250,127,25,.14)',
+          display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+        }}>
+          <Icon size={18} style={{ color: 'var(--accent)' }} aria-hidden="true" />
+        </span>
+        <span style={{ fontSize: 13, color: 'var(--text-on-bg)', opacity: 0.8 }}>{label}</span>
       </div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, color: 'var(--text-on-bg)' }}>{valor}</div>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 36, fontWeight: 600, lineHeight: 1, color: 'var(--text-on-bg)' }}>
+        {valor}
+      </div>
       {detalle && (
-        <div style={{ fontSize: 11.5, color: 'var(--text-on-bg)', marginTop: 6 }}>{detalle}</div>
+        <div style={{ fontSize: 13, color: 'var(--text-on-bg)', opacity: 0.8 }}>{detalle}</div>
       )}
+      {children}
+    </div>
+  )
+}
+
+// ---------- barra de cotizaciones ----------
+
+function BarraCotizaciones({ total, aprobadas, rechazadas }) {
+  if (!total) return null
+  const pendientes = Math.max(0, total - aprobadas - rechazadas)
+  const pct = (n) => `${(n / total) * 100}%`
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div
+        role="img"
+        aria-label={`${aprobadas} aprobadas, ${rechazadas} rechazadas, ${pendientes} pendientes`}
+        style={{ display: 'flex', height: 8, borderRadius: 4, overflow: 'hidden', gap: 2 }}
+      >
+        <span style={{ width: pct(aprobadas), background: 'var(--green, #22c55e)' }} />
+        <span style={{ width: pct(rechazadas), background: 'var(--red, #ef4444)' }} />
+        <span style={{ width: pct(pendientes), background: 'var(--line)' }} />
+      </div>
+      <div style={{ fontSize: 13, color: 'var(--text-on-bg)', opacity: 0.8 }}>
+        {numero(aprobadas)} aprobadas · {numero(rechazadas)} rechazadas · {numero(pendientes)} pendientes
+      </div>
     </div>
   )
 }
@@ -261,7 +296,8 @@ export default function Usuarios() {
     pedidas: acc.pedidas + Number(u.cotizaciones_pedidas || 0),
     aprobadas: acc.aprobadas + Number(u.cotizaciones_aprobadas || 0),
     rechazadas: acc.rechazadas + Number(u.cotizaciones_rechazadas || 0),
-  }), { productos: 0, pedidas: 0, aprobadas: 0, rechazadas: 0 }), [usuarios])
+    activos: acc.activos + (u.activo ? 1 : 0),
+  }), { productos: 0, pedidas: 0, aprobadas: 0, rechazadas: 0, activos: 0 }), [usuarios])
 
   function refrescar() {
     setRecarga(n => n + 1)
@@ -315,14 +351,38 @@ export default function Usuarios() {
 
   return (
     <>
-      <div className="admin-page-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, margin: 0, color: 'var(--text-on-bg)' }}>Usuarios</h1>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 24 }}>
+        {/* Fila 1: título + acción principal */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+          <div>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, margin: 0, color: 'var(--text-on-bg)' }}>Usuarios</h1>
+            <p style={{ margin: '4px 0 0', fontSize: 14, color: 'var(--text-on-bg)', opacity: 0.8 }}>
+              Gestiona cuentas, compras y cotizaciones
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => { setErrorAlta(null); setModalAbierto(true) }}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8, minHeight: 44, padding: '0 20px',
+              borderRadius: 10, border: 'none', background: 'var(--accent)', color: '#fff',
+              fontSize: 14, fontWeight: 600, cursor: 'pointer',
+            }}
+          >
+            <Plus size={16} aria-hidden="true" />
+            Agregar usuario
+          </button>
         </div>
-        <div className="admin-header-actions">
-          <div className="admin-search">
+
+        {/* Fila 2: barra de filtros */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
+          background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 12, padding: 12,
+        }}>
+          <div style={{ position: 'relative', flex: '1 1 320px' }}>
             <Search
-              size={15}
+              size={16}
+              aria-hidden="true"
               style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-on-bg)', pointerEvents: 'none' }}
             />
             <input
@@ -332,9 +392,9 @@ export default function Usuarios() {
               placeholder="Buscar por nombre o correo..."
               aria-label="Buscar usuarios"
               style={{
-                width: '100%', padding: '9px 12px 9px 34px', borderRadius: 10,
+                width: '100%', minHeight: 44, padding: '0 12px 0 38px', borderRadius: 10,
                 border: '1px solid var(--line)', background: 'var(--input-bg)',
-                color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
+                color: 'var(--text-on-bg)', fontSize: 14, boxSizing: 'border-box',
               }}
             />
           </div>
@@ -343,9 +403,9 @@ export default function Usuarios() {
             onChange={(e) => { setFiltroRol(e.target.value); setPagina(1) }}
             aria-label="Filtrar por tipo de usuario"
             style={{
-              padding: '9px 12px', borderRadius: 10,
+              flex: '0 1 220px', minHeight: 44, padding: '0 12px', borderRadius: 10,
               border: '1px solid var(--line)', background: 'var(--input-bg)',
-              color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
+              color: 'var(--text-on-bg)', fontSize: 14, boxSizing: 'border-box',
             }}
           >
             <option value="todos">Todos los usuarios</option>
@@ -358,27 +418,15 @@ export default function Usuarios() {
             onChange={(e) => { setFiltroCuenta(e.target.value); setPagina(1) }}
             aria-label="Filtrar por tipo de cuenta"
             style={{
-              padding: '9px 12px', borderRadius: 10,
+              flex: '0 1 280px', minHeight: 44, padding: '0 12px', borderRadius: 10,
               border: '1px solid var(--line)', background: 'var(--input-bg)',
-              color: 'var(--text-on-bg)', fontSize: 13, boxSizing: 'border-box',
+              color: 'var(--text-on-bg)', fontSize: 14, boxSizing: 'border-box',
             }}
           >
             <option value="todos">Todas las cuentas</option>
             <option value="empresa">Cuenta de empresa (@apolovibes.cl)</option>
             <option value="personal">Cuenta personal</option>
           </select>
-          <button
-            type="button"
-            onClick={() => { setErrorAlta(null); setModalAbierto(true) }}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 14px',
-              borderRadius: 10, border: '1px solid var(--line)', background: 'var(--surface)',
-              color: 'var(--text)', fontSize: 12.5, fontWeight: 600, cursor: 'pointer',
-            }}
-          >
-            <Plus size={14} />
-            Agregar usuario
-          </button>
         </div>
       </div>
 
@@ -405,8 +453,13 @@ export default function Usuarios() {
         <p style={{ color: 'var(--text-on-bg)' }}>Todavía no hay usuarios registrados.</p>
       ) : (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 18, marginBottom: 24 }}>
-            <TarjetaResumen icon={Users} label="Usuarios registrados" valor={numero(usuarios.length)} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, marginBottom: 24 }}>
+            <TarjetaResumen
+              icon={Users}
+              label="Usuarios registrados"
+              valor={numero(usuarios.length)}
+              detalle={`${numero(resumen.activos)} activos · ${numero(usuarios.length - resumen.activos)} bloqueados`}
+            />
             <TarjetaResumen
               icon={ShoppingBag}
               label="Productos comprados"
@@ -417,182 +470,186 @@ export default function Usuarios() {
               icon={FileText}
               label="Cotizaciones pedidas"
               valor={numero(resumen.pedidas)}
-              detalle={`${numero(resumen.aprobadas)} aprobadas · ${numero(resumen.rechazadas)} rechazadas`}
-            />
+            >
+              <BarraCotizaciones
+                total={resumen.pedidas}
+                aprobadas={resumen.aprobadas}
+                rechazadas={resumen.rechazadas}
+              />
+            </TarjetaResumen>
           </div>
 
-            {filtrados.length === 0 ? (
-              <p style={{ color: 'var(--text-on-bg)' }}>
-                {!busqueda && filtroRol === 'todos' && filtroCuenta === 'todos'
-                  ? 'No hay usuarios registrados.'
-                  : `No hay usuarios que coincidan con${busqueda ? ` "${busqueda}"` : ''}${filtroRol !== 'todos' ? ` y rol "${filtroRol}"` : ''}${filtroCuenta !== 'todos' ? ` y cuenta "${filtroCuenta === 'empresa' ? 'empresa' : 'personal'}"` : ''}`}
-              </p>
+          {filtrados.length === 0 ? (
+            <p style={{ color: 'var(--text-on-bg)' }}>
+              {!busqueda && filtroRol === 'todos' && filtroCuenta === 'todos'
+                ? 'No hay usuarios registrados.'
+                : `No hay usuarios que coincidan con${busqueda ? ` "${busqueda}"` : ''}${filtroRol !== 'todos' ? ` y rol "${filtroRol}"` : ''}${filtroCuenta !== 'todos' ? ` y cuenta "${filtroCuenta === 'empresa' ? 'empresa' : 'personal'}"` : ''}`}
+            </p>
           ) : (
             <>
-            <div className="admin-table-wrap">
-              <table className="admin-table admin-table--usuarios">
-                <thead>
-                  <tr style={{ color: 'var(--text-on-bg)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
-                    <th style={{ padding: '0 10px 12px' }}>Nombre</th>
-                    <th style={{ padding: '0 10px 12px' }}>Correo</th>
-                    <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Productos comprados</th>
-                    <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Cotizaciones pedidas</th>
-                    <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Aprobadas</th>
-                    <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Rechazadas</th>
-                    <th style={{ padding: '0 10px 12px' }}>Estado</th>
-                    <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {usuariosPagina.map(u => {
-                    const esPropia = esAdminActual && String(u.id) === String(usuarioActual?.id)
-                    return (
-                      <>
-                      <tr key={u.id} style={{ borderTop: '1px solid var(--surface-3)' }}>
-                        <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span>{u.nombre_completo || '—'}</span>
-                            {u.rol === 'admin' && (
-                              <span style={{
-                                fontSize: 10.5, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px',
-                                padding: '2px 8px', borderRadius: 20,
-                                color: 'var(--accent)', background: 'rgba(250,127,25,.14)',
-                              }}>
-                                Admin
-                            </span>
-                            )}
-                          </div>
-                        </td>
-                        <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{u.email}</td>
-                        <CeldaNumero
-                          valor={u.productos_comprados}
-                          icon={ShoppingBag}
-                          titulo={`${numero(u.pedidos_pagados)} ${Number(u.pedidos_pagados) === 1 ? 'pedido pagado' : 'pedidos pagados'}`}
-                        />
-                        <CeldaNumero valor={u.cotizaciones_pedidas} />
-                        <CeldaNumero valor={u.cotizaciones_aprobadas} icon={CheckCircle2} color="var(--green, #22c55e)" />
-                        <CeldaNumero valor={u.cotizaciones_rechazadas} icon={XCircle} color="var(--red, #ef4444)" />
-                        <td style={{ padding: '13px 10px' }}>
-                          <BadgeEstado activo={u.activo} />
-                        </td>
-                        <td style={{ padding: '13px 10px', textAlign: 'right' }}>
-                          {esPropia ? (
-                            <span style={{ fontSize: 11.5, color: 'var(--text-on-bg)' }}>Tu cuenta</span>
-                          ) : (
-                            <div style={{ display: 'inline-flex', gap: 6, justifyContent: 'flex-end' }}>
-                              <button
-                                type="button"
-                                onClick={() => toggleEstado(u)}
-                                title={u.activo ? 'Bloquear cuenta' : 'Desbloquear cuenta'}
-                                style={{
-                                  padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
-                                  background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
-                                }}
-                              >
-                                {u.activo ? 'Bloquear' : 'Desbloquear'}
-                              </button>
-                              {u.rol === 'admin' ? (
-                                <button
-                                  type="button"
-                                  onClick={() => cambiarRol(u, 'cliente')}
-                                  title="Quitar permisos de administrador"
-                                  style={{
-                                    padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
-                                    background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
-                                  }}
-                                >
-                                  Quitar admin
-                                </button>
-                              ) : (
-                                <button
-                                  type="button"
-                                  onClick={() => cambiarRol(u, 'admin')}
-                                  title="Otorgar permisos de administrador"
-                                  style={{
-                                    padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
-                                    background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
-                                  }}
-                                >
-                                  Dar admin
-                                </button>
+              <div className="admin-table-wrap">
+                <table className="admin-table admin-table--usuarios">
+                  <thead>
+                    <tr style={{ color: 'var(--text-on-bg)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
+                      <th style={{ padding: '0 10px 12px' }}>Nombre</th>
+                      <th style={{ padding: '0 10px 12px' }}>Correo</th>
+                      <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Productos comprados</th>
+                      <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Cotizaciones pedidas</th>
+                      <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Aprobadas</th>
+                      <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Rechazadas</th>
+                      <th style={{ padding: '0 10px 12px' }}>Estado</th>
+                      <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {usuariosPagina.map(u => {
+                      const esPropia = esAdminActual && String(u.id) === String(usuarioActual?.id)
+                      return (
+                        <tr key={u.id} style={{ borderTop: '1px solid var(--surface-3)' }}>
+                          <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                              <span>{u.nombre_completo || '—'}</span>
+                              {u.rol === 'admin' && (
+                                <span style={{
+                                  fontSize: 10.5, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px',
+                                  padding: '2px 8px', borderRadius: 20,
+                                  color: 'var(--accent)', background: 'rgba(250,127,25,.14)',
+                                }}>
+                                  Admin
+                                </span>
                               )}
-                              <button
-                                type="button"
-                                onClick={() => { setErrorAlta(null); setUsuarioEliminar(u) }}
-                                title="Eliminar usuario"
-                                style={{
-                                  padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
-                                  background: 'var(--input-bg)', color: 'var(--red, #ef4444)', fontSize: 11.5, cursor: 'pointer',
-                                }}
-                              >
-                                <Trash2 size={13} />
-                              </button>
                             </div>
-                          )}
-                        </td>
-                      </tr>
-                      </>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
+                          </td>
+                          <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{u.email}</td>
+                          <CeldaNumero
+                            valor={u.productos_comprados}
+                            icon={ShoppingBag}
+                            titulo={`${numero(u.pedidos_pagados)} ${Number(u.pedidos_pagados) === 1 ? 'pedido pagado' : 'pedidos pagados'}`}
+                          />
+                          <CeldaNumero valor={u.cotizaciones_pedidas} />
+                          <CeldaNumero valor={u.cotizaciones_aprobadas} icon={CheckCircle2} color="var(--green, #22c55e)" />
+                          <CeldaNumero valor={u.cotizaciones_rechazadas} icon={XCircle} color="var(--red, #ef4444)" />
+                          <td style={{ padding: '13px 10px' }}>
+                            <BadgeEstado activo={u.activo} />
+                          </td>
+                          <td style={{ padding: '13px 10px', textAlign: 'right' }}>
+                            {esPropia ? (
+                              <span style={{ fontSize: 11.5, color: 'var(--text-on-bg)' }}>Tu cuenta</span>
+                            ) : (
+                              <div style={{ display: 'inline-flex', gap: 6, justifyContent: 'flex-end' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => toggleEstado(u)}
+                                  title={u.activo ? 'Bloquear cuenta' : 'Desbloquear cuenta'}
+                                  style={{
+                                    padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
+                                    background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
+                                  }}
+                                >
+                                  {u.activo ? 'Bloquear' : 'Desbloquear'}
+                                </button>
+                                {u.rol === 'admin' ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => cambiarRol(u, 'cliente')}
+                                    title="Quitar permisos de administrador"
+                                    style={{
+                                      padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
+                                      background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
+                                    }}
+                                  >
+                                    Quitar admin
+                                  </button>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    onClick={() => cambiarRol(u, 'admin')}
+                                    title="Otorgar permisos de administrador"
+                                    style={{
+                                      padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
+                                      background: 'var(--input-bg)', color: 'var(--text-on-bg)', fontSize: 11.5, cursor: 'pointer',
+                                    }}
+                                  >
+                                    Dar admin
+                                  </button>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => { setErrorAlta(null); setUsuarioEliminar(u) }}
+                                  title="Eliminar usuario"
+                                  aria-label="Eliminar usuario"
+                                  style={{
+                                    padding: '6px 10px', borderRadius: 8, border: '1px solid var(--line)',
+                                    background: 'var(--input-bg)', color: 'var(--red, #ef4444)', fontSize: 11.5, cursor: 'pointer',
+                                  }}
+                                >
+                                  <Trash2 size={13} />
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
 
-            {totalPaginas > 1 && (
-              <div style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                gap: 6, marginTop: 20, padding: '20px 16px 12px',
-                background: 'var(--bg)',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <button
+              {totalPaginas > 1 && (
+                <div style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  gap: 6, marginTop: 20, padding: '20px 16px 12px',
+                  background: 'var(--bg)',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <button
                       onClick={() => setPagina(p => Math.max(1, p - 1))}
                       disabled={pagina === 1}
                       style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: 30,
-                          height: 30,
-                          borderRadius: 8,
-                          border: '1px solid var(--surface-3)',
-                          background: 'transparent',
-                          color: 'var(--text-dim)',
-                          cursor: pagina === 1 ? 'not-allowed' : 'pointer',
-                          opacity: pagina === 1 ? 0.4 : 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 30,
+                        height: 30,
+                        borderRadius: 8,
+                        border: '1px solid var(--surface-3)',
+                        background: 'transparent',
+                        color: 'var(--text-dim)',
+                        cursor: pagina === 1 ? 'not-allowed' : 'pointer',
+                        opacity: pagina === 1 ? 0.4 : 1,
                       }}
                       aria-label="Página anterior"
-                  >
+                    >
                       <ChevronLeft size={15} />
-                  </button>
+                    </button>
 
-                  <span style={{ padding: '0 8px', fontFamily: 'var(--font-mono)' }}>
+                    <span style={{ padding: '0 8px', fontFamily: 'var(--font-mono)' }}>
                       {pagina} / {totalPaginas}
-                  </span>
+                    </span>
 
-                  <button
+                    <button
                       onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))}
                       disabled={pagina === totalPaginas}
                       style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: 30,
-                          height: 30,
-                          borderRadius: 8,
-                          border: '1px solid var(--surface-3)',
-                          background: 'transparent',
-                          color: 'var(--text-dim)',
-                          cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
-                          opacity: pagina === totalPaginas ? 0.4 : 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 30,
+                        height: 30,
+                        borderRadius: 8,
+                        border: '1px solid var(--surface-3)',
+                        background: 'transparent',
+                        color: 'var(--text-dim)',
+                        cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
+                        opacity: pagina === totalPaginas ? 0.4 : 1,
                       }}
                       aria-label="Página siguiente"
-                  >
+                    >
                       <ChevronRight size={15} />
-                  </button>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             </>
           )}
         </>
