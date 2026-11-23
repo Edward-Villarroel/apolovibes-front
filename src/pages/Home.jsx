@@ -111,6 +111,41 @@ export default function Home() {
   return (
     <>
       <HeroVideo />
+       {productosLanzamiento.length > 0 && (
+        <section className="wrap" style={{ paddingTop: 32, paddingBottom: 32 }}>
+          <hr className="separador" />
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text-on-bg)' }}>Nuevos Lanzamientos</h2>
+          {mostrarFallbackLanzamientos && <AvisoFallback />}
+          <ProductCarousel productos={productosLanzamiento} />
+        </section>
+      )}
+
+      <section className="wrap" style={{ paddingTop: 32, paddingBottom: 32 }}>
+        <hr className="separador" />
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text-on-bg)' }}>Destacados</h2>
+        <div className="grid-destacados">
+          {['DesDragon.webp', 'DesCubone.webp', 'destacados.webp'].map(f => (
+            <div key={f} className="destacado-card">
+              <img src={mediaPath(f)} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            </div>
+          ))}
+        </div>
+        <style>{`
+          .grid-destacados { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+          .destacado-card {
+            aspect-ratio: 6 / 8;
+            min-height: 130px;
+            border-radius: 0px;
+            background: transparent;
+            border: 1px solid var(--line);
+            overflow: hidden;
+          }
+          @media (max-width: 768px) {
+            .grid-destacados { grid-template-columns: 1fr; }
+          }
+        `}</style>
+      </section>
+
       <section className="wrap section-py-mobile" style={{ paddingTop: '80px' }}>
         <hr className="separador" />
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text-on-bg)' }}>
@@ -143,41 +178,6 @@ export default function Home() {
           <ProductCarousel productos={productosRanking} />
         )}
       </section>
-
-      <section className="wrap" style={{ paddingTop: 32, paddingBottom: 32 }}>
-        <hr className="separador" />
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text-on-bg)' }}>Destacados</h2>
-        <div className="grid-destacados">
-          {['DesDragon.webp', 'DesCubone.webp', 'destacados.webp'].map(f => (
-            <div key={f} className="destacado-card">
-              <img src={mediaPath(f)} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-            </div>
-          ))}
-        </div>
-        <style>{`
-          .grid-destacados { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-          .destacado-card {
-            aspect-ratio: 6 / 8;
-            min-height: 130px;
-            border-radius: 0px;
-            background: transparent;
-            border: 1px solid var(--line);
-            overflow: hidden;
-          }
-          @media (max-width: 768px) {
-            .grid-destacados { grid-template-columns: 1fr; }
-          }
-        `}</style>
-      </section>
-
-      {productosLanzamiento.length > 0 && (
-        <section className="wrap" style={{ paddingTop: 32, paddingBottom: 32 }}>
-          <hr className="separador" />
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, marginBottom: 30, textAlign: 'center', color: 'var(--text-on-bg)' }}>Nuevos Lanzamientos</h2>
-          {mostrarFallbackLanzamientos && <AvisoFallback />}
-          <ProductCarousel productos={productosLanzamiento} />
-        </section>
-      )}
 
       <style>{`
         .cat-titulo { color: inherit; text-decoration: none; cursor: pointer; }
