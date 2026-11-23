@@ -7,7 +7,7 @@ import { useTheme } from '../context/ThemeContext.jsx'
 import { mediaPath, urlMedia } from '../utils/media.js'
 import {
   ShoppingCart, Menu, X, User, LayoutDashboard, LogOut, Moon, Sun, CircleCheck, ClipboardList,
-  Minus, Plus, Trash2, ShieldCheck, Calculator, ChevronRight, LogIn, ReceiptText
+  Minus, Plus, Trash2, ShieldCheck, Calculator, ChevronRight, LogIn, ReceiptText, Store
 } from 'lucide-react'
 import { useProductos } from '../context/ProductContext.jsx'
 import LoginModal from './LoginModal.jsx'
@@ -16,7 +16,7 @@ import ConfirmModal from './ConfirmModal.jsx'
 
 export default function Navbar() {
   const { items, cantidadTotal, solicitarLogin, abrirLogin, cerrarLogin, quitarItem, actualizarCantidadItem, total, requiereLogin, cargando: cargandoCarrito } = useCart()
-  const { isLoggedIn, isAdmin, logout, user, cargando: authCargando } = useAuth()
+  const { isLoggedIn, isAdmin, isEmpleado, logout, user, cargando: authCargando } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -29,6 +29,9 @@ export default function Navbar() {
   const prevIsLoggedIn = useRef(isLoggedIn)
   const navigate = useNavigate()
   const { categorias } = useProductos()
+  const esEmpleado = isEmpleado
+  const esCliente = !isAdmin && !isEmpleado
+  const RUTA_VENTA_LOCAL = '/admin/venta'
 
   useEffect(() => {
     const alScrollear = () => setScrolled(window.scrollY > 40)
@@ -73,10 +76,7 @@ export default function Navbar() {
     if (isLoggedIn && solicitarLogin && !cargandoCarrito) cerrarLogin()
   }, [isLoggedIn, solicitarLogin, cargandoCarrito, cerrarLogin])
 
-  // Si el menú móvil está abierto y el usuario acaba de iniciar sesión,
-  // cerrarlo solo una vez para que al reabrirse se renderice con el estado de auth actualizado.
-  // Se usa un ref para detectar solo la transición de no logueado → logueado; así no se cierra
-  // el menú cada vez que se abre estando ya logueado (lo que impedía abrirlo en móvil tras el login).
+
   useEffect(() => {
     const acaboDeIniciarSesion = !prevIsLoggedIn.current && isLoggedIn
     prevIsLoggedIn.current = isLoggedIn
@@ -229,7 +229,7 @@ export default function Navbar() {
               }
             }}
           >Catálogo</Link>
-          {!isAdmin && (
+          {esCliente && (
             <>
               <Link
                 to="/cotizar"
@@ -315,6 +315,33 @@ export default function Navbar() {
                     </span>
                   </div>
                 </div>
+                {esEmpleado && (
+                  <button
+                    onClick={() => {
+                      const estaEnCheckout = window.__checkoutBlocking && (
+                        (window.__checkoutLocation && window.__checkoutLocation.endsWith('/checkout')) ||
+                        window.location.pathname.endsWith('/checkout') ||
+                        window.location.pathname.includes('/checkout')
+                      )
+                      if (estaEnCheckout) {
+                        window.dispatchEvent(new CustomEvent('checkout:request-confirm', { detail: { to: RUTA_VENTA_LOCAL } }))
+                        return
+                      }
+                      setUserMenuOpen(false); navigate(RUTA_VENTA_LOCAL)
+                    }}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+                      padding: '12px 16px', border: 'none', background: 'none',
+                      color: 'var(--text)', fontSize: 13, cursor: 'pointer',
+                      textAlign: 'left', transition: 'background .15s',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--accent-soft)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+                  >
+                    <Store size={16} color="var(--text)" />
+                    Registrar venta
+                  </button>
+                )}
                 {isAdmin && (
                   <button
                     onClick={() => {
@@ -343,7 +370,7 @@ export default function Navbar() {
                     Panel Administrador
                   </button>
                 )}
-                {!isAdmin && (
+                {esCliente && (
                   <button
                     onClick={() => {
                       const estaEnCheckout = window.__checkoutBlocking && (
@@ -371,7 +398,7 @@ export default function Navbar() {
                     Mis pedidos
                   </button>
                 )}
-                {!isAdmin && (
+                {esCliente && (
                   <button
                     onClick={() => {
                       const estaEnCheckout = window.__checkoutBlocking && (
@@ -437,7 +464,7 @@ export default function Navbar() {
           </div>
 
           {/* El carrito es solo para clientes */}
-          {!isAdmin && (
+          {esCliente && (
             <div className="cart-icon" ref={cartMenuRef} style={{ position: 'relative', color: '#FBF7EE' }}>
               <button
                 onClick={() => setCartOpen(v => !v)}
@@ -745,7 +772,14 @@ export default function Navbar() {
 
             {/* Menú de usuario: pedidos, cotizaciones o panel admin */}
             {isLoggedIn && (
-              isAdmin ? (
+              esEmpleado ? (
+                <div className="nm-section">
+                  <button className="nm-item" onClick={() => handleMobileNav(RUTA_VENTA_LOCAL)}>
+                    <Store size={18} />
+                    Registrar venta
+                  </button>
+                </div>
+              ) : isAdmin ? (
                 <div className="nm-section">
                   <button
                     className="nm-item"
@@ -838,7 +872,7 @@ export default function Navbar() {
                 </>
               )
             )}
-            {!isAdmin && (
+            {esCliente && (
               <div className="nm-section">
                 <button className="nm-item" onClick={() => {
                   const estaEnCheckout = window.__checkoutBlocking && (

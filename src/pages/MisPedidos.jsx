@@ -747,35 +747,35 @@ export default function MisPedidos() {
   const pedidosPagina = useMemo(() => {
     const inicio = (pagina - 1) * filasPorPagina;
     return pedidos.slice(inicio, inicio + filasPorPagina);
-  }, [pedidos, pagina]);
+  }, [pedidos, pagina, filasPorPagina]);
 
   if (!isLoggedIn) {
     return <Navigate to="/" replace />;
   }
 
-if (cargando) {
+  if (cargando) {
     return (
-        <div className="wrap cot-pagina pagina-loader">
-            <style>{`
+      <div className="wrap cot-pagina pagina-loader">
+        <style>{`
                 @keyframes pedidos-spin {
                     to { transform: rotate(360deg); }
                 }
             `}</style>
 
-            <RefreshCw
-                size={38}
-                color="var(--accent, #FA7F19)"
-                strokeWidth={2.5}
-                style={{
-                    animation: 'pedidos-spin 1s linear infinite',
-                }}
-            />
-        </div>
+        <RefreshCw
+          size={38}
+          color="var(--accent, #FA7F19)"
+          strokeWidth={2.5}
+          style={{
+            animation: 'pedidos-spin 1s linear infinite',
+          }}
+        />
+      </div>
     );
-}
+  }
 
   return (
-    <div className="wrap cot-pagina" style={{ minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
+    <div className="wrap cot-pagina" style={{ flex: 1, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', paddingBottom: 24 }}>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--text-on-bg)' }}>
         Mis pedidos
       </h1>
@@ -1044,7 +1044,7 @@ if (cargando) {
                       {!esRetiro && p.codigo_seguimiento && p.estado !== 'cancelado' && (
                         <div className="pedido-card-meta">{estadoSeguimiento(p)}</div>
                       )}
-                      <div className="pedido-card-total">{formatoPesos(p.total)}</div>
+                      <div className="pedido-card-total" style={{ color: 'var(--text-on-bg)' }}>{formatoPesos(p.total)}</div>
                     </div>
                     <button
                       type="button"
@@ -1095,7 +1095,7 @@ if (cargando) {
                         type="button"
                         onClick={() => setResenando(p)}
                         className="pedido-card-btn"
-                        style={{ position: 'relative', background: 'transparent', color: 'var(--text)', border: '1px solid var(--surface-3)'  }}
+                        style={{ position: 'relative', background: 'transparent', color: 'var(--text)', border: '1px solid var(--surface-3)' }}
                       >
                         <Star size={16} />
                         Valorar
@@ -1139,10 +1139,8 @@ if (cargando) {
           {pedidos.length > 0 && (
             <div
               style={{
-                position: 'sticky', bottom: 0, zIndex: 10,
                 display: 'flex', flexDirection: 'column', alignItems: 'center',
-                marginTop: 'auto', gap: 8, padding: '20px 16px 12px',
-                background: 'var(--bg)',
+                marginTop: 'auto', gap: 8, padding: '24px 0 0',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-dim)' }}>

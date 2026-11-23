@@ -266,8 +266,8 @@ export default function Usuarios() {
 
   useEffect(() => {
     const calcularFilas = () => {
-      // el encabezado y las tarjetas ocupan más alto que en Inventario
-      const disponible = window.innerHeight - 560
+
+      const disponible = window.innerHeight - 450
       const base = Math.floor(disponible / 56)
       const maximo = window.innerWidth < 768 ? 6 : 10
       setFilasPorPagina(Math.max(3, Math.min(base, maximo)))

@@ -63,15 +63,17 @@ export default function App() {
           <Route path="/mis-pedidos" element={<TiendaLayout><MisPedidos /></TiendaLayout>} />
           <Route path="/mis-cotizaciones" element={<TiendaLayout><MisCotizaciones /></TiendaLayout>} />
 
-          <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
-            <Route index element={<Dashboard />} />
-            <Route path="pedidos" element={<Pedidos />} />
-            <Route path="usuarios" element={<Usuarios />} />
+          <Route
+            path="/admin"
+            element={<ProtectedRoute roles={['admin', 'empleado']}><AdminLayout /></ProtectedRoute>} >
+            <Route index element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="pedidos" element={<ProtectedRoute><Pedidos /></ProtectedRoute>} />
+            <Route path="usuarios" element={<ProtectedRoute><Usuarios /></ProtectedRoute>} />
             <Route path="venta" element={<RegistrarVentaLocal />} />
-            <Route path="inventario" element={<Inventario />} />
-            <Route path="cotizaciones" element={<Cotizaciones />} />
-            <Route path="reportes" element={<ReportesVentas />} />
-            <Route path="cupones" element={<CuponesAdmin />} />
+            <Route path="inventario" element={<ProtectedRoute><Inventario /></ProtectedRoute>} />
+            <Route path="cotizaciones" element={<ProtectedRoute><Cotizaciones /></ProtectedRoute>} />
+            <Route path="reportes" element={<ProtectedRoute><ReportesVentas /></ProtectedRoute>} />
+            <Route path="cupones" element={<ProtectedRoute><CuponesAdmin /></ProtectedRoute>} />
           </Route>
           <Route path="*" element={<TiendaLayout><NotFound /></TiendaLayout>} />
         </Routes>

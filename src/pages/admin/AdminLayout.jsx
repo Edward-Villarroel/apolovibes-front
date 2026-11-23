@@ -48,7 +48,7 @@ const sidebarBtnStyle = {
 
 function SidebarContent({ onLogout, onClose, user, theme, toggleTheme }) {
   const nombreCompleto = [user?.nombre, user?.apellido].filter(Boolean).join(' ') || user?.email || 'Mi cuenta'
-  const rolLabel = user?.rol === 'admin' ? 'Admin' : user?.rol || ''
+  const rolLabel = user?.rol === 'admin' ? 'Admin' : user?.rol === 'empleado' ? 'Empleado' : user?.rol || ''
 
   return (
     <>
@@ -215,6 +215,8 @@ export default function AdminLayout() {
   const [showConfirm, setShowConfirm] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { logout, user } = useAuth()
+  const items = user?.rol === 'empleado'
+  ? navItems.filter(i => i.to === '/admin/venta') : navItems
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
 
@@ -235,7 +237,7 @@ export default function AdminLayout() {
         background: 'var(--accent)', borderRight: '1px solid var(--line)',
         padding: '24px 18px', display: 'flex', flexDirection: 'column',
       }}>
-        <SidebarContent onLogout={() => setShowConfirm(true)} user={user} theme={theme} toggleTheme={toggleTheme} />
+        <SidebarContent items={items} onLogout={() => setShowConfirm(true)} user={user} theme={theme} toggleTheme={toggleTheme} />
       </aside>
 
       {/* Mobile sidebar overlay */}
@@ -248,6 +250,7 @@ export default function AdminLayout() {
         style={{ background: 'var(--accent)', borderRight: '1px solid var(--line)', flexDirection: 'column' }}
       >
         <MobileSidebarContent
+          items={items}
           onLogout={() => setShowConfirm(true)}
           onClose={() => setSidebarOpen(false)}
           user={user}

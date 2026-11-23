@@ -2,8 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import {
     AlertTriangle, Eye, Info, X, User, Mail, Phone, Clock,
-Lock, CheckCircle2, ChevronLeft, CreditCard, ChevronRight,
-Ruler, Hash, Layers, Tag, Palette, ImageOff, RefreshCw
+    Lock, CheckCircle2, ChevronLeft, CreditCard, ChevronRight,
+    Ruler, Hash, Layers, Tag, Palette, ImageOff, RefreshCw
 
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -515,32 +515,32 @@ export default function MisCotizaciones() {
     const cotizacionesPagina = useMemo(() => {
         const inicio = (pagina - 1) * filasPorPagina;
         return cotizaciones.slice(inicio, inicio + filasPorPagina);
-    }, [cotizaciones, pagina]);
+    }, [cotizaciones, pagina, filasPorPagina]);
 
     if (!isLoggedIn) {
         return <Navigate to="/" replace />;
     }
 
-   if (cargando) {
-    return (
-        <div className="wrap cot-pagina pagina-loader">
-            <style>{`
+    if (cargando) {
+        return (
+            <div className="wrap cot-pagina pagina-loader">
+                <style>{`
                 @keyframes pedidos-spin {
                     to { transform: rotate(360deg); }
                 }
             `}</style>
 
-            <RefreshCw
-                size={38}
-                color="var(--accent, #FA7F19)"
-                strokeWidth={2.5}
-                style={{
-                    animation: 'pedidos-spin 1s linear infinite',
-                }}
-            />
-        </div>
-    );
-}
+                <RefreshCw
+                    size={38}
+                    color="var(--accent, #FA7F19)"
+                    strokeWidth={2.5}
+                    style={{
+                        animation: 'pedidos-spin 1s linear infinite',
+                    }}
+                />
+            </div>
+        );
+    }
 
 
     async function abrirAviso(c) {
@@ -552,7 +552,7 @@ export default function MisCotizaciones() {
     }
 
     return (
-        <div className="wrap cot-pagina" style={{ minHeight: '100vh', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
+        <div className="wrap cot-pagina" style={{ flex: 1, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', paddingBottom: 24 }}>
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, marginBottom: 8, color: 'var(--text-on-bg)' }}>
                 Mis cotizaciones
             </h1>
@@ -602,8 +602,10 @@ export default function MisCotizaciones() {
                                     const estilo = estilosEstado[estadoMostrado] || estilosEstado.pendiente;
                                     return (
                                         <tr key={c.id} style={{ borderTop: '1px solid var(--surface-3)' }}>
-                                            <td style={{ padding: '10px', display: 'flex', justifyContent: 'center' }}>
-                                                <ThumbCotizacionLista src={c.thumb_url || c.imagen_thumb} nombre={c.nombre} />
+                                            <td style={{ padding: '10px' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                    <ThumbCotizacionLista src={c.thumb_url || c.imagen_thumb} nombre={c.nombre} />
+                                                </div>
                                             </td>
                                             <td style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', fontSize: 11 }}>
                                                 {String(c.id).slice(0, 8).toUpperCase()}
@@ -684,10 +686,10 @@ export default function MisCotizaciones() {
                                         <ThumbCotizacionLista src={c.thumb_url || c.imagen_thumb} nombre={c.nombre} />
                                         <div style={{ flex: 1, minWidth: 0 }}>
                                             <div className="pedido-card-meta">
-                                                {formatearFechaLarga(c.creado_en)}{c.material ? ` ? ${c.material}` : ''}
+                                                {formatearFechaLarga(c.creado_en)}{c.material ? ` - ${c.material}` : ''}
                                             </div>
                                             {c.estado === 'rechazada' ? null : c.precio != null ? (
-                                                <div className="pedido-card-total">
+                                                <div className="pedido-card-total" style={{ color: 'var(--text-on-bg)' }}>
                                                     ${formatearPrecio(c.precio)}
                                                 </div>
                                             ) : (
@@ -706,7 +708,7 @@ export default function MisCotizaciones() {
                                         <button
                                             type="button"
                                             onClick={() => setDetalle(c)}
-                                            aria-label="Ver detalle de la cotizaci?n"
+                                            aria-label="Ver detalle de la cotización"
                                             className="pedido-card-icono"
                                         >
                                             <Eye size={18} />
@@ -732,7 +734,7 @@ export default function MisCotizaciones() {
                                                     type="button"
                                                     onClick={() => abrirAviso(c)}
                                                     className="pedido-card-btn"
-                                                    style={{ position: 'relative', background: 'transparent', color: 'var(--text)', border: '1px solid var(--surface-3)' }}
+                                                    style={{ position: 'relative', background: 'transparent', color: 'var(--text-on-bg)', border: '1px solid var(--surface-3)' }}
                                                 >
                                                     <Info size={16} />
                                                     Ver novedad
@@ -749,16 +751,12 @@ export default function MisCotizaciones() {
                     {cotizaciones.length > 0 && (
                         <div
                             style={{
-                                position: 'sticky',
-                                bottom: 0,
-                                zIndex: 10,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 marginTop: 'auto',
                                 gap: 8,
-                                padding: '20px 16px 12px',
-                                background: 'var(--bg)',
+                                padding: '24px 0 0',
                             }}
                         >
                             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-dim)' }}>

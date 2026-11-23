@@ -1,16 +1,19 @@
 import { useEffect } from 'react'
+import { Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { mediaPath } from '../utils/media.js'
 
 export default function RutaCliente({ children }) {
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, isAdmin, isEmpleado } = useAuth()
     const { abrirLogin } = useCart()
 
     useEffect(() => {
         if (!isLoggedIn) abrirLogin()
     }, [isLoggedIn])
 
+    if (isAdmin) return <Navigate to="/admin" replace />
+    if (isEmpleado) return <Navigate to="/admin/venta" replace />
     if (isLoggedIn) return children
 
     return (
@@ -40,5 +43,3 @@ export default function RutaCliente({ children }) {
         </section>
     )
 }
-
-
