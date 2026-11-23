@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Minus, Plus } from 'lucide-react';
 import { useProductos } from '../../context/ProductContext.jsx';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { ventasApi } from '../../services/ventas.js';
-import SelectOpciones from '../../components/SelectOpciones.jsx';
 
 const MEDIOS = ['Efectivo', 'TUU'];
 const clp = (n) => `$${Math.round(Number(n) || 0).toLocaleString('es-CL')}`;
@@ -28,16 +28,15 @@ function totalVenta(venta) {
   return Number(venta.total) || 0;
 }
 
-/* Los estilos de esta página viven en src/styles/global.css (sección .rv-*) */
 
 export default function RegistrarVentaLocal() {
   const { productos, categorias, actualizarLocal } = useProductos();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [sesion, setSesion] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [abriendo, setAbriendo] = useState(false);
   const [registrando, setRegistrando] = useState(false);
-  const [agregando, setAgregando] = useState(false);
   const [mensaje, setMensaje] = useState(null);
   const [lugar, setLugar] = useState('');
   const [categoriaActual, setCategoriaActual] = useState('');
@@ -92,7 +91,7 @@ export default function RegistrarVentaLocal() {
     }
   }
 
-  async function agregarAlTicket() {
+  function agregarAlTicket() {
     setMensaje(null);
     const producto = productos.find(p => p.id === productoActual);
     if (!producto) {
@@ -105,28 +104,22 @@ export default function RegistrarVentaLocal() {
       return;
     }
     const existente = ticket.find(t => t.producto_id === producto.id);
-    if (existente && existente.cantidad + cant > producto.stock) {
-      setMensaje({ tipo: 'error', texto: `El stock disponible es ${producto.stock}.` });
-      return;
-    }
-    setAgregando(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 260));
-      if (existente) {
-        setTicket(ticket.map(t => t.producto_id === producto.id ? { ...t, cantidad: t.cantidad + cant } : t));
-      } else {
-        setTicket([...ticket, {
-          producto_id: producto.id,
-          nombre: producto.nombre,
-          precio: Number(producto.precio),
-          cantidad: cant,
-        }]);
+    if (existente) {
+      if (existente.cantidad + cant > producto.stock) {
+        setMensaje({ tipo: 'error', texto: `El stock disponible es ${producto.stock}.` });
+        return;
       }
-      setProductoActual('');
-      setCantidad(1);
-    } finally {
-      setAgregando(false);
+      setTicket(ticket.map(t => t.producto_id === producto.id ? { ...t, cantidad: t.cantidad + cant } : t));
+    } else {
+      setTicket([...ticket, {
+        producto_id: producto.id,
+        nombre: producto.nombre,
+        precio: Number(producto.precio),
+        cantidad: cant,
+      }]);
     }
+    setProductoActual('');
+    setCantidad(1);
   }
 
   function quitarDelTicket(productoId) {
@@ -175,7 +168,7 @@ export default function RegistrarVentaLocal() {
     setMensaje(null);
     try {
       await ventasApi.cerrarSesion(sesion.id);
-      navigate('/admin/reportes');
+      navigate(user?.rol === 'empleado' ? '/admin/venta' : '/admin/reportes');
     } catch (err) {
       setMensaje({ tipo: 'error', texto: err.message });
       setMostrarCierre(false);
@@ -186,6 +179,7 @@ export default function RegistrarVentaLocal() {
   const totalTicket = ticket.reduce((s, t) => s + t.cantidad * t.precio, 0);
   const ivaTicket = Math.round(totalTicket * 0.19);
   const totalConIva = Math.round(totalTicket * 1.19);
+  const unidadesTicket = ticket.reduce((s, t) => s + t.cantidad, 0);
   const totalEfectivo = ventasDia
     .filter(v => (v.medio_pago || '').toLowerCase() === 'efectivo')
     .reduce((s, v) => s + totalVenta(v), 0);
@@ -271,28 +265,32 @@ export default function RegistrarVentaLocal() {
 
             <div className="rv-field">
               <label className="rv-lbl" htmlFor="rv-cat">Categoría</label>
-              <SelectOpciones
+              <select
                 id="rv-cat"
-                options={[
-                  { value: '', label: 'Todas las categorías' },
-                  ...categorias.filter(c => c.cantidad > 0).map(c => ({ value: c.id, label: c.nombre })),
-                ]}
+                className="rv-fld"
                 value={categoriaActual}
-                onChange={(v) => { setCategoriaActual(v); setProductoActual(''); }}
-              />
+                onChange={(e) => { setCategoriaActual(e.target.value); setProductoActual(''); }}
+              >
+                <option value="">Todas las categorías</option>
+                {categorias.filter(c => c.cantidad > 0).map(c => (
+                  <option key={c.id} value={c.id}>{c.nombre}</option>
+                ))}
+              </select>
             </div>
 
             <div className="rv-field">
               <label className="rv-lbl" htmlFor="rv-prod">Producto</label>
-              <SelectOpciones
+              <select
                 id="rv-prod"
-                options={[
-                  { value: '', label: 'Selecciona un producto' },
-                  ...productosFiltrados.map(p => ({ value: p.id, label: `${p.nombre} — ${clp(p.precio)}` })),
-                ]}
+                className="rv-fld"
                 value={productoActual}
-                onChange={(v) => { setProductoActual(v); setCantidad(1); }}
-              />
+                onChange={(e) => { setProductoActual(e.target.value); setCantidad(1); }}
+              >
+                <option value="">Selecciona un producto</option>
+                {productosFiltrados.map(p => (
+                  <option key={p.id} value={p.id}>{p.nombre} — {clp(p.precio)}</option>
+                ))}
+              </select>
               {productoSel && (
                 <div className="rv-meta rv-stock">
                   Stock disponible: {productoSel.stock} {Number(productoSel.stock) === 1 ? 'unidad' : 'unidades'}
@@ -325,15 +323,18 @@ export default function RegistrarVentaLocal() {
               </div>
             </div>
 
-            <button className="rv-btn rv-pri rv-blanco" onClick={agregarAlTicket} disabled={agregando}>
-              {agregando ? 'Agregando…' : '+ Agregar al carrito'}
-            </button>
+            <button className="rv-btn rv-pri" onClick={agregarAlTicket}>+ Agregar al carrito</button>
           </div>
 
           {/* Carrito */}
           <div className="rv-card">
             <div className="rv-card-head">
               <h2 className="rv-h2">Carrito</h2>
+              {ticket.length > 0 && (
+                <span className="rv-count">
+                  {ticket.length} {ticket.length === 1 ? 'producto' : 'productos'} · {unidadesTicket} u.
+                </span>
+              )}
             </div>
 
             {ticket.length === 0 ? (
@@ -378,7 +379,7 @@ export default function RegistrarVentaLocal() {
                     {MEDIOS.map((medio) => (
                       <button
                         key={medio}
-                        className={`rv-chip rv-chip-${medio.toLowerCase()}${medioPago === medio ? ' on' : ''}`}
+                        className={`rv-chip${medioPago === medio ? ' on' : ''}`}
                         aria-pressed={medioPago === medio}
                         onClick={() => setMedioPago(medio)}
                       >
@@ -391,11 +392,11 @@ export default function RegistrarVentaLocal() {
             )}
 
             <button
-              className="rv-btn rv-pri rv-btn-lg rv-blanco"
+              className="rv-btn rv-pri rv-btn-lg"
               onClick={registrarVenta}
               disabled={registrando || ticket.length === 0}
             >
-              {registrando ? 'Registrando…' : 'Registrar venta'}
+              {registrando ? 'Registrando…' : ticket.length ? `Registrar venta · ${clp(totalConIva)}` : 'Registrar venta'}
             </button>
           </div>
         </section>
