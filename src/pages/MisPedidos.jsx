@@ -977,6 +977,7 @@ export default function MisPedidos() {
                             <span className="cart-badge">{p.resenas_pendientes}</span>
                           )}
                         </span>
+
                       </td>
                       <td style={{ padding: '14px 10px', textAlign: 'center', position: 'relative' }}>
                         <span
@@ -1080,7 +1081,7 @@ export default function MisPedidos() {
                         disabled={sincronizandoId === p.id}
                         className="pedido-card-btn"
                         style={{
-                          background: 'transparent', color: 'var(--text)',
+                          background: 'transparent', color: 'var(--text-on-bg)',
                           border: '1px solid var(--surface-3)',
                           opacity: sincronizandoId === p.id ? 0.5 : 1
                         }}
@@ -1095,7 +1096,7 @@ export default function MisPedidos() {
                         type="button"
                         onClick={() => setResenando(p)}
                         className="pedido-card-btn"
-                        style={{ position: 'relative', background: 'transparent', color: 'var(--text)', border: '1px solid var(--surface-3)' }}
+                        style={{ position: 'relative', background: 'transparent', color: 'var(--text-on-bg)', border: '1px solid var(--surface-3)' }}
                       >
                         <Star size={16} />
                         Valorar
@@ -1108,7 +1109,7 @@ export default function MisPedidos() {
                         type="button"
                         onClick={() => abrirAviso(p)}
                         className="pedido-card-btn"
-                        style={{ position: 'relative', background: 'transparent', color: 'var(--text)', border: '1px solid var(--surface-3)' }}
+                        style={{ position: 'relative', background: 'transparent', color: 'var(--text-on-bg)', border: '1px solid var(--surface-3)' }}
                       >
                         <Info size={16} />
                         Ver anulación
