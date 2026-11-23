@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, FileText, Plus, RefreshCw, Search, ShoppingBag, Trash2, Users, XCircle } from 'lucide-react'
+import { AlertTriangle, ChevronLeft, ChevronRight, FileText, Plus, RefreshCw, Search, ShoppingBag, Trash2, Users } from 'lucide-react'
 import { usuariosApi } from '../../services/usuarios.js'
 import ConfirmModal from '../../components/ConfirmModal.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
@@ -62,16 +62,13 @@ function BarraCotizaciones({ total, aprobadas, rechazadas }) {
 
 // ---------- celda numerica ----------
 
-function CeldaNumero({ valor, color, icon: Icon, titulo }) {
+function CeldaNumero({ valor, color, titulo }) {
   return (
     <td
       title={titulo}
-      style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: color || 'var(--text-on-bg)', whiteSpace: 'nowrap', textAlign: 'right' }}
+      style={{ padding: '13px 10px', fontFamily: 'var(--font-mono)', color: color || 'var(--text-on-bg)', whiteSpace: 'nowrap', textAlign: 'center' }}
     >
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-        {Icon && <Icon size={14} style={{ color: color || 'var(--text-on-bg)' }} />}
-        {numero(valor)}
-      </span>
+      {numero(valor)}
     </td>
   )
 }
@@ -374,7 +371,7 @@ export default function Usuarios() {
         {/* Fila 2: barra de filtros */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
-          background: 'var(--accent)', border: '1px solid var(--line)', borderRadius: 12, padding: 12,
+          background: 'var(--line)', border: '1px solid var(--line)', borderRadius: 12, padding: 12,
         }}>
           <div style={{ position: 'relative', flex: '1 1 320px' }}>
             <Search
@@ -490,10 +487,10 @@ export default function Usuarios() {
                     <tr style={{ color: 'var(--text-on-bg)', textAlign: 'left', fontSize: 11, textTransform: 'uppercase' }}>
                       <th style={{ padding: '0 10px 12px' }}>Nombre</th>
                       <th style={{ padding: '0 10px 12px' }}>Correo</th>
-                      <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Productos comprados</th>
-                      <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Cotizaciones pedidas</th>
-                      <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Aprobadas</th>
-                      <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Rechazadas</th>
+                      <th style={{ padding: '0 10px 12px', textAlign: 'center' }}>Productos comprados</th>
+                      <th style={{ padding: '0 10px 12px', textAlign: 'center' }}>Cotizaciones pedidas</th>
+                      <th style={{ padding: '0 10px 12px', textAlign: 'center' }}>Aprobadas</th>
+                      <th style={{ padding: '0 10px 12px', textAlign: 'center' }}>Rechazadas</th>
                       <th style={{ padding: '0 10px 12px' }}>Estado</th>
                       <th style={{ padding: '0 10px 12px', textAlign: 'right' }}>Acciones</th>
                     </tr>
@@ -506,26 +503,16 @@ export default function Usuarios() {
                           <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                               <span>{u.nombre_completo || '—'}</span>
-                              {u.rol === 'admin' && (
-                                <span style={{
-                                  fontSize: 10.5, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px',
-                                  padding: '2px 8px', borderRadius: 20,
-                                  color: 'var(--accent)', background: 'rgba(250,127,25,.14)',
-                                }}>
-                                  Admin
-                                </span>
-                              )}
                             </div>
                           </td>
                           <td style={{ padding: '13px 10px', color: 'var(--text-on-bg)' }}>{u.email}</td>
                           <CeldaNumero
                             valor={u.productos_comprados}
-                            icon={ShoppingBag}
                             titulo={`${numero(u.pedidos_pagados)} ${Number(u.pedidos_pagados) === 1 ? 'pedido pagado' : 'pedidos pagados'}`}
                           />
                           <CeldaNumero valor={u.cotizaciones_pedidas} />
-                          <CeldaNumero valor={u.cotizaciones_aprobadas} icon={CheckCircle2} color="var(--green, #22c55e)" />
-                          <CeldaNumero valor={u.cotizaciones_rechazadas} icon={XCircle} color="var(--red, #ef4444)" />
+                          <CeldaNumero valor={u.cotizaciones_aprobadas} color="var(--green, #22c55e)" />
+                          <CeldaNumero valor={u.cotizaciones_rechazadas} color="var(--red, #ef4444)" />
                           <td style={{ padding: '13px 10px' }}>
                             <BadgeEstado activo={u.activo} />
                           </td>
