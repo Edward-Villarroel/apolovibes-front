@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ventasApi } from '../../services/ventas.js';
 
 function capitalizar(texto) {
@@ -50,6 +50,8 @@ export default function ReporteVentas() {
   const [mensaje, setMensaje] = useState(null);
   const [detalle, setDetalle] = useState(null);
   const [cargandoDetalle, setCargandoDetalle] = useState(false);
+  const [pagina, setPagina] = useState(1);
+  const [filasPorPagina, setFilasPorPagina] = useState(6);
 
   useEffect(() => {
     let activo = true;
@@ -65,6 +67,30 @@ export default function ReporteVentas() {
     })();
     return () => { activo = false; };
   }, []);
+
+
+  useEffect(() => {
+    const calcularFilas = () => {
+      const disponible = window.innerHeight - 340;
+      const base = Math.floor(disponible / 60);
+      const maximo = window.innerWidth < 768 ? 5 : 12;
+      setFilasPorPagina(Math.max(3, Math.min(base, maximo)));
+    };
+    calcularFilas();
+    window.addEventListener('resize', calcularFilas);
+    return () => window.removeEventListener('resize', calcularFilas);
+  }, []);
+
+  const totalPaginas = Math.max(1, Math.ceil(reportes.length / filasPorPagina));
+
+  useEffect(() => {
+    if (pagina > totalPaginas) setPagina(totalPaginas);
+  }, [totalPaginas, pagina]);
+
+  const reportesPagina = useMemo(() => {
+    const inicio = (pagina - 1) * filasPorPagina;
+    return reportes.slice(inicio, inicio + filasPorPagina);
+  }, [reportes, pagina, filasPorPagina]);
 
   async function abrirDetalle(reporte) {
     setCargandoDetalle(true);
@@ -112,7 +138,7 @@ export default function ReporteVentas() {
                 </tr>
               </thead>
               <tbody>
-                {reportes.map((r) => {
+                {reportesPagina.map((r) => {
                   const n = normalizarReporte(r);
                   return (
                     <tr
@@ -141,6 +167,58 @@ export default function ReporteVentas() {
             </div>
           )}
         </>
+      )}
+
+      {!cargando && reportes.length > 0 && (
+        <div
+          style={{
+            position: 'sticky', bottom: 0, zIndex: 10,
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            marginTop: 'auto', gap: 8, padding: '20px 16px 12px',
+            background: 'var(--bg)', borderTop: '1px solid var(--surface-3)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-on-bg)' }}>
+            <button
+              onClick={() => setPagina(p => Math.max(1, p - 1))}
+              disabled={pagina === 1}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
+                background: 'transparent', color: 'var(--text-on-bg)',
+                cursor: pagina === 1 ? 'not-allowed' : 'pointer',
+                opacity: pagina === 1 ? 0.4 : 1,
+              }}
+              aria-label="Página anterior"
+            >
+              <ChevronLeft size={15} />
+            </button>
+
+            <span style={{ padding: '0 8px', fontFamily: 'var(--font-mono)' }}>
+              {pagina} / {totalPaginas}
+            </span>
+
+            <button
+              onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))}
+              disabled={pagina === totalPaginas}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: 30, height: 30, borderRadius: 8, border: '1px solid var(--surface-3)',
+                background: 'transparent', color: 'var(--text-on-bg)',
+                cursor: pagina === totalPaginas ? 'not-allowed' : 'pointer',
+                opacity: pagina === totalPaginas ? 0.4 : 1,
+              }}
+              aria-label="Página siguiente"
+            >
+              <ChevronRight size={15} />
+            </button>
+          </div>
+
+          <span style={{ fontSize: 11, color: 'var(--text-on-bg)' }}>
+            Mostrando {(pagina - 1) * filasPorPagina + 1}
+            –{Math.min(pagina * filasPorPagina, reportes.length)} de {reportes.length}
+          </span>
+        </div>
       )}
 
       {detalle && (

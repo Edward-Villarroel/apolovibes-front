@@ -141,6 +141,7 @@ let cachePedidos = { usuarioId: null, pedidos: null };
 function DetalleModal({ pedido, onClose, onPagar, procesando, onCancelado, onMensaje }) {
   const navigate = useNavigate();
   const { repetirPedido } = useCart();
+  const { texto: COLOR_TEXTO, apagado: COLOR_APAGADO } = useTemaColores();
   useBloqueoScroll();
   const [repitiendo, setRepitiendo] = useState(false);
   const [estado, setEstado] = useState(pedido.estado);
